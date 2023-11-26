@@ -2,10 +2,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Print3dMarketplace.AuthAPI.EF;
 using Print3dMarketplace.AuthAPI.Entities;
-using Print3dMarketplace.AuthAPI.Services.Interfaces;
 using Print3dMarketplace.AuthAPI.Services;
-using System;
-using AutoMapper;
+using Print3dMarketplace.AuthAPI.Services.Interfaces;
+using Print3dMarketplace.Common.Middleware;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +37,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+RegisterMiddleware();
+
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -57,21 +58,21 @@ ApplyMigration();
 
 app.Run();
 
-
 void RegisterMapper()
 {
-/*	IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
-	builder.Services.AddSingleton(mapper);*/
-
 	var assembly = Assembly.GetExecutingAssembly();
 	builder.Services.AddAutoMapper(assembly);
-
 }
 
 void RegisterDependencies()
 {
 	builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 	builder.Services.AddScoped<IAuthService, AuthService>();
+}
+
+void RegisterMiddleware()
+{
+	app.UseMiddleware<ExceptionHandlerMiddleware>();
 }
 
 void ApplyMigration()
