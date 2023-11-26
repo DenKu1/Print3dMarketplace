@@ -3,9 +3,57 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{B9BABE51-5BDA-448A-8A58-F396E1988F3C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{1EA4DCE8-0CCF-417E-A74B-0E19E41A744C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{E202CB84-F4A0-4C98-9548-CA05C222D787}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{5507BD7A-088A-495D-83FF-C4DED2483A47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Print3dMarketplace.AuthAPI", "Print3dMarketplace.AuthAPI\Print3dMarketplace.AuthAPI.csproj", "{EABC2A90-2109-491A-8B8E-D1092A09F39F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthAPI", "AuthAPI", "{39A3DE57-050A-4F52-973D-E3A7603ABF2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Print3dMarketplace.AuthAPI.Contracts", "Print3dMarketplace.AuthAPI.Contracts\Print3dMarketplace.AuthAPI.Contracts.csproj", "{AC9B1BCF-96F5-4574-9CFA-11C5EEDF0D13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C9CC8325-1C8D-4FCD-A0C8-E2B00563606E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{1ABD799C-9E0E-4AD4-A0FA-2519E9247F6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Print3dMarketplace.Common", "Print3dMarketplace.Common\Print3dMarketplace.Common.csproj", "{67DC2237-974B-4D15-9BC5-0C8A2E5F2A84}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EABC2A90-2109-491A-8B8E-D1092A09F39F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EABC2A90-2109-491A-8B8E-D1092A09F39F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EABC2A90-2109-491A-8B8E-D1092A09F39F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EABC2A90-2109-491A-8B8E-D1092A09F39F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC9B1BCF-96F5-4574-9CFA-11C5EEDF0D13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC9B1BCF-96F5-4574-9CFA-11C5EEDF0D13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC9B1BCF-96F5-4574-9CFA-11C5EEDF0D13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC9B1BCF-96F5-4574-9CFA-11C5EEDF0D13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67DC2237-974B-4D15-9BC5-0C8A2E5F2A84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67DC2237-974B-4D15-9BC5-0C8A2E5F2A84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67DC2237-974B-4D15-9BC5-0C8A2E5F2A84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67DC2237-974B-4D15-9BC5-0C8A2E5F2A84}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EABC2A90-2109-491A-8B8E-D1092A09F39F} = {39A3DE57-050A-4F52-973D-E3A7603ABF2F}
+		{39A3DE57-050A-4F52-973D-E3A7603ABF2F} = {5507BD7A-088A-495D-83FF-C4DED2483A47}
+		{AC9B1BCF-96F5-4574-9CFA-11C5EEDF0D13} = {39A3DE57-050A-4F52-973D-E3A7603ABF2F}
+		{1ABD799C-9E0E-4AD4-A0FA-2519E9247F6B} = {5507BD7A-088A-495D-83FF-C4DED2483A47}
+		{67DC2237-974B-4D15-9BC5-0C8A2E5F2A84} = {1ABD799C-9E0E-4AD4-A0FA-2519E9247F6B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B83F4C55-EA13-46D6-9ED7-B18E1C14EDD9}
