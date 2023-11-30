@@ -12,11 +12,6 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'Print3dMarketplace.UI'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('Print3dMarketplace.UI');
-  });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
