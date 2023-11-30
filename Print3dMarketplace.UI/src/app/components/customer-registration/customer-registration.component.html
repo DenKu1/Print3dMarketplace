@@ -1,0 +1,37 @@
+<div class="split-container register-form">
+  <div class="split p3d-bg-color-primary">
+    <div class="col-md-6 d-none d-md-block">
+      <h1 class="text-center">Start you 3D jorney using our app<br>now!</h1>
+      <div class="d-flex justify-content-center align-items-center">
+        <img src="../assets/customer-registration-background.png" alt="Customer Image" class="img-fluid">
+      </div>
+    </div>
+  </div>
+  <div class="split p3d-bg-color-accent">
+    <div class="col-md-6">
+      <form action="#" class="p-4 text-white">
+        <div class="mb-3">
+          <label for="name" class="form-label"><fa-icon [icon]="faUser"></fa-icon> Name</label>
+          <input type="text" class="form-control p3d-underlined-input" id="name">
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label"><fa-icon [icon]="faEnvelope"></fa-icon> Email</label>
+          <input type="email" class="form-control p3d-underlined-input" id="email">
+        </div>
+        <div class="mb-3">
+          <label for="pwd" class="form-label"><fa-icon [icon]="faLock"></fa-icon> Password</label>
+          <input type="password" class="form-control p3d-underlined-input" id="pwd">
+        </div>
+        <div class="mb-3">
+          <label for="confirm-pwd" class="form-label"><fa-icon [icon]="faLock"></fa-icon> Confirm Password</label>
+          <input type="password" class="form-control p3d-underlined-input" id="confirm-pwd">
+        </div>
+        <div class="mb-3 form-check">
+          <input class="form-check-input" type="checkbox" id="remember-me">
+          <label class="form-check-label" for="remember-me">Remember me</label>
+        </div>
+        <button type="submit" class="p3d-button float-end">Register <fa-icon [icon]="faCircleArrowRight"></fa-icon></button>
+      </form>
+    </div>
+  </div>
+</div>

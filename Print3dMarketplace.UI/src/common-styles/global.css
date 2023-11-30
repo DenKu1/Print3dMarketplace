@@ -1,0 +1,8 @@
+/* Global Styles */
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
+body {
+  background-color: var(--background-color);
+}
