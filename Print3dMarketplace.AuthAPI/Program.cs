@@ -27,6 +27,7 @@ builder.Services.Configure<IdentityOptions>(opt =>
 	opt.Password.RequiredLength = 4;
 });
 
+builder.Services.AddCors();
 builder.Services.AddControllers();
 
 RegisterMapper();
@@ -48,6 +49,10 @@ app.UseSwaggerUI(c =>
 		c.RoutePrefix = "/auth";
 	}
 });
+
+app.UseCors(builder => builder.AllowAnyOrigin()
+	.AllowAnyHeader()
+	.AllowAnyMethod());
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

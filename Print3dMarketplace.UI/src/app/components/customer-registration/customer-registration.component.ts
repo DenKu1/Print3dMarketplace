@@ -7,8 +7,8 @@ import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-register',
-  templateUrl: './user-register.component.html',
-  styleUrls: ['./user-register.component.css']
+  templateUrl: './customer-registration.component.html',
+  styleUrls: ['./customer-registration.component.css']
 })
 export class CustomerRegistrationComponent implements OnInit {
 
@@ -54,7 +54,8 @@ export class CustomerRegistrationComponent implements OnInit {
           this.router.navigate(['/users/login']);
         },
         error => {
-          this.error = error.status === 400 ? error.error.message : "Unknown error!";
+          //this.error = error.status === 400 ? error.error.message : "Unknown error!";
+          this.error = error.error.message;
           this.loading = false;
         });
   }

@@ -33,8 +33,8 @@ export class UserService {
       }));
   }
 
-  register(userName: string, email: string, password: string) {
-    return this.http.post<any>(`${environment.apiUrl}/register`, { userName, email, password });
+  register(name: string, email: string, password: string) {
+    return this.http.post<any>(`${environment.authApiUrl}/customer/register`, { name, email, password });
   }
 
   logout() {
