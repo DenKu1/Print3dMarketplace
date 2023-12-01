@@ -28,7 +28,7 @@ export class CustomerRegistrationComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
-      userName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]]
@@ -47,7 +47,7 @@ export class CustomerRegistrationComponent implements OnInit {
     }
 
     this.loading = true;
-    this.userService.register(this.f.userName.value, this.f.email.value, this.f.password.value)
+    this.userService.register(this.f.name.value, this.f.email.value, this.f.password.value)
       .pipe(first())
       .subscribe(
         () => {

@@ -1,0 +1,57 @@
+/* Background colors */
+.p3d-bg-color-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.p3d-bg-color-accent {
+  background-color: var(--accent-color) !important;
+}
+
+.p3d-bg-color-background {
+  background-color: var(--background-color) !important;
+}
+
+.p3d-bg-color-highligh {
+  background-color: var(--highlight-color) !important;
+}
+
+.p3d-bg-color-background-accent {
+  background-color: var(--background-color-accent) !important;
+}
+
+.p3d-bg-color-light-primary {
+  background-color: var(--light-primary) !important;
+}
+
+.p3d-bg-color-light-accent {
+  background-color: var(--light-accent) !important;
+}
+
+/* Colors */
+.p3d-color-primary {
+  color: var(--primary-color) !important;
+}
+
+.p3d-color-accent {
+  color: var(--accent-color) !important;
+}
+
+.p3d-color-background {
+  color: var(--background-color) !important;
+}
+
+.p3d-color-highligh {
+  color: var(--highlight-color) !important;
+}
+
+.p3d-color-background-accent {
+  color: var(--background-color-accent) !important;
+}
+
+.p3d-color-light-primary {
+  color: var(--light-primary) !important;
+}
+
+.p3d-color-light-accent {
+  color: var(--light-accent) !important;
+}
