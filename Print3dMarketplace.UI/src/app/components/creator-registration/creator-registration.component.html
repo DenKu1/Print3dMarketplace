@@ -22,6 +22,24 @@
         </div>
 
         <div class="mb-3">
+          <label for="phoneNumber"><i class="fa-solid fa-envelope"></i> Phone number</label>
+          <input type="text" class="form-control p3d-underlined-input" placeholder="Enter phone number" formControlName="phoneNumber" id="phoneNumber">
+          <span *ngIf="submitted && f.phoneNumber.errors" class="text-danger">
+            <span *ngIf="f.phoneNumber.errors.required">Phone number is required</span>
+            <span *ngIf="f.phoneNumber.errors.pattern">Phone numer has invalid format</span>
+          </span>
+        </div>
+
+        <div class="mb-3">
+          <label for="address"><i class="fa-solid fa-envelope"></i> Address</label>
+          <input type="text" class="form-control p3d-underlined-input" placeholder="Enter address" formControlName="address" id="address">
+          <span *ngIf="submitted && f.address.errors" class="text-danger">
+            <span *ngIf="f.address.errors.required">Address is required</span>
+            <span *ngIf="f.email.errors.maxlength">Max length is 50 symbols</span>
+          </span>
+        </div>
+
+        <div class="mb-3">
           <label for="email"><i class="fa-solid fa-envelope"></i> Email</label>
           <input type="email" class="form-control p3d-underlined-input" placeholder="Enter email" formControlName="email" id="email">
           <span *ngIf="submitted && f.email.errors" class="text-danger">

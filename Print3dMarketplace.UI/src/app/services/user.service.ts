@@ -3,8 +3,10 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { User } from '../../models/user/user';
+import { User } from '../../models/user/userModel';
 import { environment } from '../../enviroments/environment';
+import { CreatorRegistrationRequestModel } from '../../models/user/creatorRegistrationRequestModel';
+import { CustomerRegistrationRequestModel } from '../../models/user/customerRegistrationRequestModel';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -33,8 +35,12 @@ export class UserService {
       }));
   }
 
-  register(name: string, email: string, password: string) {
-    return this.http.post<any>(`${environment.authApiUrl}/customer/register`, { name, email, password });
+  registerCustomer(customerRegistrationModel: CustomerRegistrationRequestModel) {
+    return this.http.post<any>(`${environment.authApiUrl}/customer/register`, customerRegistrationModel);
+  }
+
+  registerCreator(creatorRegistrationModel: CreatorRegistrationRequestModel) {
+    return this.http.post<any>(`${environment.authApiUrl}/creator/register`, creatorRegistrationModel);
   }
 
   logout() {

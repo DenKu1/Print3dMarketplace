@@ -4,14 +4,14 @@ import { Router } from '@angular/router';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { CustomerRegistrationRequestModel } from '../../../models/user/customerRegistrationRequestModel';
+import { CreatorRegistrationRequestModel } from '../../../models/user/creatorRegistrationRequestModel';
 
 @Component({
   selector: 'app-user-register',
-  templateUrl: './customer-registration.component.html',
-  styleUrls: ['./customer-registration.component.css']
+  templateUrl: './creator-registration.component.html',
+  styleUrls: ['./creator-registration.component.css']
 })
-export class CustomerRegistrationComponent implements OnInit {
+export class CreatorRegistrationComponent implements OnInit {
 
   registerForm: FormGroup;
   loading = false;
@@ -31,6 +31,8 @@ export class CustomerRegistrationComponent implements OnInit {
     this.registerForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
+      phoneNumber: ['', [Validators.required, Validators.pattern("\\d{12}")]],
+      address: ['', [Validators.required, Validators.maxLength(50)]],
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]]
     },
@@ -49,13 +51,16 @@ export class CustomerRegistrationComponent implements OnInit {
 
     this.loading = true;
 
-    const customerRegistrationModel: CustomerRegistrationRequestModel = {
+
+    const creatorRegistrationModel: CreatorRegistrationRequestModel = {
       name: this.f.name.value,
       email: this.f.email.value,
-      password: this.f.password.value
+      password: this.f.password.value,
+      address: this.f.address.value,
+      phoneNumber: this.f.phoneNumber.value
     };
 
-    this.userService.registerCustomer(customerRegistrationModel)
+    this.userService.registerCreator(creatorRegistrationModel)
       .pipe(first())
       .subscribe(
         () => {

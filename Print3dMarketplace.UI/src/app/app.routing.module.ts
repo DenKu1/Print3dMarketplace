@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 
 import { Routes, RouterModule } from '@angular/router';
 import { CustomerRegistrationComponent } from './components/customer-registration/customer-registration.component';
+import { CreatorRegistrationComponent } from './components/creator-registration/creator-registration.component';
+import { UserLoginComponent } from './components/user-login/user-login.component';
 
 /*import { AlbumComponent } from './components/album/album.component';
 import { PhotoComponent } from './components/photo/photo.component';
@@ -16,7 +18,15 @@ import { UserProfileComponent } from "./components/user-profile/user-profile.com
 
 const routes: Routes = [
   {
+    path: 'user/login',
+    component: UserLoginComponent
+  },
+  {
     path: 'creator/register',
+    component: CreatorRegistrationComponent
+  },
+  {
+    path: 'customer/register',
     component: CustomerRegistrationComponent
   },
   {
@@ -36,10 +46,7 @@ const routes: Routes = [
     path: 'users/register',
     component: UserRegisterComponent
   },
-  {
-    path: 'users/login',
-    component: UserLoginComponent
-  },
+
   {
     path: 'users/:id/albums',
     component: AlbumComponent,

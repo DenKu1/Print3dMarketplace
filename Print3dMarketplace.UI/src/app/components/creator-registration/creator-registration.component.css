@@ -1,0 +1,19 @@
+.split-container {
+  display: flex;
+  height: 100vh;
+}
+
+.split {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-form h1 {
+  font-size: 42px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 60px;
+  font-family: 'Roboto-Bold';
+}
