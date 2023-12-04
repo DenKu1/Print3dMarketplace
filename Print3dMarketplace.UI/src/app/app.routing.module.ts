@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CustomerRegistrationComponent } from './components/customer-registration/customer-registration.component';
 import { CreatorRegistrationComponent } from './components/creator-registration/creator-registration.component';
 import { UserLoginComponent } from './components/user-login/user-login.component';
+import { CreatorProfileComponent } from './components/creator-profile/creator-profile.component';
 
 /*import { AlbumComponent } from './components/album/album.component';
 import { PhotoComponent } from './components/photo/photo.component';
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path: 'customer/register',
     component: CustomerRegistrationComponent
+  },
+  {
+    path: 'creator/profile',
+    component: CreatorProfileComponent
   },
   {
     path: '**',

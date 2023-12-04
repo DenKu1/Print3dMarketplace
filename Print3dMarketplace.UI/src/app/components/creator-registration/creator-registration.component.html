@@ -22,7 +22,7 @@
         </div>
 
         <div class="mb-3">
-          <label for="phoneNumber"><i class="fa-solid fa-envelope"></i> Phone number</label>
+          <label for="phoneNumber"><i class="fa-solid fa-phone"></i> Phone number</label>
           <input type="text" class="form-control p3d-underlined-input" placeholder="Enter phone number" formControlName="phoneNumber" id="phoneNumber">
           <span *ngIf="submitted && f.phoneNumber.errors" class="text-danger">
             <span *ngIf="f.phoneNumber.errors.required">Phone number is required</span>
@@ -31,7 +31,7 @@
         </div>
 
         <div class="mb-3">
-          <label for="address"><i class="fa-solid fa-envelope"></i> Address</label>
+          <label for="address"><i class="fa-solid fa-map-location-dot"></i> Address</label>
           <input type="text" class="form-control p3d-underlined-input" placeholder="Enter address" formControlName="address" id="address">
           <span *ngIf="submitted && f.address.errors" class="text-danger">
             <span *ngIf="f.address.errors.required">Address is required</span>

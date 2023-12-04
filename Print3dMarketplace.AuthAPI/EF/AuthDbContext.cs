@@ -11,6 +11,7 @@ public class AuthDbContext : IdentityDbContext<ApplicationUser>
 	}
 
 	public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+	public DbSet<Creator> Creators { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

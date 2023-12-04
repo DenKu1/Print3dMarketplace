@@ -1,0 +1,42 @@
+@import url('creator-profile.component.css');
+.card {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-clip: border-box;
+  border: 0;
+  border-radius: 0.25rem;
+}
+
+.card-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 1rem;
+}
+
+.gutters-3 {
+  margin-right: -0.75rem;
+  margin-left: -0.75rem;
+}
+
+  .gutters-3 > .col {
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+  }
+
+.mb-3, .my-3 {
+  margin-bottom: 1rem !important;
+}
+
+.h-100 {
+  height: 100% !important;
+}
+
+.shadow-none {
+  box-shadow: none !important;
+}
