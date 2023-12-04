@@ -2,45 +2,73 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { User } from '../../models/user/userModel';
 import { environment } from '../../enviroments/environment';
 import { CreatorRegistrationRequestModel } from '../../models/user/creatorRegistrationRequestModel';
 import { CustomerRegistrationRequestModel } from '../../models/user/customerRegistrationRequestModel';
+import { LoginRequestModel } from '../../models/user/loginRequestModel';
+import { LoginResponseModel } from '../../models/user/loginResponseModel';
+import { UserModel } from '../../models/user/userModel';
+import { ResponseModel } from '../../models/common/responseModel';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
 
   headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
 
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
+  private currentUserSubject: BehaviorSubject<UserModel>;
+  public currentUser: Observable<UserModel>;
 
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+    const storedUser = localStorage.getItem('currentUser');
+    const parsedUser = storedUser && storedUser !== 'undefined' ? JSON.parse(storedUser) : null;
+    this.currentUserSubject = new BehaviorSubject<UserModel>(parsedUser);
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  public get currentUserValue(): User {
+  public get currentUserValue(): UserModel {
     return this.currentUserSubject.value;
   }
 
-  login(userName: string, password: string) {
-    return this.http.post<any>(`${environment.apiUrl}/login`, { userName, password })
-      .pipe(map(user => {
-        // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        this.currentUserSubject.next(user);
-        return user;
+  login(loginRequestModel: LoginRequestModel) {
+    return this.http.post<ResponseModel>(`${environment.authApiUrl}/login`, loginRequestModel)
+      .pipe(map(response => {
+
+        if (response.isSuccess) {
+          const loginResponse = response.result as LoginResponseModel;
+
+          // store user details and jwt token in local storage to keep user logged in between page refreshes
+          localStorage.setItem('currentUser', JSON.stringify(loginResponse.user));
+          localStorage.setItem('userToken', JSON.stringify(loginResponse.token));
+          this.currentUserSubject.next(loginResponse.user);
+          return loginResponse.user;
+        } else {
+          throw new Error(response.message);
+        }
       }));
   }
 
   registerCustomer(customerRegistrationModel: CustomerRegistrationRequestModel) {
-    return this.http.post<any>(`${environment.authApiUrl}/customer/register`, customerRegistrationModel);
+    return this.http.post<ResponseModel>(`${environment.authApiUrl}/customer/register`, customerRegistrationModel)
+      .pipe(map(response => {
+
+        if (response.isSuccess) {
+          return response.result;
+        } else {
+          throw new Error(response.message);
+        }
+      }));
   }
 
   registerCreator(creatorRegistrationModel: CreatorRegistrationRequestModel) {
-    return this.http.post<any>(`${environment.authApiUrl}/creator/register`, creatorRegistrationModel);
+    return this.http.post<ResponseModel>(`${environment.authApiUrl}/creator/register`, creatorRegistrationModel)
+      .pipe(map(response => {
+
+        if (response.isSuccess) {
+          return response.result;
+        } else {
+          throw new Error(response.message);
+        }
+      }));
   }
 
   logout() {
@@ -49,16 +77,16 @@ export class UserService {
     this.currentUserSubject.next(null);
   }
 
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${environment.apiUrl}/users/`);
+  getUsers(): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(`${environment.apiUrl}/users/`);
   }
 
   getUserById(id: number) {
-    return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
+    return this.http.get<UserModel>(`${environment.apiUrl}/users/${id}`);
   }
 
   getUserByUserName(userName: string) {
-    return this.http.get<User>(`${environment.apiUrl}/users/by-user-name/${userName}`);
+    return this.http.get<UserModel>(`${environment.apiUrl}/users/by-user-name/${userName}`);
   }
 
   deleteUser(id: number) {

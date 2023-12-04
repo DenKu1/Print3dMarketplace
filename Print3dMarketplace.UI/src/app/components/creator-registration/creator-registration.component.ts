@@ -66,9 +66,8 @@ export class CreatorRegistrationComponent implements OnInit {
         () => {
           this.router.navigate(['/users/login']);
         },
-        error => {
-          this.error = error.status === 400 ? error.error.message : "Unknown error!";
-          this.error = error.error.message;
+        err => {
+          this.error = err.status === 400 ? err.error.message : "Unknown error!";
           this.loading = false;
         });
   }
