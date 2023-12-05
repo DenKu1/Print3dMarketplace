@@ -9,6 +9,7 @@ import { LoginRequestModel } from '../../models/user/loginRequestModel';
 import { LoginResponseModel } from '../../models/user/loginResponseModel';
 import { UserModel } from '../../models/user/userModel';
 import { ResponseModel } from '../../models/common/responseModel';
+import { CreatorModel } from '../../models/user/creatorModel';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -29,7 +30,7 @@ export class UserService {
     return this.currentUserSubject.value;
   }
 
-  login(loginRequestModel: LoginRequestModel) {
+  login(loginRequestModel: LoginRequestModel): Observable<UserModel> {
     return this.http.post<ResponseModel>(`${environment.authApiUrl}/login`, loginRequestModel)
       .pipe(map(response => {
 
@@ -67,6 +68,18 @@ export class UserService {
           return response.result;
         } else {
           throw new Error(response.message);
+        }
+      }));
+  }
+
+  getCreatorById(userId: string): Observable<CreatorModel> {
+    return this.http.get<ResponseModel>(`${environment.authApiUrl}/creator/${userId}`)
+      .pipe(map(response => {
+
+        if (response.isSuccess) {
+          return response.result as CreatorModel;
+        } else {
+          return null;
         }
       }));
   }

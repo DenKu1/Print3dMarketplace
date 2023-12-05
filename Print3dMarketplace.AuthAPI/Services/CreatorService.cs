@@ -1,35 +1,38 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Print3dMarketplace.AuthAPI.Contracts.DTOs;
 using Print3dMarketplace.AuthAPI.EF;
 using Print3dMarketplace.AuthAPI.Entities;
 using Print3dMarketplace.AuthAPI.Services.Interfaces;
-using Print3dMarketplace.Common.Data;
-using System.Linq.Expressions;
 
 namespace Print3dMarketplace.AuthAPI.Services;
 
-public class CreatorService //: ServiceBase<>
+public class CreatorService : ICreatorService
 {
 	private readonly IMapper _mapper;
-	private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-	private readonly AuthDbContext _db;
+	private readonly AuthDbContext _context;
 
 	public CreatorService(
 		IMapper mapper,
-		AuthDbContext db)// : base
+		AuthDbContext context)
 	{
 		_mapper = mapper;
-		_db = db;
+		_context = context;
 	}
 
-	public async Task<IdentityResult> GetCreator(string id)
+	public async Task AddCreatorInfo(CreatorRegistrationRequestDto creatorRegistrationRequestDto, Guid userId)
 	{
-		return await context.Set<Creator>().Where(expression).FirstOrDefaultAsync();
+		var creator = _mapper.Map<Creator>(creatorRegistrationRequestDto);
+		creator.ApplicationUserId = userId;
 
+		await _context.Set<Creator>().AddAsync(creator);
+		await _context.SaveChangesAsync();
+	}
 
-		var user = _mapper.Map<ApplicationUser>(registrationRequestDto);
-		return await _userManager.CreateAsync(user, registrationRequestDto.Password);
+	public async Task<CreatorDto> GetCreator(Guid userId)
+	{
+		var creator = await _context.Set<Creator>().FirstOrDefaultAsync(x => x.ApplicationUserId == userId);
+		return _mapper.Map<CreatorDto>(creator);
 	}
 }

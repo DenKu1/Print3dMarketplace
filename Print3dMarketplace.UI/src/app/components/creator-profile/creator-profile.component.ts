@@ -3,6 +3,7 @@ import { UserModel } from '../../../models/user/userModel';
 import { FormBuilder } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CreatorModel } from '../../../models/user/creatorModel';
 
 @Component({
   selector: 'creator-profile',
@@ -11,12 +12,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class CreatorProfileComponent implements OnInit {
   currentUser: UserModel;
+  creatorInfo: CreatorModel;
   
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private userService: UserService) {
+    private userService: UserService)
+  {
   }
 
   ngOnInit() {
@@ -25,7 +28,13 @@ export class CreatorProfileComponent implements OnInit {
     if (this.currentUser.isCreator == false) {
       this.router.navigate(['/users/login']);
     }
-    //this.crTagInfo = new CreateTagInfo(this.formBuilder, this.currentUser.id)
+
+    this.getCreatorInfo();
+  }
+
+  getCreatorInfo(): void {
+    this.userService.getCreatorById(this.currentUser.id).subscribe(
+      creator => { this.creatorInfo = creator; })
   }
 
   getCurrentUser(): void {

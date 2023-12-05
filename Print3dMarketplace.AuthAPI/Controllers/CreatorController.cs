@@ -4,26 +4,26 @@ using Print3dMarketplace.Common.DTOs;
 
 namespace Print3dMarketplace.AuthAPI.Controllers;
 
-[Route("api/creator")]
+[Route("api/auth/creator")]
 [ApiController]
 public class CreatorController : ControllerBase
 {
-	private readonly IAuthService _authService;
+	private readonly ICreatorService _creatorService;
 
 	public CreatorController(
-		IAuthService authService)
+		ICreatorService creatorService)
 	{
-		_authService = authService;
+		_creatorService = creatorService;
 	}
 
-	[HttpPost("{userId}")]
-	public async Task<IActionResult> RegisterCustomer([FromRoute] int userId)
+	[HttpGet("{userId}")]
+	public async Task<IActionResult> GetCreator([FromRoute] Guid userId)
 	{
-		var result = await _authService.RegisterCustomer(model);
+		var result = await _creatorService.GetCreator(userId);
 
-		if (!result.Succeeded)
-			return BadRequest(ResponseDto.ErrorResponse(result.ToString()));
+		if (result == null)
+			return NotFound(ResponseDto.ErrorResponse($"Creator information for {userId} not found"));
 
-		return Ok(ResponseDto.SuccessResponse());
+		return Ok(ResponseDto.SuccessResponse(result));
 	}
 }

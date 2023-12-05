@@ -1,6 +1,9 @@
-﻿namespace Print3dMarketplace.Common.Data;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Print3dMarketplace.Common.Data;
 
 public abstract class BaseEntity
 {
-	public string Id { get; set; }
+	[Key]
+	public Guid Id { get; set; }
 }

@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Print3dMarketplace.AuthAPI.EF;
 using Print3dMarketplace.AuthAPI.Entities;
 using Print3dMarketplace.AuthAPI.Services;
@@ -14,7 +16,7 @@ builder.Services.AddDbContext<AuthDbContext>(option =>
 	option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
 	.AddEntityFrameworkStores<AuthDbContext>()
 	.AddDefaultTokenProviders();
 
@@ -34,7 +36,32 @@ RegisterMapper();
 RegisterDependencies();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(option =>
+{
+	option.AddSecurityDefinition(name: JwtBearerDefaults.AuthenticationScheme, securityScheme: new OpenApiSecurityScheme
+	{
+		Name = "Authorization",
+		Description = "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
+		In = ParameterLocation.Header,
+		Type = SecuritySchemeType.ApiKey,
+		Scheme = "Bearer"
+	});
+	option.AddSecurityRequirement(new OpenApiSecurityRequirement
+	{
+		{
+			new OpenApiSecurityScheme
+			{
+				Reference= new OpenApiReference
+				{
+					Type=ReferenceType.SecurityScheme,
+					Id=JwtBearerDefaults.AuthenticationScheme
+				}
+			}, new string[]{}
+		}
+	});
+});
+
 
 var app = builder.Build();
 
@@ -73,6 +100,7 @@ void RegisterDependencies()
 {
 	builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 	builder.Services.AddScoped<IAuthService, AuthService>();
+	builder.Services.AddScoped<ICreatorService, CreatorService>();
 }
 
 void RegisterMiddleware()

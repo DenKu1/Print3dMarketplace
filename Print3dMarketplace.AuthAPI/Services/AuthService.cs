@@ -11,21 +11,24 @@ public class AuthService : IAuthService
 {
 	private readonly IMapper _mapper;
 	private readonly IJwtTokenGenerator _jwtTokenGenerator;
+	private readonly ICreatorService _creatorService;
 
 	private readonly AuthDbContext _db;
 	private readonly UserManager<ApplicationUser> _userManager;
-	private readonly RoleManager<IdentityRole> _roleManager;
+	private readonly RoleManager<ApplicationRole> _roleManager;
 
 	public AuthService(
 		IMapper mapper,
 		IJwtTokenGenerator jwtTokenGenerator,
+		ICreatorService creatorService,
 		AuthDbContext db,
 		UserManager<ApplicationUser> userManager,
-		RoleManager<IdentityRole> roleManager)
+		RoleManager<ApplicationRole> roleManager)
 	{
 		_mapper = mapper;
 		_db = db;
 		_jwtTokenGenerator = jwtTokenGenerator;
+		_creatorService = creatorService;
 		_userManager = userManager;
 		_roleManager = roleManager;
 	}
@@ -39,7 +42,16 @@ public class AuthService : IAuthService
 	public async Task<IdentityResult> RegisterCreator(CreatorRegistrationRequestDto registrationRequestDto)
 	{
 		var user = _mapper.Map<ApplicationUser>(registrationRequestDto);
-		return await _userManager.CreateAsync(user, registrationRequestDto.Password);
+		var result = await _userManager.CreateAsync(user, registrationRequestDto.Password);
+
+		if (result.Succeeded)
+		{
+			var createdUser = await _userManager.FindByEmailAsync(registrationRequestDto.Email);
+
+			await _creatorService.AddCreatorInfo(registrationRequestDto, createdUser.Id);
+		}
+		
+		return result;
 	}
 
 	public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)

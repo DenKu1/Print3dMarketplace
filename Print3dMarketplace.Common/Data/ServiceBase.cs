@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -55,3 +55,4 @@ public class ServiceBase<TEntity> : IGenericRepository<TEntity> where TEntity : 
 		context.Entry(entity).State = EntityState.Modified;
 	}
 }
+*/
