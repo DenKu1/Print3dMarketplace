@@ -8,7 +8,7 @@ public class CreatorProfile : Profile
 {
 	public CreatorProfile()
 	{
-		CreateMap<Creator, CreatorDto>();
+		CreateMap<Creator, CreatorDto>().ReverseMap();
 		CreateMap<CreatorRegistrationRequestDto, Creator>();
 	}
 }

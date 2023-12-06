@@ -12,10 +12,22 @@
   color: var(--primary-color);
 }
 
-.p3d-button:hover {
-  transform: translateX(2px); /* Add a slight lift on hover for interaction */
-  transition: transform 0.2s;
-}
+  .p3d-button:hover {
+    transform: translateX(2px); /* Add a slight lift on hover for interaction */
+    transition: transform 0.2s;
+  }
+
+  /* Disabled state */
+  .p3d-button:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    box-shadow: 0px 6px 0px 0px #999999;
+    cursor: not-allowed;
+  }
+
+    .p3d-button:disabled:hover {
+      transform: none; /* Remove the lift effect for disabled buttons */
+    }
 
 /* Underlined input */
 .p3d-underlined-input {
@@ -34,4 +46,16 @@
     box-shadow: none !important;
     border-bottom: 1px solid var(--background-color) !important;
     color: var(--background-color) !important;
+  }
+
+  /* Disabled state */
+  .p3d-underlined-input:disabled {
+    border-bottom: 1px solid #cccccc !important;
+    color: #666666 !important;
+  }
+
+  .p3d-underlined-input:disabled:focus,
+  .p3d-underlined-input:disabled:hover {
+    border-bottom: 1px solid #cccccc !important;
+    color: #666666 !important;
   }

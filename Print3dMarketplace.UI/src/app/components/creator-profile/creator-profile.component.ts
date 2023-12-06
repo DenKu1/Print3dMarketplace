@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreatorModel } from '../../../models/user/creatorModel';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'creator-profile',
@@ -49,12 +50,46 @@ export class CreatorProfileComponent implements OnInit {
   }
 
   updateCreatorInfo(): void {
-/*    this.userService.updateCreator(this.currentUser.id, creator).subscribe(
-      creator => { this.creatorInfo = creator; })*/
+    this.upCreatorInfo.submitted = true;
+    this.upCreatorInfo.success = '';
+    this.upCreatorInfo.error = '';
+
+    if (this.upCreatorInfo.form.invalid) {
+      return;
+    }
+
+    this.upCreatorInfo.loading = true;
+
+    var creatorModel: CreatorModel =
+    {
+      phoneNumber: this.upCreatorInfo.f.phoneNumber.value,
+      alternativePhoneNumber: this.upCreatorInfo.f.alternativePhoneNumber.value,
+      address: this.upCreatorInfo.f.address.value,
+      description: this.upCreatorInfo.f.description.value,
+    }
+
+    this.userService.updateCreator(this.currentUser.id, creatorModel)
+      .pipe(first())
+      .subscribe(
+        isUpdated => {
+          if (isUpdated) {
+
+            this.upCreatorInfo.success = "Updated successfully";
+            this.upCreatorInfo.form.markAsUntouched();
+          }
+
+          this.upCreatorInfo.loading = false;
+          this.upCreatorInfo.disable();
+        },
+        err => {
+          this.upCreatorInfo.error = "Unknown error! Please try again";
+          this.upCreatorInfo.loading = false;
+          this.upCreatorInfo.disable();
+        });
   }
+
 }
 class UpdateCreatorInfo {
-  isDisabled = true;
   loading = false;
   submitted = false;
   error: string = '';
@@ -66,11 +101,13 @@ class UpdateCreatorInfo {
 
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
-      phoneNumber: ['', [Validators.required, Validators.pattern("\\d{12}")]],
-      alternativePhoneNumber: ['', [Validators.required, Validators.pattern("\\d{12}")]],
-      address: ['', [Validators.required, Validators.maxLength(50)]],
-      description: ['', [Validators.required, Validators.maxLength(50)]],
+      phoneNumber: [{ value: '', disabled: true }, [Validators.required, Validators.pattern("\\d{12}")]],
+      alternativePhoneNumber: [{ value: '', disabled: true }, [Validators.required, Validators.pattern("\\d{12}")]],
+      address: [{ value: '', disabled: true }, [Validators.required, Validators.maxLength(50)]],
+      description: [{ value: '', disabled: true }, [Validators.required, Validators.maxLength(50)]],
     });
+
+    this.form.disable();
   }
 
   initialize(creatorInfo: CreatorModel): void {
@@ -83,7 +120,11 @@ class UpdateCreatorInfo {
     this.form.markAsUntouched();
   }
 
-  toggle(): void {
-    this.isDisabled = !this.isDisabled;
+  enable(): void {
+    this.form.enable();
+  }
+
+  disable(): void {
+    this.form.disable();
   }
 }

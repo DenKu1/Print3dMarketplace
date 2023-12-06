@@ -50,7 +50,7 @@
                 </div>
 
                 <!--Update creator form: phoneNumber-->
-                <input type="text" class="col-sm-9 text-secondary" formControlName="phoneNumber">
+                <input [disabled]="upCreatorInfo.form.disabled || upCreatorInfo.loading" type="text" class="col-sm-9 text-secondary" formControlName="phoneNumber">
                 <span *ngIf="upCreatorInfo.submitted && upCreatorInfo.f.phoneNumber.errors" class="text-danger">
                   <span *ngIf="upCreatorInfo.f.phoneNumber.errors.required">Phone number is required</span>
                   <span *ngIf="upCreatorInfo.f.phoneNumber.errors.pattern">Phone numer has invalid format</span>
@@ -66,7 +66,7 @@
                 </div>
 
                 <!--Update creator form: alternativePhoneNumber-->
-                <input type="text" class="col-sm-9 text-secondary" formControlName="alternativePhoneNumber">
+                <input [disabled]="upCreatorInfo.form.disabled || upCreatorInfo.loading" type="text" class="col-sm-9 text-secondary" formControlName="alternativePhoneNumber">
                 <span *ngIf="upCreatorInfo.submitted && upCreatorInfo.f.alternativePhoneNumber.errors" class="text-danger">
                   <span *ngIf="upCreatorInfo.f.alternativePhoneNumber.errors.required">Alternative phone number is required</span>
                   <span *ngIf="upCreatorInfo.f.alternativePhoneNumber.errors.pattern">Alternative phone numer has invalid format</span>
@@ -82,7 +82,7 @@
                 </div>
 
                 <!--Update creator form: address-->
-                <input type="text" class="col-sm-9 text-secondary" formControlName="address">
+                <input [disabled]="upCreatorInfo.form.disabled || upCreatorInfo.loading" type="text" class="col-sm-9 text-secondary" formControlName="address">
                 <span *ngIf="upCreatorInfo.submitted && upCreatorInfo.f.address.errors" class="text-danger">
                   <span *ngIf="upCreatorInfo.f.address.errors.required">Address is required</span>
                   <span *ngIf="upCreatorInfo.f.address.errors.maxlength">Max length is 50 symbols</span>
@@ -98,11 +98,15 @@
                 </div>
 
                 <!--Update creator form: description-->
-                <input type="text" class="col-sm-9 text-secondary" formControlName="description">
+                <input [disabled]="upCreatorInfo.form.disabled || upCreatorInfo.loading" type="text" class="col-sm-9 text-secondary" formControlName="description">
                 <span *ngIf="upCreatorInfo.submitted && upCreatorInfo.f.description.errors" class="text-danger">
                   <span *ngIf="upCreatorInfo.f.description.errors.required">Address is required</span>
                   <span *ngIf="upCreatorInfo.f.description.errors.maxlength">Max length is 50 symbols</span>
                 </span>
+
+              </div>
+              <hr>
+              <div class="row">
 
                 <!--Update creator form: alert-->
                 <div style="min-height: 56px;">
@@ -116,18 +120,15 @@
                   </div>
                 </div>
 
-              </div>
-              <hr>
-              <div class="row">
                 <div class="col-sm-12">
                   <!--Update creator form: edit-->
-                  <button type="submit" [disabled]="!upCreatorInfo.isDisabled || upCreatorInfo.loading" class="p3d-button float-end"
-                          (click)="upCreatorInfo.toggle()">
+                  <button type="button" [disabled]="!upCreatorInfo.form.disabled || upCreatorInfo.loading" class="p3d-button float-end"
+                          (click)="upCreatorInfo.enable()">
                     Edit
                   </button>
 
                   <!--Update creator form: submit-->
-                  <button type="submit" [disabled]="upCreatorInfo.isDisabled || !upCreatorInfo.form.touched || upCreatorInfo.loading" class="p3d-button float-end">
+                  <button type="submit" [disabled]="upCreatorInfo.form.disabled || !upCreatorInfo.form.touched || upCreatorInfo.loading" class="p3d-button float-end mx-2">
                     <span *ngIf="upCreatorInfo.loading" class="spinner-border spinner-border-sm mr-1"></span>Save
                   </button>
                 </div>
