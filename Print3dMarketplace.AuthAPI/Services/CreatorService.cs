@@ -4,6 +4,7 @@ using Print3dMarketplace.AuthAPI.Contracts.DTOs;
 using Print3dMarketplace.AuthAPI.EF;
 using Print3dMarketplace.AuthAPI.Entities;
 using Print3dMarketplace.AuthAPI.Services.Interfaces;
+using System.Security.Claims;
 
 namespace Print3dMarketplace.AuthAPI.Services;
 
@@ -34,5 +35,14 @@ public class CreatorService : ICreatorService
 	{
 		var creator = await _context.Set<Creator>().FirstOrDefaultAsync(x => x.ApplicationUserId == userId);
 		return _mapper.Map<CreatorDto>(creator);
+	}
+
+	public async Task<bool> UpdateCreator(CreatorDto creatorDto, Guid userId)
+	{
+		var creator = await _context.Set<Creator>().FirstOrDefaultAsync(x => x.ApplicationUserId == userId);
+
+		_mapper.Map(creatorDto, creator);
+
+		return await _context.SaveChangesAsync() > 0;
 	}
 }

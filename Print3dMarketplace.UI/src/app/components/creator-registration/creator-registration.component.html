@@ -35,7 +35,7 @@
           <input type="text" class="form-control p3d-underlined-input" placeholder="Enter address" formControlName="address" id="address">
           <span *ngIf="submitted && f.address.errors" class="text-danger">
             <span *ngIf="f.address.errors.required">Address is required</span>
-            <span *ngIf="f.email.errors.maxlength">Max length is 50 symbols</span>
+            <span *ngIf="f.address.errors.maxlength">Max length is 50 symbols</span>
           </span>
         </div>
 

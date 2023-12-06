@@ -6,4 +6,5 @@ public interface ICreatorService
 {
 	Task AddCreatorInfo(CreatorRegistrationRequestDto creatorRegistrationRequestDto, Guid userId);
 	Task<CreatorDto> GetCreator(Guid userId);
+	Task<bool> UpdateCreator(CreatorDto creatorDto, Guid userId);
 }

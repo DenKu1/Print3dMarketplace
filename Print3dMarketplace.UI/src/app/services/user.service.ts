@@ -72,7 +72,7 @@ export class UserService {
       }));
   }
 
-  getCreatorById(userId: string): Observable<CreatorModel> {
+  getCreator(userId: string): Observable<CreatorModel> {
     return this.http.get<ResponseModel>(`${environment.authApiUrl}/creator/${userId}`)
       .pipe(map(response => {
 
@@ -81,6 +81,13 @@ export class UserService {
         } else {
           return null;
         }
+      }));
+  }
+
+  updateCreator(userId: string, creator: CreatorModel): Observable<boolean> {
+    return this.http.put<ResponseModel>(`${environment.authApiUrl}/creator/${userId}`, creator)
+      .pipe(map(response => {
+        return response.isSuccess;
       }));
   }
 

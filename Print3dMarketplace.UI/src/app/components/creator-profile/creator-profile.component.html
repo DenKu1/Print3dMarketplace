@@ -40,67 +40,101 @@
       </div>
       <div class="col-md-8">
         <div class="card mb-3">
-          <div class="card-body p3d-bg-color-light-accent">
-            <div class="row">
-              <div class="col-sm-3">
-                <h6 class="mb-0">Full Name</h6>
+
+          <!--Update creator form-->
+          <form [formGroup]="upCreatorInfo.form" (submit)="updateCreatorInfo()">
+            <div class="card-body p3d-bg-color-light-accent">
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Main phone number</h6>
+                </div>
+
+                <!--Update creator form: phoneNumber-->
+                <input type="text" class="col-sm-9 text-secondary" formControlName="phoneNumber">
+                <span *ngIf="upCreatorInfo.submitted && upCreatorInfo.f.phoneNumber.errors" class="text-danger">
+                  <span *ngIf="upCreatorInfo.f.phoneNumber.errors.required">Phone number is required</span>
+                  <span *ngIf="upCreatorInfo.f.phoneNumber.errors.pattern">Phone numer has invalid format</span>
+                </span>
+
               </div>
-              <div class="col-sm-9 text-secondary">
-                John Doe
+
+              <hr>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Alternative phone number</h6>
+                </div>
+
+                <!--Update creator form: alternativePhoneNumber-->
+                <input type="text" class="col-sm-9 text-secondary" formControlName="alternativePhoneNumber">
+                <span *ngIf="upCreatorInfo.submitted && upCreatorInfo.f.alternativePhoneNumber.errors" class="text-danger">
+                  <span *ngIf="upCreatorInfo.f.alternativePhoneNumber.errors.required">Alternative phone number is required</span>
+                  <span *ngIf="upCreatorInfo.f.alternativePhoneNumber.errors.pattern">Alternative phone numer has invalid format</span>
+                </span>
+
+              </div>
+
+              <hr>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Address</h6>
+                </div>
+
+                <!--Update creator form: address-->
+                <input type="text" class="col-sm-9 text-secondary" formControlName="address">
+                <span *ngIf="upCreatorInfo.submitted && upCreatorInfo.f.address.errors" class="text-danger">
+                  <span *ngIf="upCreatorInfo.f.address.errors.required">Address is required</span>
+                  <span *ngIf="upCreatorInfo.f.address.errors.maxlength">Max length is 50 symbols</span>
+                </span>
+
+              </div>
+
+              <hr>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Company description</h6>
+                </div>
+
+                <!--Update creator form: description-->
+                <input type="text" class="col-sm-9 text-secondary" formControlName="description">
+                <span *ngIf="upCreatorInfo.submitted && upCreatorInfo.f.description.errors" class="text-danger">
+                  <span *ngIf="upCreatorInfo.f.description.errors.required">Address is required</span>
+                  <span *ngIf="upCreatorInfo.f.description.errors.maxlength">Max length is 50 symbols</span>
+                </span>
+
+                <!--Update creator form: alert-->
+                <div style="min-height: 56px;">
+                  <div *ngIf="upCreatorInfo.success" class="alert alert-info alert-dismissible fade show mx-3">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{upCreatorInfo.success}}
+                  </div>
+                  <div *ngIf="upCreatorInfo.error" class="alert alert-danger alert-dismissible fade show mx-3">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{upCreatorInfo.error}}
+                  </div>
+                </div>
+
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-12">
+                  <!--Update creator form: edit-->
+                  <button type="submit" [disabled]="!upCreatorInfo.isDisabled || upCreatorInfo.loading" class="p3d-button float-end"
+                          (click)="upCreatorInfo.toggle()">
+                    Edit
+                  </button>
+
+                  <!--Update creator form: submit-->
+                  <button type="submit" [disabled]="upCreatorInfo.isDisabled || !upCreatorInfo.form.touched || upCreatorInfo.loading" class="p3d-button float-end">
+                    <span *ngIf="upCreatorInfo.loading" class="spinner-border spinner-border-sm mr-1"></span>Save
+                  </button>
+                </div>
               </div>
             </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <h6 class="mb-0">Email</h6>
-              </div>
-              <div class="col-sm-9 text-secondary">
-                johndoe@gmail.com
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <h6 class="mb-0">Main phone number</h6>
-              </div>
-              <div class="col-sm-9 text-secondary">
-                +380968167233
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <h6 class="mb-0">Alternative phone number</h6>
-              </div>
-              <div class="col-sm-9 text-secondary">
-                +380968167233
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <h6 class="mb-0">Address</h6>
-              </div>
-              <div class="col-sm-9 text-secondary">
-                Kyiv, Simyi Prahovyh 27
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <h6 class="mb-0">Company description</h6>
-              </div>
-              <div class="col-sm-9 text-secondary">
-                We treat our customers with respect and integrity, make orders at us
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-12">
-                <button class="p3d-button float-end">Edit</button>
-              </div>
-            </div>
-          </div>
+          </form>
+
         </div>
 
         <div class="row gutters-3">
