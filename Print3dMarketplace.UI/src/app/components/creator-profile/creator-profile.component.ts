@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreatorModel } from '../../../models/user/creatorModel';
 import { first } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'creator-profile',
@@ -21,7 +22,8 @@ export class CreatorProfileComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private userService: UserService)
+    private userService: UserService,
+    private toastrService: ToastrService)
   {
     this.upCreatorInfo = new UpdateCreatorInfo(this.formBuilder);
   }
@@ -51,8 +53,6 @@ export class CreatorProfileComponent implements OnInit {
 
   updateCreatorInfo(): void {
     this.upCreatorInfo.submitted = true;
-    this.upCreatorInfo.success = '';
-    this.upCreatorInfo.error = '';
 
     if (this.upCreatorInfo.form.invalid) {
       return;
@@ -73,16 +73,19 @@ export class CreatorProfileComponent implements OnInit {
       .subscribe(
         isUpdated => {
           if (isUpdated) {
+            this.toastrService.success("Updated successfully");
 
-            this.upCreatorInfo.success = "Updated successfully";
             this.upCreatorInfo.form.markAsUntouched();
+
+            this.creatorInfo = creatorModel;
           }
 
           this.upCreatorInfo.loading = false;
           this.upCreatorInfo.disable();
         },
         err => {
-          this.upCreatorInfo.error = "Unknown error! Please try again";
+          this.toastrService.error("Unknown error! Please try again");
+
           this.upCreatorInfo.loading = false;
           this.upCreatorInfo.disable();
         });
@@ -92,8 +95,6 @@ export class CreatorProfileComponent implements OnInit {
 class UpdateCreatorInfo {
   loading = false;
   submitted = false;
-  error: string = '';
-  success: string = '';
 
   form: FormGroup;
 

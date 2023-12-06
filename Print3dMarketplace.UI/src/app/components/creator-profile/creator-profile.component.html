@@ -108,18 +108,6 @@
               <hr>
               <div class="row">
 
-                <!--Update creator form: alert-->
-                <div style="min-height: 56px;">
-                  <div *ngIf="upCreatorInfo.success" class="alert alert-info alert-dismissible fade show mx-3">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {{upCreatorInfo.success}}
-                  </div>
-                  <div *ngIf="upCreatorInfo.error" class="alert alert-danger alert-dismissible fade show mx-3">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {{upCreatorInfo.error}}
-                  </div>
-                </div>
-
                 <div class="col-sm-12">
                   <!--Update creator form: edit-->
                   <button type="button" [disabled]="!upCreatorInfo.form.disabled || upCreatorInfo.loading" class="p3d-button float-end"

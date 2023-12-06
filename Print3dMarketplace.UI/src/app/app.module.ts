@@ -11,6 +11,8 @@ import { CustomerRegistrationComponent } from './components/customer-registratio
 import { CreatorRegistrationComponent } from './components/creator-registration/creator-registration.component';
 import { UserLoginComponent } from './components/user-login/user-login.component';
 import { CreatorProfileComponent } from './components/creator-profile/creator-profile.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { CreatorProfileComponent } from './components/creator-profile/creator-pr
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
