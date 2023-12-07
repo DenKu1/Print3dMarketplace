@@ -1,17 +1,13 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Print3dMarketplace.AuthAPI.EF;
 using Print3dMarketplace.AuthAPI.Entities;
-using Print3dMarketplace.AuthAPI.Services;
-using Print3dMarketplace.AuthAPI.Services.Interfaces;
-using Print3dMarketplace.Common.Middleware;
+using Print3dMarketplace.AuthAPI.Startup;
+using Print3dMarketplace.Common.Startup;
 using System.Reflection;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+var assembly = Assembly.GetExecutingAssembly();
 
 builder.Services.AddDbContext<AuthDbContext>(option =>
 {
@@ -34,42 +30,16 @@ builder.Services.Configure<IdentityOptions>(opt =>
 
 builder.Services.AddCors();
 builder.Services.AddControllers();
-
-RegisterMapper();
-RegisterDependencies();
-
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen(option =>
-{
-	option.AddSecurityDefinition(name: JwtBearerDefaults.AuthenticationScheme, securityScheme: new OpenApiSecurityScheme
-	{
-		Name = "Authorization",
-		Description = "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
-		In = ParameterLocation.Header,
-		Type = SecuritySchemeType.ApiKey,
-		Scheme = "Bearer"
-	});
-	option.AddSecurityRequirement(new OpenApiSecurityRequirement
-	{
-		{
-			new OpenApiSecurityScheme
-			{
-				Reference= new OpenApiReference
-				{
-					Type=ReferenceType.SecurityScheme,
-					Id=JwtBearerDefaults.AuthenticationScheme
-				}
-			}, new string[]{}
-		}
-	});
-});
-
-AddAppAuthetication(builder);
+builder.RegisterMapper(assembly);
+builder.RegisterDependencies();
+builder.AddSwaggerGen();
+builder.AddAppAuthentication();
 
 var app = builder.Build();
 
-RegisterMiddleware();
+app.RegisterCommonMiddleware();
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
@@ -81,72 +51,13 @@ app.UseSwaggerUI(c =>
 	}
 });
 
-app.UseCors(builder => builder.AllowAnyOrigin()
-	.AllowAnyHeader()
-	.AllowAnyMethod());
+app.UseCors();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-ApplyMigration();
+app.ApplyMigration<AuthDbContext>();
 
 app.Run();
-
-void RegisterMapper()
-{
-	var assembly = Assembly.GetExecutingAssembly();
-	builder.Services.AddAutoMapper(assembly);
-}
-
-void RegisterDependencies()
-{
-	builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-	builder.Services.AddScoped<IAuthService, AuthService>();
-	builder.Services.AddScoped<ICreatorService, CreatorService>();
-}
-
-void RegisterMiddleware()
-{
-	app.UseMiddleware<ExceptionHandlerMiddleware>();
-}
-
-void ApplyMigration()
-{
-	using (var scope = app.Services.CreateScope())
-	{
-		var _db = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
-
-		if (_db.Database.GetPendingMigrations().Count() > 0)
-			_db.Database.Migrate();
-	}
-}
-
-void AddAppAuthetication(WebApplicationBuilder builder)
-{
-	var settingsSection = builder.Configuration.GetSection("ApiSettings:JwtOptions");
-
-	var secret = settingsSection.GetValue<string>("Secret");
-	var issuer = settingsSection.GetValue<string>("Issuer");
-	var audience = settingsSection.GetValue<string>("Audience");
-
-	var key = Encoding.ASCII.GetBytes(secret);
-
-	builder.Services.AddAuthentication(x =>
-	{
-		x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-		x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-	}).AddJwtBearer(x =>
-	{
-		x.TokenValidationParameters = new TokenValidationParameters
-		{
-			ValidateIssuerSigningKey = true,
-			IssuerSigningKey = new SymmetricSecurityKey(key),
-			ValidateIssuer = true,
-			ValidIssuer = issuer,
-			ValidAudience = audience,
-			ValidateAudience = true
-		};
-	});
-}
