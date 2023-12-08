@@ -23,8 +23,8 @@ public class TemplatePrinterService : ITemplatePrinterService
 
 	public async Task<IEnumerable<TemplatePrinterDto>> GetAllTemplatePrinters()
 	{
-		var templateMaterials = await _context.Set<TemplatePrinter>().AsQueryable().ToListAsync();
+		var templatePrinters = await _context.Set<TemplatePrinter>().AsQueryable().ToListAsync();
 
-		return _mapper.Map<IEnumerable<TemplatePrinterDto>>(templateMaterials);
+		return _mapper.Map<IEnumerable<TemplatePrinterDto>>(templatePrinters);
 	}
 }

@@ -30,8 +30,8 @@ app.UseSwaggerUI(c =>
 {
 	if (!app.Environment.IsDevelopment())
 	{
-		c.SwaggerEndpoint("/swagger/v1/swagger.json", "Material API");
-		c.RoutePrefix = "/materials";
+		c.SwaggerEndpoint("/swagger/v1/swagger.json", "Printer API");
+		c.RoutePrefix = "/printers";
 	}
 });
 

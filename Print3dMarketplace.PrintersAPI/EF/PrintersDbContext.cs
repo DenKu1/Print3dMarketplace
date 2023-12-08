@@ -10,7 +10,7 @@ public class PrintersDbContext : DbContext
 	}
 
 	public DbSet<Nozzle> Nozzles { get; set; }
-	public DbSet<TemplatePrinter> TemplateMaterials { get; set; }
+	public DbSet<TemplatePrinter> TemplatePrinters { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
