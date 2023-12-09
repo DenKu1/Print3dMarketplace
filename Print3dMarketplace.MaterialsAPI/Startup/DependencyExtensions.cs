@@ -8,5 +8,6 @@ public static class DependencyExtensions
 	public static void RegisterDependencies(this WebApplicationBuilder builder)
 	{
 		builder.Services.AddScoped<ITemplateMaterialService, TemplateMaterialService>();
+		builder.Services.AddScoped<IMaterialService, MaterialService>();
 	}
 }
