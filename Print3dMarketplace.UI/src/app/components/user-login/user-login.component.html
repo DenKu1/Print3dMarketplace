@@ -1,24 +1,25 @@
 <div class="row">
   <div class="col-md-4"></div>
   <div class="col-md-4">
-    <div class="card my-5 bg-light shadow-lg">
+    <div class="card my-5 shadow-lg border-style-3 p3d-bg-color-background">
       <form [formGroup]="loginForm" (submit)="onSubmit()">
-        <div class="card-header text-center">
-          <h2 class="card-title text-primary">Log in</h2>
+        <div class="card-header text-center p3d-bg-color-background-accent-dark">
+          <h2 style="font-family: 'Arvo', serif;" class="card-title text-primary p3d-color-primary">Sign in</h2>
         </div>
-        <div class="card-body">
-          <div class="form-group">
-            <label for="userName">Username</label>
-            <input type="text" class="form-control" placeholder="Enter username" formControlName="userName" id="userName">
+        <div class="card-body split p3d-bg-color-accent text-white border border-5">
+          <div class="mb-3">
+            <label for="userName"><i class="fa-solid fa-user"></i> Name</label>
+            <input type="text" class="form-control p3d-underlined-input" placeholder="Enter name" formControlName="userName" id="userName">
             <span *ngIf="submitted && f.userName.errors" class="text-danger">
               <span *ngIf="f.userName.errors.required">Username is required</span>
               <span *ngIf="f.userName.errors.minlength">Min length is 4 symbols</span>
               <span *ngIf="f.userName.errors.maxlength">Max length is 50 symbols</span>
             </span>
           </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" placeholder="Enter password" formControlName="password" id="password">
+
+          <div class="mb-3">
+            <label for="password"><i class="fa-solid fa-lock"></i> Password</label>
+            <input type="password" class="form-control p3d-underlined-input" placeholder="Enter password" formControlName="password" id="password">
             <span *ngIf="submitted && f.password.errors" class="text-danger">
               <span *ngIf="f.password.errors.required">Password is required</span>
               <span *ngIf="f.password.errors.minlength">Min length is 4 symbols</span>
@@ -26,18 +27,17 @@
             </span>
           </div>
           <span *ngIf="error" class="text-danger">{{error}}</span>
-          <hr class="mx-4">
           <div>
             <p class="text-center font-weight-light mb-0">
-              I still don't have an account. <a [routerLink]="['/users/register']">Sign up</a>
+              Don't have an account. <a class="btn btn-outline-danger border-style-3 sing-up-button" [routerLink]="['/users/register']">Sign up</a>
             </p>
           </div>
         </div>
-        <div class="card-footer">
-          <button type="submit" [disabled]="loading" class="btn btn-block btn-outline-secondary">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>Login
-          </button>
-        </div>
+        <div class="card-footer p3d-bg-color-background">
+            <button type="submit" [disabled]="loading" class="p3d-button-lf float-end">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>Register <i class="fa-solid fa-circle-arrow-right"></i>
+            </button>
+          </div>
       </form>
     </div>
   </div>

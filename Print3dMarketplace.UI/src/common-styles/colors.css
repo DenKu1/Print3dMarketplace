@@ -1,4 +1,4 @@
-/* Background colors */
+ /* Background colors */
 .p3d-bg-color-primary {
   background-color: var(--primary-color) !important;
 }
@@ -19,6 +19,14 @@
   background-color: var(--background-color-accent) !important;
 }
 
+.p3d-bg-color-background-accent-dark {
+  background-color: var(--background-color-accent-dark) !important;
+}
+
+.p3d-bg-color-light-accent {
+  background-color: var(--background-color-accent-dark) !important;
+}
+
 .p3d-bg-color-light-primary {
   background-color: var(--light-primary) !important;
 }
@@ -26,6 +34,7 @@
 .p3d-bg-color-light-accent {
   background-color: var(--light-accent) !important;
 }
+
 
 /* Colors */
 .p3d-color-primary {
