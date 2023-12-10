@@ -142,6 +142,39 @@
             </div>
           </div>
         </div>
+
+        <div [formGroup]="upMaterials.form">
+
+          <button (click)="upMaterials.addEmptyMaterialModel()">Add</button>
+
+          <div *ngFor="let materialFormGroup of upMaterials.materialsFormGroupArray; let i = index"
+               [formGroup]="materialFormGroup">
+
+            <div class="form-field">
+              <label for="colorId">Color ID:</label>
+              <input id="colorId" type="text" formControlName="colorId" placeholder="Enter Color ID" />
+            </div>
+
+            <div class="form-field">
+              <label for="templateMaterialId">Template Material ID:</label>
+              <input id="templateMaterialId" type="text" formControlName="templateMaterialId" placeholder="Enter Template Material ID" />
+            </div>
+
+            <div class="form-field">
+              <label for="name">Name:</label>
+              <input id="name" type="text" formControlName="name" placeholder="Enter Name" />
+            </div>
+
+            <div class="form-field">
+              <label for="isActive">Is Active:</label>
+              <input id="isActive" type="checkbox" formControlName="isActive" />
+            </div>
+
+            <button (click)="upMaterials.deleteMaterialModel(i)">Delete - {{i}}</button>
+          </div>
+
+        </div>
+
       </div>
     </div>
   </div>

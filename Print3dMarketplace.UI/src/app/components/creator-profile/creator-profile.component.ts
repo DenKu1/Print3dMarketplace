@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { UserModel } from '../../../models/user/userModel';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreatorModel } from '../../../models/user/creatorModel';
 import { first } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { MaterialModel } from '../../../models/material/materialModel';
 
 @Component({
   selector: 'creator-profile',
@@ -17,6 +18,8 @@ export class CreatorProfileComponent implements OnInit {
   creatorInfo: CreatorModel;
 
   upCreatorInfo: UpdateCreatorInfo;
+
+  upMaterials: UpdateMaterials;
   
   constructor(
     private router: Router,
@@ -26,6 +29,8 @@ export class CreatorProfileComponent implements OnInit {
     private toastrService: ToastrService)
   {
     this.upCreatorInfo = new UpdateCreatorInfo(this.formBuilder);
+
+    this.upMaterials = new UpdateMaterials(this.formBuilder);
   }
 
   ngOnInit() {
@@ -92,6 +97,7 @@ export class CreatorProfileComponent implements OnInit {
   }
 
 }
+
 class UpdateCreatorInfo {
   loading = false;
   submitted = false;
@@ -127,5 +133,69 @@ class UpdateCreatorInfo {
 
   disable(): void {
     this.form.disable();
+  }
+}
+
+class UpdateMaterials {
+  loading = false;
+  submitted = false;
+
+  form: FormGroup;
+
+  get f() { return this.form.controls; }
+
+  constructor(private formBuilder: FormBuilder) {
+
+    this.form = formBuilder.group({
+      materials: formBuilder.array([])
+    })
+
+    this.form.disable();
+  }
+
+  initialize(materialModels: MaterialModel[]): void {
+
+    materialModels.forEach(x => this.addMaterialModel(x));
+
+    this.form.markAsUntouched();
+  }
+
+  enable(): void {
+    this.form.enable();
+  }
+
+  disable(): void {
+    this.form.disable();
+  }
+
+  addMaterialModel(materialModel: MaterialModel) {
+    const formArray = this.form.get('materials') as FormArray;
+
+    formArray.push(this.formBuilder.group({
+      colorId: [{ value: materialModel.colorId, disabled: true }, [Validators.required]],
+      templateMaterialId: [{ value: materialModel.templateMaterialId, disabled: true }, [Validators.required]],
+      name: [{ value: materialModel.name, disabled: true }, [Validators.required, Validators.maxLength(50)]],
+      isActive: [{ value: materialModel.isActive, disabled: true }, [Validators.required, Validators.pattern("\\d{12}")]]
+    }))
+  }
+
+  addEmptyMaterialModel() {
+    const formArray = this.form.get('materials') as FormArray;
+
+    formArray.push(this.formBuilder.group({
+      colorId: [{ value: '', disabled: true }, [Validators.required]],
+      templateMaterialId: [{ value: '', disabled: true }, [Validators.required]],
+      name: [{ value: '', disabled: true }, [Validators.required, Validators.maxLength(50)]],
+      isActive: [{ value: false, disabled: true }, [Validators.required, Validators.pattern("\\d{12}")]]
+    }))
+  }
+
+  deleteMaterialModel(index: number) {
+    const formArray = this.form.get('materials') as FormArray;
+    formArray.removeAt(index)
+  }
+
+  get materialsFormGroupArray(): FormGroup[] {
+    return (this.form.get('materials') as FormArray).controls as FormGroup[];
   }
 }
