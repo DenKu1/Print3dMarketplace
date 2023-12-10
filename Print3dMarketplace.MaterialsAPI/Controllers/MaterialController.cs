@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Print3dMarketplace.Common.DTOs;
 using Print3dMarketplace.MaterialsAPI.Contracts.DTOs;
+using Print3dMarketplace.MaterialsAPI.Entities;
 using Print3dMarketplace.MaterialsAPI.Services.Interfaces;
 
 namespace Print3dMarketplace.MaterialsAPI.Controllers;
@@ -15,6 +16,14 @@ public class MaterialController : ControllerBase
 		IMaterialService materialService)
 	{
 		_materialService = materialService;
+	}
+
+	[HttpGet("{userId}")]
+	public async Task<IActionResult> GetAllCreatorMaterials(Guid userId)
+	{
+		var materials = await _materialService.GetAllCreatorMaterials(userId);
+
+		return Ok(ResponseDto.SuccessResponse(materials));
 	}
 
 	[HttpPut("{userId}")]

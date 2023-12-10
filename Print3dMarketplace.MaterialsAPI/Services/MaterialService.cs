@@ -21,6 +21,15 @@ public class MaterialService : IMaterialService
 		_context = context;
 	}
 
+	public async Task<IEnumerable<MaterialDto>> GetAllCreatorMaterials(Guid userId)
+	{
+		var materials = await _context.Set<Material>()
+			.Where(x => x.ApplicationUserId == userId)
+			.AsQueryable().ToListAsync();
+
+		return _mapper.Map<IEnumerable<MaterialDto>>(materials);
+	}
+
 	public async Task<bool> UpdateCreatorMaterials(IEnumerable<MaterialDto> newMaterialDtos, Guid userId)
 	{
 		try

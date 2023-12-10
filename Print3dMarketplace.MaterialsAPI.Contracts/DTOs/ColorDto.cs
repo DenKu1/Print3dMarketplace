@@ -1,6 +1,6 @@
 ﻿namespace Print3dMarketplace.MaterialsAPI.Contracts.DTOs;
 
-public class TemplateMaterialDto
+public class ColorDto
 {
 	public Guid Id { get; set; }
 

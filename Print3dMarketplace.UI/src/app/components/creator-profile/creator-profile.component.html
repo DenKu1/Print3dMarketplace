@@ -147,17 +147,33 @@
 
           <button (click)="upMaterials.addEmptyMaterialModel()">Add</button>
 
+          <!--Update creator form: edit-->
+          <button type="button" [disabled]="!upMaterials.form.disabled || upMaterials.loading" class="p3d-button float-end"
+                  (click)="upMaterials.enable()">
+            Edit
+          </button>
+
           <div *ngFor="let materialFormGroup of upMaterials.materialsFormGroupArray; let i = index"
                [formGroup]="materialFormGroup">
 
             <div class="form-field">
-              <label for="colorId">Color ID:</label>
-              <input id="colorId" type="text" formControlName="colorId" placeholder="Enter Color ID" />
+              <label for="colorId">Color:</label>
+              <select id="colorId" formControlName="colorId">
+                <option *ngFor="let color of colors"
+                        [value]="color.id">
+                  {{color.name}}
+                </option>
+              </select>
             </div>
 
             <div class="form-field">
-              <label for="templateMaterialId">Template Material ID:</label>
-              <input id="templateMaterialId" type="text" formControlName="templateMaterialId" placeholder="Enter Template Material ID" />
+              <label for="templateMaterialId">Template Material</label>
+              <select id="templateMaterialId" formControlName="templateMaterialId">
+                <option *ngFor="let templateMaterial of templateMaterials"
+                        [value]="templateMaterial.id">
+                  {{templateMaterial.name}}
+                </option>
+              </select>
             </div>
 
             <div class="form-field">

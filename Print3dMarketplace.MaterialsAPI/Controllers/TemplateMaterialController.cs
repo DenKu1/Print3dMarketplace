@@ -24,4 +24,3 @@ public class TemplateMaterialController : ControllerBase
 		return Ok(ResponseDto.SuccessResponse(result));
 	}
 }
-

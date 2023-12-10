@@ -94,30 +94,8 @@ export class UserService {
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('userToken');
+
     this.currentUserSubject.next(null);
-  }
-
-  getUsers(): Observable<UserModel[]> {
-    return this.http.get<UserModel[]>(`${environment.apiUrl}/users/`);
-  }
-
-  getUserById(id: number) {
-    return this.http.get<UserModel>(`${environment.apiUrl}/users/${id}`);
-  }
-
-  getUserByUserName(userName: string) {
-    return this.http.get<UserModel>(`${environment.apiUrl}/users/by-user-name/${userName}`);
-  }
-
-  deleteUser(id: number) {
-    return this.http.delete(`${environment.apiUrl}/users/${id}`);
-  }
-
-  attachUserTags(tags: string[]) {
-    return this.http.post(`${environment.apiUrl}/users/${this.currentUserSubject.value.id}/attachTags`, tags,{headers: this.headers})
-  }
-
-  detachUserTag(tag: string) {
-    return this.http.post(`${environment.apiUrl}/users/${this.currentUserSubject.value.id}/detachTag`, `"${tag}"`,{headers: this.headers})
   }
 }

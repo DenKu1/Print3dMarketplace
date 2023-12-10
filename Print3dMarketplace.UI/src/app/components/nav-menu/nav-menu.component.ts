@@ -49,7 +49,7 @@ export class NavMenuComponent implements OnInit {
     }
 
     this.loading = true;
-    this.userService.getUserByUserName(this.userName.value)
+/*    this.userService.getUserByUserName(this.userName.value)
       .pipe(first())
       .subscribe(
         user => {
@@ -58,6 +58,6 @@ export class NavMenuComponent implements OnInit {
         err => {
           this.error = "User was not found";
           this.loading = false;
-        });
+        });*/
   }
 }

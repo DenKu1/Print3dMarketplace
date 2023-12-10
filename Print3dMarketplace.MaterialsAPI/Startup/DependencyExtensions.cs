@@ -9,5 +9,6 @@ public static class DependencyExtensions
 	{
 		builder.Services.AddScoped<ITemplateMaterialService, TemplateMaterialService>();
 		builder.Services.AddScoped<IMaterialService, MaterialService>();
+		builder.Services.AddScoped<IColorService, ColorService>();
 	}
 }

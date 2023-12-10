@@ -4,10 +4,10 @@ using Print3dMarketplace.MaterialsAPI.Entities;
 
 namespace Print3dMarketplace.MaterialsAPI.Profiles;
 
-public class MaterialProfile : Profile
+public class ColorProfile : Profile
 {
-	public MaterialProfile()
+	public ColorProfile()
 	{
-		CreateMap<MaterialDto, Material>().ReverseMap();
+		CreateMap<Color, ColorDto>();
 	}
 }

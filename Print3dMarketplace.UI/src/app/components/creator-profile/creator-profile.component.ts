@@ -7,6 +7,9 @@ import { CreatorModel } from '../../../models/user/creatorModel';
 import { first } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { MaterialModel } from '../../../models/material/materialModel';
+import { MaterialService } from '../../services/material.service';
+import { TemplateMaterialModel } from '../../../models/material/templateMaterialModel';
+import { ColorModel } from '../../../models/material/colorModel';
 
 @Component({
   selector: 'creator-profile',
@@ -17,8 +20,11 @@ export class CreatorProfileComponent implements OnInit {
   currentUser: UserModel;
   creatorInfo: CreatorModel;
 
-  upCreatorInfo: UpdateCreatorInfo;
+  materials: MaterialModel[];
+  templateMaterials: TemplateMaterialModel[];
+  colors: ColorModel[];
 
+  upCreatorInfo: UpdateCreatorInfo;
   upMaterials: UpdateMaterials;
   
   constructor(
@@ -26,11 +32,13 @@ export class CreatorProfileComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     private userService: UserService,
+    private materialService: MaterialService,
     private toastrService: ToastrService)
   {
     this.upCreatorInfo = new UpdateCreatorInfo(this.formBuilder);
-
     this.upMaterials = new UpdateMaterials(this.formBuilder);
+
+
   }
 
   ngOnInit() {
@@ -41,6 +49,9 @@ export class CreatorProfileComponent implements OnInit {
     }
 
     this.getCreatorInfo();
+    this.getMaterials();
+    this.getTemplateMaterials();
+    this.getColors();
   }
 
   getCurrentUser(): void {
@@ -53,6 +64,28 @@ export class CreatorProfileComponent implements OnInit {
       {
         this.creatorInfo = creator;
         this.upCreatorInfo.initialize(creator);
+      })
+  }
+
+  getMaterials(): void {
+    this.materialService.getAllCreatorMaterials(this.currentUser.id).subscribe(
+      materials => {
+        this.materials = materials;
+        this.upMaterials.initialize(materials);
+      })
+  }
+
+  getTemplateMaterials(): void {
+    this.materialService.getAllTemplateMaterials().subscribe(
+      templateMaterials => {
+        this.templateMaterials = templateMaterials;
+      })
+  }
+
+  getColors(): void {
+    this.materialService.getAllColors().subscribe(
+      colors => {
+        this.colors = colors;
       })
   }
 
