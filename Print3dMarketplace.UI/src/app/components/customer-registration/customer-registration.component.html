@@ -54,9 +54,11 @@
 
         <span *ngIf="error" class="text-danger">{{error}}</span>
 
-        <div class="mb-3 form-check">
-          <input class="form-check-input" type="checkbox" id="remember-me">
-          <label class="form-check-label" for="remember-me">Remember me</label>
+        <div class="mb-3">
+          <p class="font-weight-light mb-0">
+            I have an account.
+            <a [routerLink]="['/user/login']">Login here</a>
+          </p>
         </div>
 
         <button [disabled]="loading" type="submit" class="p3d-button float-end">

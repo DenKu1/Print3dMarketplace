@@ -5,6 +5,7 @@ import { CustomerRegistrationComponent } from './components/customer-registratio
 import { CreatorRegistrationComponent } from './components/creator-registration/creator-registration.component';
 import { UserLoginComponent } from './components/user-login/user-login.component';
 import { CreatorProfileComponent } from './components/creator-profile/creator-profile.component';
+import { RoleSelectionComponent } from './components/role-selection/role-selection.component';
 
 /*import { AlbumComponent } from './components/album/album.component';
 import { PhotoComponent } from './components/photo/photo.component';
@@ -23,6 +24,10 @@ const routes: Routes = [
     component: UserLoginComponent
   },
   {
+    path: 'user/select-role',
+    component: RoleSelectionComponent
+  },
+  {
     path: 'creator/register',
     component: CreatorRegistrationComponent
   },
@@ -36,7 +41,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    component: CustomerRegistrationComponent
+    component: RoleSelectionComponent
   }
 
 /*  {

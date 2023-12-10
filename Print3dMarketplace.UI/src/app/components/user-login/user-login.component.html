@@ -29,13 +29,13 @@
           <span *ngIf="error" class="text-danger">{{error}}</span>
           <div>
             <p class="text-center font-weight-light mb-0">
-              Don't have an account. <a class="btn btn-outline-danger border-style-3 sing-up-button" [routerLink]="['/users/register']">Sign up</a>
+              Don't have an account. <a class="btn btn-outline-danger border-style-3 sing-up-button" [routerLink]="['/user/select-role']">Sign up</a>
             </p>
           </div>
         </div>
         <div class="card-footer p3d-bg-color-background">
             <button type="submit" [disabled]="loading" class="p3d-button-lf float-end">
-              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>Register <i class="fa-solid fa-circle-arrow-right"></i>
+              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>Sign in <i class="fa-solid fa-circle-arrow-right"></i>
             </button>
           </div>
       </form>

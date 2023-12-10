@@ -23,11 +23,14 @@ export class NavMenuComponent implements OnInit {
     private router: Router,
     private userService: UserService
   ) {
-    //this.userService.currentUser.subscribe(x => this.currentUser = x);
-    this.userName = new FormControl('', [Validators.required, Validators.maxLength(50)])
   }
 
   ngOnInit(): void {
+    this.getCurrentUser();
+  }
+
+  getCurrentUser(): void {
+    this.userService.currentUser.subscribe(user => this.currentUser = user);
   }
 
   profile() {
@@ -36,7 +39,7 @@ export class NavMenuComponent implements OnInit {
 
   logout() {
     this.userService.logout();
-    this.router.navigate(['/users/login']);
+    this.router.navigate(['/user/login']);
   }
 
   findUser()

@@ -13,6 +13,7 @@ import { UserLoginComponent } from './components/user-login/user-login.component
 import { CreatorProfileComponent } from './components/creator-profile/creator-profile.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RoleSelectionComponent } from './components/role-selection/role-selection.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CustomerRegistrationComponent,
     CreatorRegistrationComponent,
     UserLoginComponent,
-    CreatorProfileComponent
+    CreatorProfileComponent,
+    RoleSelectionComponent
   ],
   imports: [
     BrowserModule,
