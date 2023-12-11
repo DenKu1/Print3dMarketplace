@@ -127,57 +127,67 @@
         </div>
 
         <!--Update creator form-->
-        <form [formGroup]="upMaterials.form" class="mt-3">
+        <form [formGroup]="upMaterials.form">
           <div *ngFor="let materialFormGroup of upMaterials.materialsFormGroupArray; let i = index" [formGroup]="materialFormGroup">
-            <div class="card mb-3">
-              <div class="card-body p3d-bg-color-light-accent">
-                <!-- colorId -->
-                <div class="mb-3">
-                  <label for="colorId" class="form-label">Color:</label>
-                  <select id="colorId" class="form-select" formControlName="colorId">
-                    <option *ngFor="let color of colors" [value]="color.id">{{color.name}}</option>
-                  </select>
-                  <div *ngIf="upMaterials.submitted && materialFormGroup.controls.colorId.errors" class="invalid-feedback d-block">
-                    <div *ngIf="materialFormGroup.controls.colorId.errors.required">Color is required.</div>
-                  </div>
-                </div>
-                <!-- templateMaterialId -->
-                <div class="mb-3">
-                  <label for="templateMaterialId" class="form-label">Template Material:</label>
-                  <select id="templateMaterialId" class="form-select" formControlName="templateMaterialId">
-                    <option *ngFor="let templateMaterial of templateMaterials" [value]="templateMaterial.id">{{templateMaterial.name}}</option>
-                  </select>
-                  <div *ngIf="upMaterials.submitted && materialFormGroup.controls.templateMaterialId.errors" class="invalid-feedback d-block">
-                    <div *ngIf="materialFormGroup.controls.templateMaterialId.errors.required">Template Material is required.</div>
-                  </div>
-                </div>
-                <!-- name -->
-                <div class="mb-3">
-                  <label for="name" class="form-label">Name:</label>
-                  <input id="name" type="text" class="form-control" formControlName="name" placeholder="Enter Name" />
-                  <div *ngIf="upMaterials.submitted && materialFormGroup.controls.name.errors" class="invalid-feedback d-block">
-                    <div *ngIf="materialFormGroup.controls.name.errors.required">Name material is required.</div>
-                    <div *ngIf="materialFormGroup.controls.name.errors.maxlength">Max length is 50 symbols.</div>
-                  </div>
-                </div>
-                <!-- isActive -->
-                <div class="mb-3 form-check">
-                  <input id="isActive" type="checkbox" class="form-check-input" formControlName="isActive" />
-                  <label for="isActive" class="form-check-label">Is Active:</label>
-                  <div *ngIf="upMaterials.submitted && materialFormGroup.controls.isActive.errors" class="invalid-feedback d-block">
-                    <div *ngIf="materialFormGroup.controls.isActive.errors.required">Activity flag is required.</div>
-                  </div>
+            <div class="card">
+
+              <div class="row g-0 flex-sm-row">
+                <!--Left card part with image-->
+                <div class="col-md-4">
+                  <img src="../assets/creator-profile-material.png" alt="Creator Material Image" class="img-fluid rounded-start">
                 </div>
 
+                <!--Right card part with image-->
+                <div class="col-md-8">
+                  <div class="card-body p3d-bg-color-light-accent">
+
+                    <!-- colorId -->
+                    <div class="mb-3">
+                      <label for="colorId" class="form-label">Color:</label>
+                      <select id="colorId" class="form-select" formControlName="colorId">
+                        <option *ngFor="let color of colors" [value]="color.id">{{color.name}}</option>
+                      </select>
+                      <div *ngIf="upMaterials.submitted && materialFormGroup.controls.colorId.errors" class="invalid-feedback d-block">
+                        <div *ngIf="materialFormGroup.controls.colorId.errors.required">Color is required.</div>
+                      </div>
+                    </div>
+                    <!-- templateMaterialId -->
+                    <div class="mb-3">
+                      <label for="templateMaterialId" class="form-label">Template Material:</label>
+                      <select id="templateMaterialId" class="form-select" formControlName="templateMaterialId">
+                        <option *ngFor="let templateMaterial of templateMaterials" [value]="templateMaterial.id">{{templateMaterial.name}}</option>
+                      </select>
+                      <div *ngIf="upMaterials.submitted && materialFormGroup.controls.templateMaterialId.errors" class="invalid-feedback d-block">
+                        <div *ngIf="materialFormGroup.controls.templateMaterialId.errors.required">Template Material is required.</div>
+                      </div>
+                    </div>
+                    <!-- name -->
+                    <div class="mb-3">
+                      <label for="name" class="form-label">Name:</label>
+                      <input id="name" type="text" class="form-control" formControlName="name" placeholder="Enter Name" />
+                      <div *ngIf="upMaterials.submitted && materialFormGroup.controls.name.errors" class="invalid-feedback d-block">
+                        <div *ngIf="materialFormGroup.controls.name.errors.required">Name material is required.</div>
+                        <div *ngIf="materialFormGroup.controls.name.errors.maxlength">Max length is 50 symbols.</div>
+                      </div>
+                    </div>
+                    <!-- isActive -->
+                    <div class="mb-3 form-check">
+                      <input id="isActive" type="checkbox" class="form-check-input" formControlName="isActive" />
+                      <label for="isActive" class="form-check-label">Is Active:</label>
+                      <div *ngIf="upMaterials.submitted && materialFormGroup.controls.isActive.errors" class="invalid-feedback d-block">
+                        <div *ngIf="materialFormGroup.controls.isActive.errors.required">Activity flag is required.</div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <!-- Delete Button -->
+                  <div class="d-flex justify-content-end">
+                    <button type="button" class="p3d-button" [disabled]="upMaterials.form.disabled || upMaterials.loading" (click)="upMaterials.deleteMaterialModel(i)">Delete</button>
+                  </div>
+                </div>
               </div>
-
-              <div class="card-footer">
-                <!-- Delete Button -->
-                <div class="d-flex justify-content-end">
-                  <button type="button" class="p3d-button" [disabled]="upMaterials.form.disabled || upMaterials.loading" (click)="upMaterials.deleteMaterialModel(i)">Delete</button>
-                </div>
-              </div>
-
             </div>
           </div>
 
