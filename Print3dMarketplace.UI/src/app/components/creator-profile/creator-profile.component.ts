@@ -10,6 +10,10 @@ import { MaterialModel } from '../../../models/material/materialModel';
 import { MaterialService } from '../../services/material.service';
 import { TemplateMaterialModel } from '../../../models/material/templateMaterialModel';
 import { ColorModel } from '../../../models/material/colorModel';
+import { PrinterModel } from '../../../models/printer/printerModel';
+import { PrinterService } from '../../services/printer.service';
+import { TemplatePrinterModel } from '../../../models/printer/templatePrinterModel';
+import { NozzleModel } from '../../../models/printer/nozzleModel';
 
 @Component({
   selector: 'creator-profile',
@@ -24,8 +28,13 @@ export class CreatorProfileComponent implements OnInit {
   templateMaterials: TemplateMaterialModel[];
   colors: ColorModel[];
 
+  printers: PrinterModel[];
+  templatePrinters: TemplatePrinterModel[];
+  nozzles: NozzleModel[];
+
   upCreatorInfo: UpdateCreatorInfo;
   upMaterials: UpdateMaterials;
+  upPrinters: UpdatePrinters;
   
   constructor(
     private router: Router,
@@ -33,12 +42,12 @@ export class CreatorProfileComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private materialService: MaterialService,
+    private printerService: PrinterService,
     private toastrService: ToastrService)
   {
     this.upCreatorInfo = new UpdateCreatorInfo(this.formBuilder);
     this.upMaterials = new UpdateMaterials(this.formBuilder);
-
-
+    this.upPrinters = new UpdatePrinters(this.formBuilder);
   }
 
   ngOnInit() {
@@ -49,9 +58,14 @@ export class CreatorProfileComponent implements OnInit {
     }
 
     this.getCreatorInfo();
-    this.getMaterials();
+
     this.getTemplateMaterials();
     this.getColors();
+    this.getMaterials();
+
+    this.getTemplatePrinters();
+    this.getNozzles();
+    this.getPrinters();
   }
 
   getCurrentUser(): void {
@@ -86,6 +100,28 @@ export class CreatorProfileComponent implements OnInit {
     this.materialService.getAllColors().subscribe(
       colors => {
         this.colors = colors;
+      })
+  }
+
+  getPrinters(): void {
+    this.printerService.getAllCreatorPrinters(this.currentUser.id).subscribe(
+      printers => {
+        this.printers = printers;
+        this.upPrinters.initialize(printers);
+      })
+  }
+
+  getTemplatePrinters(): void {
+    this.printerService.getAllTemplatePrinters().subscribe(
+      templatePrinters => {
+        this.templatePrinters = templatePrinters;
+      })
+  }
+
+  getNozzles(): void {
+    this.printerService.getAllNozzles().subscribe(
+      nozzles => {
+        this.nozzles = nozzles;
       })
   }
 
@@ -143,8 +179,7 @@ export class CreatorProfileComponent implements OnInit {
         colorId: group.get('colorId').value,
         templateMaterialId: group.get('templateMaterialId').value,
         name: group.get('name').value,
-        isActive: group.get('isActive').value,
-        // Add other properties as necessary
+        isActive: group.get('isActive').value
       };
     });
 
@@ -162,6 +197,45 @@ export class CreatorProfileComponent implements OnInit {
         }
       }, error => {
         this.upMaterials.loading = false;
+        this.toastrService.error("An error occurred");
+      });
+  }
+
+  updatePrinters(): void {
+    this.upPrinters.submitted = true;
+
+    if (this.upPrinters.form.invalid) {
+      return;
+    }
+
+    this.upPrinters.loading = true;
+
+    const printerModels: PrinterModel[] = this.upPrinters.printersFormGroupArray.map(group => {
+      return {
+        nozzleId: group.get('nozzleId').value,
+        templatePrinterId: group.get('templatePrinterId').value,
+        modelName: group.get('modelName').value,
+        printAreaLength: group.get('printAreaLength').value,
+        printAreaWidth: group.get('printAreaWidth').value,
+        printAreaHeight: group.get('printAreaHeight').value,
+        isActive: group.get('isActive').value
+      };
+    });
+
+    this.printerService.updateCreatorPrinters(this.currentUser.id, printerModels)
+      .pipe(first())
+      .subscribe(isUpdated => {
+        this.upPrinters.loading = false;
+
+        if (isUpdated) {
+          this.toastrService.success("Printers updated successfully");
+          this.printers = printerModels;
+          this.upPrinters.disable();
+        } else {
+          this.toastrService.error("Unknown error! Please try again");
+        }
+      }, error => {
+        this.upPrinters.loading = false;
         this.toastrService.error("An error occurred");
       });
   }
@@ -266,5 +340,75 @@ class UpdateMaterials {
 
   get materialsFormGroupArray(): FormGroup[] {
     return (this.form.get('materials') as FormArray).controls as FormGroup[];
+  }
+}
+
+class UpdatePrinters {
+  loading = false;
+  submitted = false;
+
+  form: FormGroup;
+
+  get f() { return this.form.controls; }
+
+  constructor(private formBuilder: FormBuilder) {
+
+    this.form = formBuilder.group({
+      printers: formBuilder.array([])
+    })
+
+    this.form.disable();
+  }
+
+  initialize(printerModels: PrinterModel[]): void {
+
+    printerModels.forEach(x => this.addPrinterModel(x));
+
+    this.form.markAsUntouched();
+  }
+
+  enable(): void {
+    this.form.enable();
+  }
+
+  disable(): void {
+    this.form.disable();
+  }
+
+  addPrinterModel(printerModel: PrinterModel) {
+    const formArray = this.form.get('printers') as FormArray;
+
+    formArray.push(this.formBuilder.group({
+      nozzleId: [{ value: printerModel.nozzleId, disabled: true }, [Validators.required]],
+      templatePrinterId: [{ value: printerModel.templatePrinterId, disabled: true }, [Validators.required]],
+      modelName: [{ value: printerModel.modelName, disabled: true }, [Validators.required, Validators.maxLength(50)]],
+      printAreaLength: [{ value: printerModel.printAreaLength, disabled: true }, [Validators.required, Validators.min(0), Validators.max(1000)]],
+      printAreaWidth: [{ value: printerModel.printAreaWidth, disabled: true }, [Validators.required, Validators.min(0), Validators.max(1000)]],
+      printAreaHeight: [{ value: printerModel.printAreaHeight, disabled: true }, [Validators.required, Validators.min(0), Validators.max(1000)]],
+      isActive: [{ value: printerModel.isActive, disabled: true }, [Validators.required]]
+    }))
+  }
+
+  addEmptyPrinterModel() {
+    const formArray = this.form.get('printers') as FormArray;
+
+    formArray.push(this.formBuilder.group({
+      nozzleId: [{ value: '', disabled: true }, [Validators.required]],
+      templatePrinterId: [{ value: '', disabled: true }, [Validators.required]],
+      modelName: [{ value: '', disabled: true }, [Validators.required, Validators.maxLength(50)]],
+      printAreaLength: [{ value: '', disabled: true }, [Validators.required, Validators.min(0), Validators.max(1000)]],
+      printAreaWidth: [{ value: '', disabled: true }, [Validators.required, Validators.min(0), Validators.max(1000)]],
+      printAreaHeight: [{ value: '', disabled: true }, [Validators.required, Validators.min(0), Validators.max(1000)]],
+      isActive: [{ value: false, disabled: true }, [Validators.required]]
+    }))
+  }
+
+  deletePrinterModel(index: number) {
+    const formArray = this.form.get('printers') as FormArray;
+    formArray.removeAt(index)
+  }
+
+  get printersFormGroupArray(): FormGroup[] {
+    return (this.form.get('printers') as FormArray).controls as FormGroup[];
   }
 }

@@ -4,7 +4,7 @@ using Print3dMarketplace.PrintersAPI.Services.Interfaces;
 
 namespace Print3dMarketplace.PrintersAPI.Controllers;
 
-[Route("api/materials/nozzles")]
+[Route("api/printers/nozzles")]
 [ApiController]
 public class NozzleController : ControllerBase
 {

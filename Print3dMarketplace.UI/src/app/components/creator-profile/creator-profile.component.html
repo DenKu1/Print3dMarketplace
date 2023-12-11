@@ -126,14 +126,14 @@
 
         </div>
 
-        <div class="accordion" id="accordionExample">
+        <div class="accordion" id="materialsAndPrintersAccordion">
           <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <h2 class="accordion-header" id="headingMaterials">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#headingMaterials" aria-expanded="true" aria-controls="headingMaterials">
                 Available materials
               </button>
             </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div id="headingMaterials" class="accordion-collapse collapse show" aria-labelledby="headingMaterials" data-bs-parent="#materialsAndPrintersAccordion">
               <div class="accordion-body">
 
                 <!--Update creator form-->
@@ -219,18 +219,136 @@
               </div>
             </div>
           </div>
+
           <div class="accordion-item">
-            <h2 class="accordion-header" id="headingTwo">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <h2 class="accordion-header" id="headingPrinters">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrinters" aria-expanded="true" aria-controls="collapsePrinters">
                 Available printers
               </button>
             </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+            <div id="collapsePrinters" class="accordion-collapse collapse show" aria-labelledby="headingPrinters" data-bs-parent="#materialsAndPrintersAccordion">
               <div class="accordion-body">
-                <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+
+                <!--Update creator form-->
+                <form [formGroup]="upPrinters.form">
+                  <div *ngFor="let printerFormGroup of upPrinters.printersFormGroupArray; let i = index" [formGroup]="printerFormGroup">
+                    <div class="card">
+
+                      <div class="row g-0 flex-sm-row">
+                        <!--Left card part with image-->
+                        <div class="col-md-4">
+                          <img src="../assets/creator-profile-printer.png" alt="Creator Printer Image" class="img-fluid rounded-start">
+                        </div>
+
+                        <!--Right card part with image-->
+                        <div class="col-md-8">
+                          <div class="card-body p3d-bg-color-light-accent">
+
+                            <!-- nozzleId -->
+                            <div class="mb-3">
+                              <label for="nozzleId" class="form-label">Nozzle:</label>
+                              <select id="nozzleId" class="form-select" formControlName="nozzleId">
+                                <option *ngFor="let nozzle of nozzles" [value]="nozzle.id">{{nozzle.size}}</option>
+                              </select>
+                              <div *ngIf="upPrinters.submitted && printerFormGroup.controls.nozzleId.errors" class="invalid-feedback d-block">
+                                <div *ngIf="printerFormGroup.controls.nozzleId.errors.required">Nozzle is required.</div>
+                              </div>
+                            </div>
+
+                            <!-- templatePrinterId -->
+                            <div class="mb-3">
+                              <label for="templatePrinterId" class="form-label">Template Printer:</label>
+                              <select id="templatePrinterId" class="form-select" formControlName="templatePrinterId">
+                                <option *ngFor="let templatePrinter of templatePrinters" [value]="templatePrinter.id">{{templatePrinter.modelName}}</option>
+                              </select>
+                              <div *ngIf="upPrinters.submitted && printerFormGroup.controls.templatePrinterId.errors" class="invalid-feedback d-block">
+                                <div *ngIf="printerFormGroup.controls.templatePrinterId.errors.required">Template Printer is required.</div>
+                              </div>
+                            </div>
+
+                            <!-- modelName -->
+                            <div class="mb-3">
+                              <label for="modelName" class="form-label">Model name:</label>
+                              <input id="modelName" type="text" class="form-control" formControlName="modelName" placeholder="Enter model name" />
+                              <div *ngIf="upPrinters.submitted && printerFormGroup.controls.modelName.errors" class="invalid-feedback d-block">
+                                <div *ngIf="printerFormGroup.controls.modelName.errors.required">Model name printer is required.</div>
+                                <div *ngIf="printerFormGroup.controls.modelName.errors.maxlength">Max length is 50 symbols.</div>
+                              </div>
+                            </div>
+
+                            <!-- printAreaLength -->
+                            <div class="mb-3">
+                              <label for="printAreaLength" class="form-label">Print area length (mm):</label>
+                              <input id="printAreaLength" type="text" class="form-control" formControlName="printAreaLength" placeholder="Enter print area length" />
+                              <div *ngIf="upPrinters.submitted && printerFormGroup.controls.printAreaLength.errors" class="invalid-feedback d-block">
+                                <div *ngIf="printerFormGroup.controls.printAreaLength.errors.required">Print area length is required.</div>
+                                <div *ngIf="printerFormGroup.controls.printAreaLength.errors.max">Max length is 1000 mm.</div>
+                                <div *ngIf="printerFormGroup.controls.printAreaLength.errors.min">Min length is 0 mm.</div>
+                              </div>
+                            </div>
+
+                            <!-- printAreaWidth -->
+                            <div class="mb-3">
+                              <label for="printAreaWidth" class="form-label">Print area width (mm):</label>
+                              <input id="printAreaWidth" type="text" class="form-control" formControlName="printAreaWidth" placeholder="Enter print area width" />
+                              <div *ngIf="upPrinters.submitted && printerFormGroup.controls.printAreaWidth.errors" class="invalid-feedback d-block">
+                                <div *ngIf="printerFormGroup.controls.printAreaWidth.errors.required">Print area width is required.</div>
+                                <div *ngIf="printerFormGroup.controls.printAreaWidth.errors.max">Max width is 1000 mm.</div>
+                                <div *ngIf="printerFormGroup.controls.printAreaWidth.errors.min">Min width is 0 mm.</div>
+                              </div>
+                            </div>
+
+                            <!-- printAreaHeight -->
+                            <div class="mb-3">
+                              <label for="printAreaHeight" class="form-label">Print area height (mm):</label>
+                              <input id="printAreaHeight" type="text" class="form-control" formControlName="printAreaHeight" placeholder="Enter print area height" />
+                              <div *ngIf="upPrinters.submitted && printerFormGroup.controls.printAreaHeight.errors" class="invalid-feedback d-block">
+                                <div *ngIf="printerFormGroup.controls.printAreaHeight.errors.required">Print area height is required.</div>
+                                <div *ngIf="printerFormGroup.controls.printAreaHeight.errors.max">Max height is 1000 mm.</div>
+                                <div *ngIf="printerFormGroup.controls.printAreaHeight.errors.min">Min height is 0 mm.</div>
+                              </div>
+                            </div>
+
+                            <!-- isActive -->
+                            <div class="mb-3 form-check">
+                              <input id="isActive" type="checkbox" class="form-check-input" formControlName="isActive" />
+                              <label for="isActive" class="form-check-label">Is Active:</label>
+                              <div *ngIf="upPrinters.submitted && printerFormGroup.controls.isActive.errors" class="invalid-feedback d-block">
+                                <div *ngIf="printerFormGroup.controls.isActive.errors.required">Activity flag is required.</div>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                        <div class="card-footer">
+                          <!-- Delete Button -->
+                          <div class="d-flex justify-content-end">
+                            <button type="button" class="p3d-button p3d-button-square" [disabled]="upPrinters.form.disabled || upPrinters.loading" (click)="upPrinters.deletePrinterModel(i)"><i class="fa-solid fa-xmark text-danger"></i></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Add, Save and Edit Buttons -->
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <button type="button" class="p3d-button" [disabled]="upPrinters.form.disabled || upPrinters.loading" (click)="upPrinters.addEmptyPrinterModel()">Add</button>
+
+                      <button type="submit" class="p3d-button mx-2" [disabled]="upPrinters.form.disabled || !upPrinters.form.touched || upPrinters.loading" (click)="updatePrinters()">
+                        <span *ngIf="upPrinters.loading" class="spinner-border spinner-border-sm me-2"></span> Save
+                      </button>
+                    </div>
+                    <button type="button" class="p3d-button" [disabled]="!upPrinters.form.disabled || upPrinters.loading" (click)="upPrinters.enable()">Edit</button>
+
+                  </div>
+
+                </form>
+
               </div>
             </div>
           </div>
+
         </div>
 
       </div>

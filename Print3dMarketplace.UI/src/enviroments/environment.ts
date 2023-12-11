@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   authApiUrl: 'https://localhost:7008/api/auth',
-  materialApiUrl: 'https://localhost:7059/api/materials'
+  materialApiUrl: 'https://localhost:7059/api/materials',
+  printerApiUrl: 'https://localhost:7138/api/printers'
 };
 
 /*

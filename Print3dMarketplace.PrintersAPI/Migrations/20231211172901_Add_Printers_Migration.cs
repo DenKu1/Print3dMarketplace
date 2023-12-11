@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Print3dMarketplace.PrintersAPI.Migrations
-{
+namespace Print3dMarketplace.PrintersAPI.Migrations;
+
     /// <inheritdoc />
     public partial class Add_Printers_Migration : Migration
     {
@@ -210,4 +210,3 @@ namespace Print3dMarketplace.PrintersAPI.Migrations
                 });
         }
     }
-}
