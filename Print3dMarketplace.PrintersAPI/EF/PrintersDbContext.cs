@@ -11,6 +11,7 @@ public class PrintersDbContext : DbContext
 
 	public DbSet<Nozzle> Nozzles { get; set; }
 	public DbSet<TemplatePrinter> TemplatePrinters { get; set; }
+	public DbSet<Printer> Printers { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

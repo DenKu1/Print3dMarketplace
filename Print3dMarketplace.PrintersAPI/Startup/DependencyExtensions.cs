@@ -7,6 +7,8 @@ public static class DependencyExtensions
 {
 	public static void RegisterDependencies(this WebApplicationBuilder builder)
 	{
+		builder.Services.AddScoped<INozzleService, NozzleService>();
+		builder.Services.AddScoped<IPrinterService, PrinterService>();
 		builder.Services.AddScoped<ITemplatePrinterService, TemplatePrinterService>();
 	}
 }
