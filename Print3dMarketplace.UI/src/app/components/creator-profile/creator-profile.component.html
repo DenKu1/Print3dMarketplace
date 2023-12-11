@@ -111,11 +111,14 @@
                 <div class="col-sm-12">
                   <!--Update creator form: edit-->
                   <button type="button" [disabled]="!upCreatorInfo.form.disabled || upCreatorInfo.loading" class="p3d-button float-end"
-                          (click)="upCreatorInfo.enable()">Edit</button>
+                          (click)="upCreatorInfo.enable()">
+                    Edit
+                  </button>
 
                   <!--Update creator form: submit-->
                   <button type="submit" [disabled]="upCreatorInfo.form.disabled || !upCreatorInfo.form.touched || upCreatorInfo.loading" class="p3d-button float-end mx-2">
-                    <span *ngIf="upCreatorInfo.loading" class="spinner-border spinner-border-sm mr-1"></span> Save</button>
+                    <span *ngIf="upCreatorInfo.loading" class="spinner-border spinner-border-sm mr-1"></span> Save
+                  </button>
                 </div>
               </div>
             </div>
@@ -123,103 +126,76 @@
 
         </div>
 
-        <div class="row gutters-3">
-          <div class="col-sm-6 mb-3">
-            <div class="card h-100 p3d-bg-color-light-accent">
-              <div class="card-body">
-                <h5 class="card-title p3d-bg-color-light-accent">3D Printer</h5>
-                <p class="card-text"><strong>Model:</strong> Prusa i3</p>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item p3d-bg-color-background-accent"><strong>Supported Material Type:</strong> PLA, ABS, PETG</li>
-                  <li class="list-group-item p3d-bg-color-background-accent"><strong>Supported Layer Height:</strong> 0.05mm - 0.4mm</li>
-                  <li class="list-group-item p3d-bg-color-background-accent"><strong>Print Size:</strong> 200mm x 200mm x 180mm</li>
-                  <li class="list-group-item p3d-bg-color-background-accent"><strong>Supported Nozzle Size:</strong> 0.4mm</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!--Update creator form-->
-        <form [formGroup]="upMaterials.form">
+        <form [formGroup]="upMaterials.form" class="mt-3">
+          <div *ngFor="let materialFormGroup of upMaterials.materialsFormGroupArray; let i = index" [formGroup]="materialFormGroup">
+            <div class="card mb-3">
+              <div class="card-body p3d-bg-color-light-accent">
+                <!-- colorId -->
+                <div class="mb-3">
+                  <label for="colorId" class="form-label">Color:</label>
+                  <select id="colorId" class="form-select" formControlName="colorId">
+                    <option *ngFor="let color of colors" [value]="color.id">{{color.name}}</option>
+                  </select>
+                  <div *ngIf="upMaterials.submitted && materialFormGroup.controls.colorId.errors" class="invalid-feedback d-block">
+                    <div *ngIf="materialFormGroup.controls.colorId.errors.required">Color is required.</div>
+                  </div>
+                </div>
+                <!-- templateMaterialId -->
+                <div class="mb-3">
+                  <label for="templateMaterialId" class="form-label">Template Material:</label>
+                  <select id="templateMaterialId" class="form-select" formControlName="templateMaterialId">
+                    <option *ngFor="let templateMaterial of templateMaterials" [value]="templateMaterial.id">{{templateMaterial.name}}</option>
+                  </select>
+                  <div *ngIf="upMaterials.submitted && materialFormGroup.controls.templateMaterialId.errors" class="invalid-feedback d-block">
+                    <div *ngIf="materialFormGroup.controls.templateMaterialId.errors.required">Template Material is required.</div>
+                  </div>
+                </div>
+                <!-- name -->
+                <div class="mb-3">
+                  <label for="name" class="form-label">Name:</label>
+                  <input id="name" type="text" class="form-control" formControlName="name" placeholder="Enter Name" />
+                  <div *ngIf="upMaterials.submitted && materialFormGroup.controls.name.errors" class="invalid-feedback d-block">
+                    <div *ngIf="materialFormGroup.controls.name.errors.required">Name material is required.</div>
+                    <div *ngIf="materialFormGroup.controls.name.errors.maxlength">Max length is 50 symbols.</div>
+                  </div>
+                </div>
+                <!-- isActive -->
+                <div class="mb-3 form-check">
+                  <input id="isActive" type="checkbox" class="form-check-input" formControlName="isActive" />
+                  <label for="isActive" class="form-check-label">Is Active:</label>
+                  <div *ngIf="upMaterials.submitted && materialFormGroup.controls.isActive.errors" class="invalid-feedback d-block">
+                    <div *ngIf="materialFormGroup.controls.isActive.errors.required">Activity flag is required.</div>
+                  </div>
+                </div>
 
-          <!--Update materials form: add-->
-          <button type="button" [disabled]="upMaterials.form.disabled || upMaterials.loading" class="p3d-button float-end"
-                  (click)="upMaterials.addEmptyMaterialModel()">
-            Add
-          </button>
+              </div>
 
-          <div *ngFor="let materialFormGroup of upMaterials.materialsFormGroupArray; let i = index"
-               [formGroup]="materialFormGroup">
+              <div class="card-footer">
+                <!-- Delete Button -->
+                <div class="d-flex justify-content-end">
+                  <button type="button" class="p3d-button" [disabled]="upMaterials.form.disabled || upMaterials.loading" (click)="upMaterials.deleteMaterialModel(i)">Delete</button>
+                </div>
+              </div>
 
-            <!--Update materials form: colorId-->
-            <div class="form-field">
-              <label for="colorId">Color:</label>
-              <select id="colorId" formControlName="colorId">
-                <option *ngFor="let color of colors"
-                        [value]="color.id">
-                  {{color.name}}
-                </option>
-              </select>
             </div>
-            <span *ngIf="upMaterials.submitted && materialFormGroup.controls.colorId.errors" class="text-danger">
-              <span *ngIf="materialFormGroup.controls.colorId.errors.required">Color is required</span>
-            </span>
-
-            <!--Update materials form: templateId-->
-            <div class="form-field">
-              <label for="templateMaterialId">Template Material</label>
-              <select id="templateMaterialId" formControlName="templateMaterialId">
-                <option *ngFor="let templateMaterial of templateMaterials"
-                        [value]="templateMaterial.id">
-                  {{templateMaterial.name}}
-                </option>
-              </select>
-            </div>
-            <span *ngIf="upMaterials.submitted && materialFormGroup.controls.templateMaterialId.errors" class="text-danger">
-              <span *ngIf="materialFormGroup.controls.templateMaterialId.errors.required">Template material is required</span>
-            </span>
-
-            <!--Update materials form: name-->
-            <div class="form-field">
-              <label for="name">Name:</label>
-              <input id="name" type="text" formControlName="name" placeholder="Enter Name" />
-            </div>
-            <span *ngIf="upMaterials.submitted && materialFormGroup.controls.name.errors" class="text-danger">
-              <span *ngIf="materialFormGroup.controls.name.errors.required">Name material is required</span>
-              <span *ngIf="materialFormGroup.controls.name.errors.maxlength">Max length is 50 symbols</span>
-            </span>
-
-            <!--Update materials form: isActive-->
-            <div class="form-field">
-              <label for="isActive">Is Active:</label>
-              <input id="isActive" type="checkbox" formControlName="isActive" />
-            </div>
-            <span *ngIf="upMaterials.submitted && materialFormGroup.controls.isActive.errors" class="text-danger">
-              <span *ngIf="materialFormGroup.controls.isActive.errors.required">Activity flag is required</span>
-            </span>
-
-            <!--Update materials form: delete-->
-            <button type="button" [disabled]="upMaterials.form.disabled || upMaterials.loading" class="p3d-button float-end"
-                    (click)="upMaterials.deleteMaterialModel(i)">
-              Delete
-            </button>
-
           </div>
 
-          <!--Update materials form: edit-->
-          <button type="button" [disabled]="!upMaterials.form.disabled || upMaterials.loading" class="p3d-button float-end"
-                  (click)="upMaterials.enable()">
-            Edit
-          </button>
+          <!-- Add, Save and Edit Buttons -->
+          <div class="d-flex justify-content-between">
+            <div>
+              <button type="button" class="p3d-button" [disabled]="upMaterials.form.disabled || upMaterials.loading" (click)="upMaterials.addEmptyMaterialModel()">Add</button>
 
-          <!--Update materials form: submit-->
-          <button type="submit" [disabled]="upMaterials.form.disabled || !upMaterials.form.touched || upMaterials.loading" class="p3d-button float-end mx-2"
-                  (click)="updateMaterials()">
-            <span *ngIf="upMaterials.loading" class="spinner-border spinner-border-sm mr-1"></span> Save
-          </button>
+              <button type="submit" class="p3d-button mx-2" [disabled]="upMaterials.form.disabled || !upMaterials.form.touched || upMaterials.loading" (click)="updateMaterials()">
+                <span *ngIf="upMaterials.loading" class="spinner-border spinner-border-sm me-2"></span> Save
+              </button>
+            </div>
+            <button type="button" class="p3d-button" [disabled]="!upMaterials.form.disabled || upMaterials.loading" (click)="upMaterials.enable()">Edit</button>
+
+          </div>
 
         </form>
+
       </div>
     </div>
   </div>
