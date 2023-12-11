@@ -111,14 +111,11 @@
                 <div class="col-sm-12">
                   <!--Update creator form: edit-->
                   <button type="button" [disabled]="!upCreatorInfo.form.disabled || upCreatorInfo.loading" class="p3d-button float-end"
-                          (click)="upCreatorInfo.enable()">
-                    Edit
-                  </button>
+                          (click)="upCreatorInfo.enable()">Edit</button>
 
                   <!--Update creator form: submit-->
                   <button type="submit" [disabled]="upCreatorInfo.form.disabled || !upCreatorInfo.form.touched || upCreatorInfo.loading" class="p3d-button float-end mx-2">
-                    <span *ngIf="upCreatorInfo.loading" class="spinner-border spinner-border-sm mr-1"></span>Save
-                  </button>
+                    <span *ngIf="upCreatorInfo.loading" class="spinner-border spinner-border-sm mr-1"></span> Save</button>
                 </div>
               </div>
             </div>
@@ -144,20 +141,12 @@
         </div>
 
         <!--Update creator form-->
-        <form [formGroup]="upMaterials.form" >
+        <form [formGroup]="upMaterials.form">
 
-          <button (click)="upMaterials.addEmptyMaterialModel()">Add</button>
-
-          <!--Update materials form: edit-->
-          <button type="button" [disabled]="!upMaterials.form.disabled || upMaterials.loading" class="p3d-button float-end"
-                  (click)="upMaterials.enable()">
-            Edit
-          </button>
-
-          <!--Update materials form: submit-->
-          <button type="button" [disabled]="upMaterials.form.disabled || !upMaterials.form.touched || upMaterials.loading" class="p3d-button float-end mx-2"
-                  (submit)="updateMaterials()">
-            <span *ngIf="upMaterials.loading" class="spinner-border spinner-border-sm mr-1"></span>Save
+          <!--Update materials form: add-->
+          <button type="button" [disabled]="upMaterials.form.disabled || upMaterials.loading" class="p3d-button float-end"
+                  (click)="upMaterials.addEmptyMaterialModel()">
+            Add
           </button>
 
           <div *ngFor="let materialFormGroup of upMaterials.materialsFormGroupArray; let i = index"
@@ -210,12 +199,24 @@
               <span *ngIf="materialFormGroup.controls.isActive.errors.required">Activity flag is required</span>
             </span>
 
-            <button (click)="upMaterials.deleteMaterialModel(i)">Delete - {{i}}</button>
+            <!--Update materials form: delete-->
+            <button type="button" [disabled]="upMaterials.form.disabled || upMaterials.loading" class="p3d-button float-end"
+                    (click)="upMaterials.deleteMaterialModel(i)">
+              Delete
+            </button>
+
           </div>
 
+          <!--Update materials form: edit-->
+          <button type="button" [disabled]="!upMaterials.form.disabled || upMaterials.loading" class="p3d-button float-end"
+                  (click)="upMaterials.enable()">
+            Edit
+          </button>
+
           <!--Update materials form: submit-->
-          <button type="submit" [disabled]="upMaterials.form.disabled || !upMaterials.form.touched || upMaterials.loading" class="p3d-button float-end mx-2">
-            <span *ngIf="upMaterials.loading" class="spinner-border spinner-border-sm mr-1"></span>Save
+          <button type="submit" [disabled]="upMaterials.form.disabled || !upMaterials.form.touched || upMaterials.loading" class="p3d-button float-end mx-2"
+                  (click)="updateMaterials()">
+            <span *ngIf="upMaterials.loading" class="spinner-border spinner-border-sm mr-1"></span> Save
           </button>
 
         </form>

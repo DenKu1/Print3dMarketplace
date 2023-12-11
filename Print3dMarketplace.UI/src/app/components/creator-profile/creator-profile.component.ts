@@ -244,7 +244,7 @@ class UpdateMaterials {
       colorId: [{ value: materialModel.colorId, disabled: true }, [Validators.required]],
       templateMaterialId: [{ value: materialModel.templateMaterialId, disabled: true }, [Validators.required]],
       name: [{ value: materialModel.name, disabled: true }, [Validators.required, Validators.maxLength(50)]],
-      isActive: [{ value: materialModel.isActive, disabled: true }, [Validators.required, Validators.pattern("\\d{12}")]]
+      isActive: [{ value: materialModel.isActive, disabled: true }, [Validators.required]]
     }))
   }
 
@@ -255,7 +255,7 @@ class UpdateMaterials {
       colorId: [{ value: '', disabled: true }, [Validators.required]],
       templateMaterialId: [{ value: '', disabled: true }, [Validators.required]],
       name: [{ value: '', disabled: true }, [Validators.required, Validators.maxLength(50)]],
-      isActive: [{ value: false, disabled: true }, [Validators.required, Validators.pattern("\\d{12}")]]
+      isActive: [{ value: false, disabled: true }, [Validators.required]]
     }))
   }
 
