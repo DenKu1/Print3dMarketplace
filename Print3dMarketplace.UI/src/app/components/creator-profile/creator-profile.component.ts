@@ -129,6 +129,42 @@ export class CreatorProfileComponent implements OnInit {
         });
   }
 
+  updateMaterials(): void {
+    this.upMaterials.submitted = true;
+
+    if (this.upMaterials.form.invalid) {
+      return;
+    }
+
+    this.upMaterials.loading = true;
+
+    const materialModels: MaterialModel[] = this.upMaterials.materialsFormGroupArray.map(group => {
+      return {
+        colorId: group.get('colorId').value,
+        templateMaterialId: group.get('templateMaterialId').value,
+        name: group.get('name').value,
+        isActive: group.get('isActive').value,
+        // Add other properties as necessary
+      };
+    });
+
+    this.materialService.updateCreatorMaterials(this.currentUser.id, materialModels)
+      .pipe(first())
+      .subscribe(isUpdated => {
+        this.upMaterials.loading = false;
+
+        if (isUpdated) {
+          this.toastrService.success("Materials updated successfully");
+          this.materials = materialModels;
+          this.upMaterials.disable();
+        } else {
+          this.toastrService.error("Unknown error! Please try again");
+        }
+      }, error => {
+        this.upMaterials.loading = false;
+        this.toastrService.error("An error occurred");
+      });
+  }
 }
 
 class UpdateCreatorInfo {

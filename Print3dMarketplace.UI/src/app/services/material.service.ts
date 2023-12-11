@@ -48,8 +48,11 @@ export class MaterialService {
       }));
   }
 
-  updateCreatorMaterials(userId: string, materials: MaterialModel[]) {
-    return this.http.put<MaterialModel[]>(`${environment.materialApiUrl}/materials/${userId}`, materials);
+  updateCreatorMaterials(userId: string, materials: MaterialModel[]): Observable<boolean> {
+    return this.http.put<ResponseModel>(`${environment.materialApiUrl}/materials/${userId}`, materials)
+      .pipe(map(response => {
+        return response.isSuccess;
+      }));
   }
 }
 
