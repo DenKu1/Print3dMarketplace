@@ -12,6 +12,10 @@
   color: var(--primary-color);
 }
 
+.p3d-button-square {
+  width: 50px;
+}
+
   .p3d-button:hover {
     transform: translateX(2px); /* Add a slight lift on hover for interaction */
     transition: transform 0.2s;

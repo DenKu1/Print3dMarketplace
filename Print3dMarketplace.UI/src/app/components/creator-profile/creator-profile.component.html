@@ -126,85 +126,112 @@
 
         </div>
 
-        <!--Update creator form-->
-        <form [formGroup]="upMaterials.form">
-          <div *ngFor="let materialFormGroup of upMaterials.materialsFormGroupArray; let i = index" [formGroup]="materialFormGroup">
-            <div class="card">
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Available materials
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
 
-              <div class="row g-0 flex-sm-row">
-                <!--Left card part with image-->
-                <div class="col-md-4">
-                  <img src="../assets/creator-profile-material.png" alt="Creator Material Image" class="img-fluid rounded-start">
-                </div>
+                <!--Update creator form-->
+                <form [formGroup]="upMaterials.form">
+                  <div *ngFor="let materialFormGroup of upMaterials.materialsFormGroupArray; let i = index" [formGroup]="materialFormGroup">
+                    <div class="card">
 
-                <!--Right card part with image-->
-                <div class="col-md-8">
-                  <div class="card-body p3d-bg-color-light-accent">
+                      <div class="row g-0 flex-sm-row">
+                        <!--Left card part with image-->
+                        <div class="col-md-4">
+                          <img src="../assets/creator-profile-material.png" alt="Creator Material Image" class="img-fluid rounded-start">
+                        </div>
 
-                    <!-- colorId -->
-                    <div class="mb-3">
-                      <label for="colorId" class="form-label">Color:</label>
-                      <select id="colorId" class="form-select" formControlName="colorId">
-                        <option *ngFor="let color of colors" [value]="color.id">{{color.name}}</option>
-                      </select>
-                      <div *ngIf="upMaterials.submitted && materialFormGroup.controls.colorId.errors" class="invalid-feedback d-block">
-                        <div *ngIf="materialFormGroup.controls.colorId.errors.required">Color is required.</div>
+                        <!--Right card part with image-->
+                        <div class="col-md-8">
+                          <div class="card-body p3d-bg-color-light-accent">
+
+                            <!-- colorId -->
+                            <div class="mb-3">
+                              <label for="colorId" class="form-label">Color:</label>
+                              <select id="colorId" class="form-select" formControlName="colorId">
+                                <option *ngFor="let color of colors" [value]="color.id">{{color.name}}</option>
+                              </select>
+                              <div *ngIf="upMaterials.submitted && materialFormGroup.controls.colorId.errors" class="invalid-feedback d-block">
+                                <div *ngIf="materialFormGroup.controls.colorId.errors.required">Color is required.</div>
+                              </div>
+                            </div>
+                            <!-- templateMaterialId -->
+                            <div class="mb-3">
+                              <label for="templateMaterialId" class="form-label">Template Material:</label>
+                              <select id="templateMaterialId" class="form-select" formControlName="templateMaterialId">
+                                <option *ngFor="let templateMaterial of templateMaterials" [value]="templateMaterial.id">{{templateMaterial.name}}</option>
+                              </select>
+                              <div *ngIf="upMaterials.submitted && materialFormGroup.controls.templateMaterialId.errors" class="invalid-feedback d-block">
+                                <div *ngIf="materialFormGroup.controls.templateMaterialId.errors.required">Template Material is required.</div>
+                              </div>
+                            </div>
+                            <!-- name -->
+                            <div class="mb-3">
+                              <label for="name" class="form-label">Name:</label>
+                              <input id="name" type="text" class="form-control" formControlName="name" placeholder="Enter Name" />
+                              <div *ngIf="upMaterials.submitted && materialFormGroup.controls.name.errors" class="invalid-feedback d-block">
+                                <div *ngIf="materialFormGroup.controls.name.errors.required">Name material is required.</div>
+                                <div *ngIf="materialFormGroup.controls.name.errors.maxlength">Max length is 50 symbols.</div>
+                              </div>
+                            </div>
+                            <!-- isActive -->
+                            <div class="mb-3 form-check">
+                              <input id="isActive" type="checkbox" class="form-check-input" formControlName="isActive" />
+                              <label for="isActive" class="form-check-label">Is Active:</label>
+                              <div *ngIf="upMaterials.submitted && materialFormGroup.controls.isActive.errors" class="invalid-feedback d-block">
+                                <div *ngIf="materialFormGroup.controls.isActive.errors.required">Activity flag is required.</div>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                        <div class="card-footer">
+                          <!-- Delete Button -->
+                          <div class="d-flex justify-content-end">
+                            <button type="button" class="p3d-button p3d-button-square" [disabled]="upMaterials.form.disabled || upMaterials.loading" (click)="upMaterials.deleteMaterialModel(i)"><i class="fa-solid fa-xmark text-danger"></i></button>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <!-- templateMaterialId -->
-                    <div class="mb-3">
-                      <label for="templateMaterialId" class="form-label">Template Material:</label>
-                      <select id="templateMaterialId" class="form-select" formControlName="templateMaterialId">
-                        <option *ngFor="let templateMaterial of templateMaterials" [value]="templateMaterial.id">{{templateMaterial.name}}</option>
-                      </select>
-                      <div *ngIf="upMaterials.submitted && materialFormGroup.controls.templateMaterialId.errors" class="invalid-feedback d-block">
-                        <div *ngIf="materialFormGroup.controls.templateMaterialId.errors.required">Template Material is required.</div>
-                      </div>
+                  </div>
+
+                  <!-- Add, Save and Edit Buttons -->
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <button type="button" class="p3d-button" [disabled]="upMaterials.form.disabled || upMaterials.loading" (click)="upMaterials.addEmptyMaterialModel()">Add</button>
+
+                      <button type="submit" class="p3d-button mx-2" [disabled]="upMaterials.form.disabled || !upMaterials.form.touched || upMaterials.loading" (click)="updateMaterials()">
+                        <span *ngIf="upMaterials.loading" class="spinner-border spinner-border-sm me-2"></span> Save
+                      </button>
                     </div>
-                    <!-- name -->
-                    <div class="mb-3">
-                      <label for="name" class="form-label">Name:</label>
-                      <input id="name" type="text" class="form-control" formControlName="name" placeholder="Enter Name" />
-                      <div *ngIf="upMaterials.submitted && materialFormGroup.controls.name.errors" class="invalid-feedback d-block">
-                        <div *ngIf="materialFormGroup.controls.name.errors.required">Name material is required.</div>
-                        <div *ngIf="materialFormGroup.controls.name.errors.maxlength">Max length is 50 symbols.</div>
-                      </div>
-                    </div>
-                    <!-- isActive -->
-                    <div class="mb-3 form-check">
-                      <input id="isActive" type="checkbox" class="form-check-input" formControlName="isActive" />
-                      <label for="isActive" class="form-check-label">Is Active:</label>
-                      <div *ngIf="upMaterials.submitted && materialFormGroup.controls.isActive.errors" class="invalid-feedback d-block">
-                        <div *ngIf="materialFormGroup.controls.isActive.errors.required">Activity flag is required.</div>
-                      </div>
-                    </div>
+                    <button type="button" class="p3d-button" [disabled]="!upMaterials.form.disabled || upMaterials.loading" (click)="upMaterials.enable()">Edit</button>
 
                   </div>
-                </div>
-                <div class="card-footer">
-                  <!-- Delete Button -->
-                  <div class="d-flex justify-content-end">
-                    <button type="button" class="p3d-button" [disabled]="upMaterials.form.disabled || upMaterials.loading" (click)="upMaterials.deleteMaterialModel(i)">Delete</button>
-                  </div>
-                </div>
+
+                </form>
+
               </div>
             </div>
           </div>
-
-          <!-- Add, Save and Edit Buttons -->
-          <div class="d-flex justify-content-between">
-            <div>
-              <button type="button" class="p3d-button" [disabled]="upMaterials.form.disabled || upMaterials.loading" (click)="upMaterials.addEmptyMaterialModel()">Add</button>
-
-              <button type="submit" class="p3d-button mx-2" [disabled]="upMaterials.form.disabled || !upMaterials.form.touched || upMaterials.loading" (click)="updateMaterials()">
-                <span *ngIf="upMaterials.loading" class="spinner-border spinner-border-sm me-2"></span> Save
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Available printers
               </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+              </div>
             </div>
-            <button type="button" class="p3d-button" [disabled]="!upMaterials.form.disabled || upMaterials.loading" (click)="upMaterials.enable()">Edit</button>
-
           </div>
-
-        </form>
+        </div>
 
       </div>
     </div>
