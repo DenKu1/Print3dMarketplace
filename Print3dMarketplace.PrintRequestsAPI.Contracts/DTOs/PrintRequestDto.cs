@@ -4,8 +4,9 @@ public class PrintRequestDto
 {
 	public Guid Id { get; set; }
 
+	public string PrintRequestStatusName { get; set; }
+
 	public Guid ApplicationUserId { get; set; }
-	public Guid PrintRequestStatusId { get; set; }
 	public Guid TemplateMaterialId { get; set; }
 	public Guid NozzleId { get; set; }
 	public Guid ColorId { get; set; }

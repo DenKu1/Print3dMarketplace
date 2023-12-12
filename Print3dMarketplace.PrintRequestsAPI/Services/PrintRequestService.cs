@@ -23,7 +23,10 @@ public class PrintRequestService : IPrintRequestService
 
 	public async Task<IEnumerable<PrintRequestDto>> GetAllPrintRequests()
 	{
-		var printRequests = await _context.Set<PrintRequest>().AsQueryable().ToListAsync();
+		var printRequests = await _context.Set<PrintRequest>()
+			.AsQueryable()
+			.Include(x => x.PrintRequestStatus)
+			.ToListAsync();
 
 		return _mapper.Map<IEnumerable<PrintRequestDto>>(printRequests);
 	}
@@ -35,6 +38,8 @@ public class PrintRequestService : IPrintRequestService
 			var newPrintRequest = _mapper.Map<PrintRequest>(newPrintRequestDto);
 			newPrintRequest.ApplicationUserId = userId;
 
+			await SetPrintRequestStatus(newPrintRequest, KnownPrintRequestStatuses.New);
+			
 			await _context.PrintRequests.AddAsync(newPrintRequest);
 
 			return await _context.SaveChangesAsync() > 0;
@@ -45,4 +50,11 @@ public class PrintRequestService : IPrintRequestService
 		}
 	}
 
+	private async Task SetPrintRequestStatus(PrintRequest printRequest, KnownPrintRequestStatuses newStatus)
+	{
+		if (printRequest == null)
+			return;
+
+		printRequest.PrintRequestStatus = await _context.Set<PrintRequestStatus>().FirstAsync(x => x.Name == nameof(newStatus));
+	}
 }
