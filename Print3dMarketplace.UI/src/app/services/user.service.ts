@@ -17,17 +17,29 @@ export class UserService {
   headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
 
   private currentUserSubject: BehaviorSubject<UserModel>;
+  private currentTokenSubject: BehaviorSubject<string>;
+
   public currentUser: Observable<UserModel>;
+  public currentToken: Observable<string>;
 
   constructor(private http: HttpClient) {
     const storedUser = localStorage.getItem('currentUser');
     const parsedUser = storedUser && storedUser !== 'undefined' ? JSON.parse(storedUser) : null;
     this.currentUserSubject = new BehaviorSubject<UserModel>(parsedUser);
     this.currentUser = this.currentUserSubject.asObservable();
+
+    const storedToken = localStorage.getItem('userToken');
+    const parsedToken = storedToken && storedToken !== 'undefined' ? JSON.parse(storedToken) : null;
+    this.currentTokenSubject = new BehaviorSubject<string>(parsedToken);
+    this.currentToken = this.currentTokenSubject.asObservable();
   }
 
   public get currentUserValue(): UserModel {
     return this.currentUserSubject.value;
+  }
+
+  public get currentUserTokenValue(): string {
+    return this.currentTokenSubject.value;
   }
 
   login(loginRequestModel: LoginRequestModel): Observable<UserModel> {

@@ -6,19 +6,14 @@ import { CreatorRegistrationComponent } from './components/creator-registration/
 import { UserLoginComponent } from './components/user-login/user-login.component';
 import { CreatorProfileComponent } from './components/creator-profile/creator-profile.component';
 import { RoleSelectionComponent } from './components/role-selection/role-selection.component';
-
-/*import { AlbumComponent } from './components/album/album.component';
-import { PhotoComponent } from './components/photo/photo.component';
-import { UserRegisterComponent } from './components/user-register/user-register.component';
-import { UserLoginComponent } from './components/user-login/user-login.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { HomeComponent } from './components/home/home.component';
-
-import { AuthGuard } from './helpers/auth.guard';
-import { UserManagerComponent } from './components/user-manager/user-manager.component';
-import { UserProfileComponent } from "./components/user-profile/user-profile.component";*/
+import { CustomerPrintRequestCreationComponent } from './components/customer-print-request-creation/customer-print-request-creation.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    component: RoleSelectionComponent
+  },
   {
     path: 'user/login',
     component: UserLoginComponent
@@ -32,54 +27,21 @@ const routes: Routes = [
     component: CreatorRegistrationComponent
   },
   {
-    path: 'customer/register',
-    component: CustomerRegistrationComponent
-  },
-  {
     path: 'creator/profile',
     component: CreatorProfileComponent
   },
   {
-    path: '**',
-    component: RoleSelectionComponent
-  }
-
-/*  {
-    path: '',
-    component: HomeComponent
+    path: 'customer/register',
+    component: CustomerRegistrationComponent
   },
   {
-    path: 'profile',
-    component: UserProfileComponent
-  },
-  {
-    path: 'users/register',
-    component: UserRegisterComponent
-  },
-
-  {
-    path: 'users/:id/albums',
-    component: AlbumComponent,
-    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
-    canActivate: [AuthGuard],
-    data: { roles: ["User"] }
-  },
-  {
-    path: 'albums/:id/photos',
-    component: PhotoComponent,
-    canActivate: [AuthGuard],
-    data: { roles: ["User"] }
-  },
-  {
-    path: 'admin',
-    component: UserManagerComponent,
-    canActivate: [AuthGuard],
-    data: { roles: ["Admin"] }
+    path: 'customer/print-request-creation',
+    component: CustomerPrintRequestCreationComponent
   },
   {
     path: '**',
     component: NotFoundComponent
-  }*/
+  }
 ];
 
 @NgModule({

@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
 import { RouterModule } from '@angular/router';
 import { CustomerRegistrationComponent } from './components/customer-registration/customer-registration.component';
@@ -14,6 +14,10 @@ import { CreatorProfileComponent } from './components/creator-profile/creator-pr
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RoleSelectionComponent } from './components/role-selection/role-selection.component';
+import { CustomerPrintRequestCreationComponent } from './components/customer-print-request-creation/customer-print-request-creation.component';
+import { ErrorInterceptor } from '../helpers/error.interceptor';
+import { JwtInterceptor } from '../helpers/jwt.interceptor';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +27,9 @@ import { RoleSelectionComponent } from './components/role-selection/role-selecti
     CreatorRegistrationComponent,
     UserLoginComponent,
     CreatorProfileComponent,
-    RoleSelectionComponent
+    RoleSelectionComponent,
+    CustomerPrintRequestCreationComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +40,10 @@ import { RoleSelectionComponent } from './components/role-selection/role-selecti
     BrowserAnimationsModule,
     ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
