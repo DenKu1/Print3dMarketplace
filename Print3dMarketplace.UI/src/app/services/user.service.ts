@@ -3,13 +3,13 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../enviroments/environment';
-import { CreatorRegistrationRequestModel } from '../../models/user/creatorRegistrationRequestModel';
-import { CustomerRegistrationRequestModel } from '../../models/user/customerRegistrationRequestModel';
-import { LoginRequestModel } from '../../models/user/loginRequestModel';
-import { LoginResponseModel } from '../../models/user/loginResponseModel';
-import { UserModel } from '../../models/user/userModel';
-import { ResponseModel } from '../../models/common/responseModel';
-import { CreatorModel } from '../../models/user/creatorModel';
+import { CreatorRegistrationRequestModel } from '../models/user/creatorRegistrationRequestModel';
+import { CustomerRegistrationRequestModel } from '../models/user/customerRegistrationRequestModel';
+import { LoginRequestModel } from '../models/user/loginRequestModel';
+import { LoginResponseModel } from '../models/user/loginResponseModel';
+import { UserModel } from '../models/user/userModel';
+import { ResponseModel } from '../models/common/responseModel';
+import { CreatorModel } from '../models/user/creatorModel';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {

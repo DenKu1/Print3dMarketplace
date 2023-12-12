@@ -5,8 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { UserService } from 'src/app/services/user.service';
-import { LoginRequestModel } from '../../../models/user/loginRequestModel';
-import { UserModel } from '../../../models/user/userModel';
+import { LoginRequestModel } from '../../models/user/loginRequestModel';
+import { UserModel } from '../../models/user/userModel';
 
 @Component({
   selector: 'app-user-login',

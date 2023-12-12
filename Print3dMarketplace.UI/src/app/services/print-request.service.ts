@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../enviroments/environment';
-import { ResponseModel } from '../../models/common/responseModel';
-import { PrintRequestModel } from '../../models/print-requests/printRequestModel';
+import { ResponseModel } from '../models/common/responseModel';
+import { PrintRequestModel } from '../models/print-requests/printRequestModel';
 
 @Injectable({
   providedIn: 'root'

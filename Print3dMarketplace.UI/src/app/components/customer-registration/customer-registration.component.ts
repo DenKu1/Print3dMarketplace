@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { CustomerRegistrationRequestModel } from '../../../models/user/customerRegistrationRequestModel';
+import { CustomerRegistrationRequestModel } from '../../models/user/customerRegistrationRequestModel';
 
 @Component({
   selector: 'app-user-register',

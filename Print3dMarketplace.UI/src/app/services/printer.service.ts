@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { PrinterModel } from '../../models/printer/printerModel';
+import { PrinterModel } from '../models/printer/printerModel';
 import { environment } from '../../enviroments/environment';
-import { ResponseModel } from '../../models/common/responseModel';
-import { TemplatePrinterModel } from '../../models/printer/templatePrinterModel';
-import { NozzleModel } from '../../models/printer/nozzleModel';
+import { ResponseModel } from '../models/common/responseModel';
+import { TemplatePrinterModel } from '../models/printer/templatePrinterModel';
+import { NozzleModel } from '../models/printer/nozzleModel';
 
 @Injectable({
   providedIn: 'root'

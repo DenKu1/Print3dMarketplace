@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { MaterialModel } from '../../models/material/materialModel';
+import { MaterialModel } from '../models/material/materialModel';
 import { environment } from '../../enviroments/environment';
-import { ResponseModel } from '../../models/common/responseModel';
-import { TemplateMaterialModel } from '../../models/material/templateMaterialModel';
-import { ColorModel } from '../../models/material/colorModel';
+import { ResponseModel } from '../models/common/responseModel';
+import { TemplateMaterialModel } from '../models/material/templateMaterialModel';
+import { ColorModel } from '../models/material/colorModel';
 
 @Injectable({
   providedIn: 'root'

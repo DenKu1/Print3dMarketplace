@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { UserModel } from '../../../models/user/userModel';
+import { UserModel } from '../../models/user/userModel';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CreatorModel } from '../../../models/user/creatorModel';
+import { CreatorModel } from '../../models/user/creatorModel';
 import { first } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { MaterialModel } from '../../../models/material/materialModel';
+import { MaterialModel } from '../../models/material/materialModel';
 import { MaterialService } from '../../services/material.service';
-import { TemplateMaterialModel } from '../../../models/material/templateMaterialModel';
-import { ColorModel } from '../../../models/material/colorModel';
-import { PrinterModel } from '../../../models/printer/printerModel';
+import { TemplateMaterialModel } from '../../models/material/templateMaterialModel';
+import { ColorModel } from '../../models/material/colorModel';
+import { PrinterModel } from '../../models/printer/printerModel';
 import { PrinterService } from '../../services/printer.service';
-import { TemplatePrinterModel } from '../../../models/printer/templatePrinterModel';
-import { NozzleModel } from '../../../models/printer/nozzleModel';
+import { TemplatePrinterModel } from '../../models/printer/templatePrinterModel';
+import { NozzleModel } from '../../models/printer/nozzleModel';
 
 @Component({
   selector: 'creator-profile',

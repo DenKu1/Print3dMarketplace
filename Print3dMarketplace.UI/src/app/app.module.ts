@@ -15,8 +15,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RoleSelectionComponent } from './components/role-selection/role-selection.component';
 import { CustomerPrintRequestCreationComponent } from './components/customer-print-request-creation/customer-print-request-creation.component';
-import { ErrorInterceptor } from '../helpers/error.interceptor';
-import { JwtInterceptor } from '../helpers/jwt.interceptor';
+import { ErrorInterceptor } from './helpers/error.interceptor';
+import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({

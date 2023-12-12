@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { UserModel } from '../../../models/user/userModel';
+import { UserModel } from '../../models/user/userModel';
 
 @Component({
   selector: 'app-nav-menu',
