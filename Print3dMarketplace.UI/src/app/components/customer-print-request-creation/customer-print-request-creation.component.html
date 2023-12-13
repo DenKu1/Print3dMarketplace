@@ -1,200 +1,207 @@
 <section class="order-form m-4">
   <div class="container pt-4">
-    <div class="row">
-      <div class="col-12 px-4">
-        <h1>Create a new print request</h1>
-        <span>You will be notified when creators accept your print request</span>
-        <hr class="mt-1" />
-      </div>
 
-      <div class="col-12">
-        <div class="row mx-4">
-          <div class="col-12">
-            <label class="order-form-label">Material</label>
-          </div>
-          <div class="col-6">
-            <div class="d-flex align-items-center">
-              <select class="form-select">
-                <option selected>-- Choose material --</option>
-                <option value="1">ABS</option>
-                <option value="2">PLA</option>
-                <option value="3">PETG</option>
-              </select>
-              <i class="fa-solid fa-circle-info p-1" title="Carefully choose appropriate material. Significantly impacts on cost and durability of the model"></i>
-            </div>
-          </div>
-        </div>
+    <!--Create print request form-->
+    <form [formGroup]="crPrintRequestFormInfo.form" (submit)="createPrintRequest()">
 
-        <div class="row mt-3 mx-4">
-          <div class="col-12">
-            <label class="order-form-label">Layer height</label>
-          </div>
-          <div class="col-6">
-            <div class="d-flex align-items-center">
-              <select class="form-select">
-                <option selected>-- Choose height --</option>
-                <option value="1">0.1</option>
-                <option value="2">0.2</option>
-                <option value="3">0.4</option>
-              </select>
-              <i class="fa-solid fa-circle-info p-1" title="Higher values produce faster prints in lower resolution, lower values produce slower prints in higher resolution"></i>
-            </div>
-          </div>
-        </div>
-
-        <div class="row mt-3 mx-4">
-          <div class="col-12">
-            <label class="order-form-label">Model size</label>
-          </div>
-          <div class="col-4">
-            <div class="form-outline">
-              <input type="text" id="form4" class="form-control order-form-input" />
-              <label class="form-label">Length, mm</label>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="form-outline">
-              <input type="text" id="form4" class="form-control order-form-input" />
-              <label class="form-label">Width, mm</label>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="form-outline">
-              <input type="text" id="form4" class="form-control order-form-input" />
-              <label class="form-label">Height, mm</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="row mt-3 mx-4">
-          <div class="col-12">
-            <label class="order-form-label" for="date-picker-example">Infill percentage</label>
-          </div>
-          <div class="col-6">
-            <div class="d-flex align-items-center">
-              <select class="form-select">
-                <option selected>-- Choose infill --</option>
-                <option value="1">10%</option>
-                <option value="2">20%</option>
-                <option value="3">30%</option>
-                <option value="3">30%</option>
-                <option value="3">40%</option>
-                <option value="3">50%</option>
-                <option value="3">60%</option>
-                <option value="3">70%</option>
-                <option value="3">80%</option>
-                <option value="3">90%</option>
-                <option value="3">100%</option>
-              </select>
-              <i class="fa-solid fa-circle-info p-1" title="It affects the strength and weight of the product"></i>
-            </div>
-          </div>
-        </div>
-
-        <div class="row mt-3 mx-4">
-          <div class="col-12">
-            <label class="order-form-label">Color</label>
-          </div>
-          <div class="col-6">
-            <div class="d-flex align-items-center">
-              <select class="form-select">
-                <option selected>-- Choose color --</option>
-                <option value="1">Any</option>
-                <option value="1">Red</option>
-                <option value="2">Green</option>
-                <option value="3">Blue</option>
-              </select>
-              <i class="fa-solid fa-circle-info p-1" title="Choose 'any' option if it is doesn't matter'"></i>
-            </div>
-          </div>
-        </div>
-
-        <div class="row mt-3 mx-4">
-          <div class="col-12">
-            <label class="order-form-label">Upload stl model</label>
-          </div>
-          <div class="col-12">
-            <input class="form-control" type="file" id="formFile">
-          </div>
-        </div>
-
-        <div class="row mt-3 mx-4">
-          <div class="col-12">
-            <label class="order-form-label">General comment</label>
-          </div>
-          <div class="col-12">
-            <div class="form-outline">
-              <textarea class="form-control order-form-input" id="exampleFormControlTextarea1" rows="3"></textarea>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 p-3">
+      <div class="row ">
+        <div class="col-12 px-4">
+          <h1>Create a new print request</h1>
+          <span>You will be notified when creators accept your print request</span>
           <hr class="mt-1" />
-          <span>Expierenced user options, choose only if you are sure what you are doing</span>
         </div>
 
         <div class="col-12">
+          <!-- templateMaterialId -->
           <div class="row mx-4">
             <div class="col-12">
-              <label class="order-form-label">Supports</label>
+              <label for="templateMaterialId" class="order-form-label">Material</label>
             </div>
             <div class="col-6">
               <div class="d-flex align-items-center">
-                <select class="form-select">
-                  <option selected>-- Use supports --</option>
-                  <option value="1">Yes</option>
-                  <option value="2">No</option>
-                  <option value="3">Not sure</option>
+                <select id="templateMaterialId" class="form-select" formControlName="templateMaterialId">
+                  <option value="">-- Choose material --</option>
+                  <option *ngFor="let templateMaterial of crPrintRequestFormInfo.templateMaterials" [value]="templateMaterial.id">{{templateMaterial.name}}</option>
                 </select>
-                <i class="fa-solid fa-circle-info p-1" title="Supports are necessary for the construction of overhanging elements of the model"></i>
+                <div *ngIf="crPrintRequestFormInfo.submitted && crPrintRequestFormInfo.f.templateMaterialId.errors" class="invalid-feedback d-block">
+                  <div *ngIf="crPrintRequestFormInfo.f.templateMaterialId.errors.required">Material is required</div>
+                </div>
+
+                <i class="fa-solid fa-circle-info fa-xl p-1 text-info" title="Carefully choose appropriate material. Significantly impacts on cost and durability of the model"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- colorId -->
+          <div class="row mx-4">
+            <div class="col-12">
+              <label for="colorId" class="order-form-label">Color</label>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center">
+                <select id="colorId" class="form-select" formControlName="colorId">
+                  <option value="">-- Choose color --</option>
+                  <option *ngFor="let color of crPrintRequestFormInfo.colors" [value]="color.id">{{color.name}}</option>
+                </select>
+                <div *ngIf="crPrintRequestFormInfo.submitted && crPrintRequestFormInfo.f.colorId.errors" class="invalid-feedback d-block">
+                  <div *ngIf="crPrintRequestFormInfo.f.colorId.errors.required">Color  is required</div>
+                </div>
+
+                <i class="fa-solid fa-circle-info fa-xl p-1 text-info" title="Choose 'any' option if it is doesn't matter'"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- layerHeight -->
+          <div class="row mx-4">
+            <div class="col-12">
+              <label for="layerHeight" class="order-form-label">Layer Height, mm</label>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center">
+                <input type="number" id="layerHeight" class="form-control" formControlName="layerHeight" min="0" max="1" step="0.01" />
+                <div *ngIf="crPrintRequestFormInfo.submitted && crPrintRequestFormInfo.f.layerHeight.errors" class="invalid-feedback d-block">
+                  <div *ngIf="crPrintRequestFormInfo.f.layerHeight.errors.required">Layer height is required</div>
+                  <div *ngIf="crPrintRequestFormInfo.f.layerHeight.errors.min">Layer height can't be less than 0</div>
+                  <div *ngIf="crPrintRequestFormInfo.f.layerHeight.errors.max">Layer height can't be more than 1</div>
+                </div>
+                <i class="fa-solid fa-circle-info fa-xl p-1 text-info" title="The height of each printed layer. A smaller value will result in a smoother, higher-quality print, but will also take longer."></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- infill -->
+          <div class="row mx-4">
+            <div class="col-12">
+              <label for="infill" class="order-form-label">Infill, %</label>
+            </div>
+            <div class="col-6">
+              <div class="d-flex align-items-center">
+                <input type="number" id="infill" class="form-control" formControlName="infill" min="0" max="100" step="1" value="100" />
+                <div *ngIf="crPrintRequestFormInfo.submitted && crPrintRequestFormInfo.f.infill.errors" class="invalid-feedback d-block">
+                  <div *ngIf="crPrintRequestFormInfo.f.infill.errors.required">Infill is required</div>
+                  <div *ngIf="crPrintRequestFormInfo.f.infill.errors.min">Infill can't be less than 0</div>
+                  <div *ngIf="crPrintRequestFormInfo.f.infill.errors.max">Infill can't be more than 100</div>
+                </div>
+                <i class="fa-solid fa-circle-info fa-xl p-1 text-info" title="The amount of material used to fill the inside of the print. A higher value will make the print heavier and stronger, but will also use more material and take longer."></i>
+              </div>
+            </div>
+          </div>
+
+          <!--printArea-->
+          <div class="row mt-3 mx-4">
+            <div class="col-12">
+              <label class="order-form-label">Model size</label>
+            </div>
+            <div class="col-4">
+              <div class="d-flex align-items-center">
+                <input type="number" id="printAreaLength" formControlName="printAreaLength" class="form-control order-form-input" min="0" max="1000" />
+                <div *ngIf="crPrintRequestFormInfo.submitted && crPrintRequestFormInfo.f.printAreaLength.errors" class="invalid-feedback d-block">
+                  <div *ngIf="crPrintRequestFormInfo.f.printAreaLength.errors.required">Length is required</div>
+                  <div *ngIf="crPrintRequestFormInfo.f.printAreaLength.errors.min">Length can't be less than 0</div>
+                  <div *ngIf="crPrintRequestFormInfo.f.printAreaLength.errors.max">Length can't be more than 1000</div>
+                </div>
+                <label for="printAreaLength" class="form-label">Length, mm</label>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="d-flex align-items-center">
+                <input type="number" id="printAreaWidth" formControlName="printAreaWidth" class="form-control order-form-input" min="0" max="1000" />
+                <div *ngIf="crPrintRequestFormInfo.submitted && crPrintRequestFormInfo.f.printAreaWidth.errors" class="invalid-feedback d-block">
+                  <div *ngIf="crPrintRequestFormInfo.f.printAreaWidth.errors.required">Width is required</div>
+                  <div *ngIf="crPrintRequestFormInfo.f.printAreaWidth.errors.min">Width can't be less than 0</div>
+                  <div *ngIf="crPrintRequestFormInfo.f.printAreaWidth.errors.max">Width can't be more than 1000</div>
+                </div>
+                <label for="printAreaWidth" class="form-label">Width, mm</label>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="d-flex align-items-center">
+                <input type="number" id="printAreaHeight" formControlName="printAreaHeight" class="form-control order-form-input" min="0" max="1000" />
+                <div *ngIf="crPrintRequestFormInfo.submitted && crPrintRequestFormInfo.f.printAreaHeight.errors" class="invalid-feedback d-block">
+                  <div *ngIf="crPrintRequestFormInfo.f.printAreaHeight.errors.required">Height is required</div>
+                  <div *ngIf="crPrintRequestFormInfo.f.printAreaHeight.errors.min">Height can't be less than 0</div>
+                  <div *ngIf="crPrintRequestFormInfo.f.printAreaHeight.errors.max">Height can't be more than 1000</div>
+                </div>
+                <label for="printAreaHeight" class="form-label">Height, mm</label>
               </div>
             </div>
           </div>
 
           <div class="row mt-3 mx-4">
             <div class="col-12">
-              <label class="order-form-label">Border width</label>
+              <label class="order-form-label">Upload stl model</label>
             </div>
-            <div class="col-6">
-              <div class="d-flex align-items-center">
-                <select class="form-select">
-                  <option selected>-- Choose border --</option>
-                  <option value="1">0.1</option>
-                  <option value="2">0.2</option>
-                  <option value="3">0.4</option>
-                  <option value="3">Not sure</option>
-                </select>
-                <i class="fa-solid fa-circle-info p-1" title="The thickness of the wall, as well as the internal filling, affects the strength and weight of the model."></i>
-              </div>
+            <div class="col-12">
+              <input class="form-control" type="file" id="formFile">
             </div>
           </div>
 
+          <!--comment (optional)-->
           <div class="row mt-3 mx-4">
             <div class="col-12">
-              <label class="order-form-label">Nozzle size</label>
+              <label class="order-form-label">General comment</label>
             </div>
-            <div class="col-6">
-              <div class="d-flex align-items-center">
-                <select class="form-select">
-                  <option selected>-- Choose nozzle --</option>
-                  <option value="1">0.2</option>
-                  <option value="1">0.3</option>
-                  <option value="2">0.4</option>
-                  <option value="3">Not sure</option>
-                </select>
-                <i class="fa-solid fa-circle-info p-1" title="A smaller nozzle size will result in higher-resolution prints with smoother finishes"></i>
+            <div class="col-12">
+              <div class="form-outline">
+                <textarea class="form-control order-form-input" id="comment" formControlName="comment" rows="3"></textarea>
+                <div *ngIf="crPrintRequestFormInfo.submitted && crPrintRequestFormInfo.f.comment.errors" class="invalid-feedback d-block">
+                  <div *ngIf="crPrintRequestFormInfo.f.comment.errors.maxlength">Comment can't be longer than 200 characters</div>
+                </div>
               </div>
             </div>
           </div>
 
-        </div>
-        <div class="row mt-3">
+          <div class="col-12 p-3">
+            <hr class="mt-1" />
+            <span><i class="fa-solid fa-triangle-exclamation fa-xl text-warning"></i> Expierenced user options, choose only if you are sure what you are doing</span>
+          </div>
+
+          <!--useSupports (optional)-->
           <div class="col-12">
-            <button type="button" id="btnSubmit" class="p3d-button float-end">Submit</button>
+            <div class="row mx-4">
+              <div class="col-12">
+                <label class="order-form-label">(Optional) Supports</label>
+              </div>
+              <div class="col-6">
+                <div class="d-flex align-items-center">
+                  <select class="form-select" formControlName="useSupports">
+                    <option selected [value]="null">-- Use supports --</option>
+                    <option [value]="true">Yes</option>
+                    <option [value]="false">No</option>
+                    <option [value]="null">Not sure</option>
+                  </select>
+                  <i class="fa-solid fa-circle-info fa-xl p-1 text-info" title="Supports are necessary for the construction of overhanging elements of the model"></i>
+                </div>
+              </div>
+            </div>
+
+            <!--wallThickness (optional)-->
+            <div class="row mt-3 mx-4">
+              <div class="col-12">
+                <label for="wallThickness" class="order-form-label">(Optional) Wall Thickness, mm</label>
+              </div>
+              <div class="col-6">
+                <div class="d-flex align-items-center">
+                  <input type="number" id="wallThickness" class="form-control" formControlName="wallThickness" min="0" max="1" step="0.01" />
+                  <div *ngIf="crPrintRequestFormInfo.submitted && crPrintRequestFormInfo.f.wallThickness.errors" class="invalid-feedback d-block">
+                    <div *ngIf="crPrintRequestFormInfo.f.wallThickness.errors.min">Wall thickness can't be less than 0</div>
+                    <div *ngIf="crPrintRequestFormInfo.f.wallThickness.errors.max">Wall thickness can't be more than 1</div>
+                  </div>
+                  <i class="fa-solid fa-circle-info fa-xl p-1 text-info" title="The thickness of the object walls. A higher value will result in a sturdier object, but will also use more material and take longer to print."></i>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              <button type="button" id="btnSubmit" class="p3d-button float-end">Submit</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+    </form>
   </div>
 </section>

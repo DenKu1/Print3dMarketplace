@@ -26,7 +26,7 @@ public class PrintRequestController : ControllerBase
 	}
 
 	[HttpPost("{userId}")]
-	public async Task<IActionResult> CreatePrintRequest(PrintRequestDto newPrintRequestDto, Guid userId)
+	public async Task<IActionResult> CreatePrintRequest(CreatePrintRequestDto newPrintRequestDto, Guid userId)
 	{
 		var isSuccess = await _printRequestService.CreatePrintRequest(newPrintRequestDto, userId);
 

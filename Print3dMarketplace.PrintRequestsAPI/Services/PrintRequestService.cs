@@ -31,12 +31,14 @@ public class PrintRequestService : IPrintRequestService
 		return _mapper.Map<IEnumerable<PrintRequestDto>>(printRequests);
 	}
 
-	public async Task<bool> CreatePrintRequest(PrintRequestDto newPrintRequestDto, Guid userId)
+	public async Task<bool> CreatePrintRequest(CreatePrintRequestDto newPrintRequestDto, Guid userId)
 	{
 		try
 		{
 			var newPrintRequest = _mapper.Map<PrintRequest>(newPrintRequestDto);
+
 			newPrintRequest.ApplicationUserId = userId;
+			newPrintRequest.IsActive = true;
 
 			await SetPrintRequestStatus(newPrintRequest, KnownPrintRequestStatuses.New);
 			

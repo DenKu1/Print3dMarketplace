@@ -1,25 +1,15 @@
-export interface PrintRequestModel {
-  id: string;
-
-  printRequestStatusName: string;
-
-  applicationUserId: string;
+export interface CreatePrintRequestModel {
   templateMaterialId: string;
-  nozzleId: string;
   colorId: string;
-  modelId: string;
 
+  layerHeight: number;
   infill: number;
 
   printAreaLength: number;
   printAreaWidth: number;
   printAreaHeight: number;
 
-  borderWidth: number;
-  layerHeight: number;
-
-  comment: string;
-
-  useSupports: boolean;
-  isActive: boolean;
+  comment: string | null;
+  useSupports: boolean | null;
+  wallThickness: number | null;
 }

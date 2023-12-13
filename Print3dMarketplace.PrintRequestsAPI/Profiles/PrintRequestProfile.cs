@@ -8,7 +8,7 @@ public class PrintRequestProfile : Profile
 {
 	public PrintRequestProfile()
 	{
-		CreateMap<PrintRequestDto, PrintRequest>();
+		CreateMap<CreatePrintRequestDto, PrintRequest>();
 		CreateMap<PrintRequest, PrintRequestDto>()
 			.ForMember(x => x.PrintRequestStatusName, x => x.MapFrom(x => x.PrintRequestStatus.Name));
 	}

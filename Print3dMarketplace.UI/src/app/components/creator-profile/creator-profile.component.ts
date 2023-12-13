@@ -54,7 +54,8 @@ export class CreatorProfileComponent implements OnInit {
     this.getCurrentUser();
 
     if (this.currentUser.isCreator == false) {
-      this.router.navigate(['/users/login']);
+      this.userService.logout();
+      this.router.navigate(['/user/login']);
     }
 
     this.getCreatorInfo();

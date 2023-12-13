@@ -6,5 +6,5 @@ public interface IPrintRequestService
 {
 	Task<IEnumerable<PrintRequestDto>> GetAllPrintRequests();
 
-	Task<bool> CreatePrintRequest(PrintRequestDto newPrintRequestDto, Guid userId);
+	Task<bool> CreatePrintRequest(CreatePrintRequestDto newPrintRequestDto, Guid userId);
 }
