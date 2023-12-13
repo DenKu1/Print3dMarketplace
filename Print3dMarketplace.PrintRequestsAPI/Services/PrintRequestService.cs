@@ -57,6 +57,6 @@ public class PrintRequestService : IPrintRequestService
 		if (printRequest == null)
 			return;
 
-		printRequest.PrintRequestStatus = await _context.Set<PrintRequestStatus>().FirstAsync(x => x.Name == nameof(newStatus));
+		printRequest.PrintRequestStatus = await _context.Set<PrintRequestStatus>().FirstAsync(x => x.Name == newStatus.ToString());
 	}
 }

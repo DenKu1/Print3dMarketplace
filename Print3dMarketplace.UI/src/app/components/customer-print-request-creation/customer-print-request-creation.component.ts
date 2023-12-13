@@ -6,9 +6,10 @@ import { MaterialService } from '../../services/material.service';
 import { ToastrService } from 'ngx-toastr';
 import { TemplateMaterialModel } from '../../models/material/templateMaterialModel';
 import { ColorModel } from '../../models/material/colorModel';
-import { forkJoin } from 'rxjs';
+import { first, forkJoin } from 'rxjs';
 import { UserModel } from '../../models/user/userModel';
 import { PrintRequestService } from '../../services/print-request.service';
+import { CreatePrintRequestModel } from '../../models/print-requests/printRequestModel';
 
 @Component({
   selector: 'customer-print-request-creation',
@@ -54,7 +55,49 @@ export class CustomerPrintRequestCreationComponent implements OnInit {
   }
 
   createPrintRequest(): void {
-    //this.printRequestService.createPrintRequest();
+    this.crPrintRequestFormInfo.submitted = true;
+
+    if (this.crPrintRequestFormInfo.form.invalid) {
+      return;
+    }
+
+    this.crPrintRequestFormInfo.loading = true;
+
+    var printRequest: CreatePrintRequestModel =
+    {
+      templateMaterialId: this.crPrintRequestFormInfo.f.templateMaterialId.value,
+      colorId: this.crPrintRequestFormInfo.f.colorId.value,
+
+      layerHeight: this.crPrintRequestFormInfo.f.layerHeight.value,
+      infill: this.crPrintRequestFormInfo.f.infill.value,
+
+      printAreaLength: this.crPrintRequestFormInfo.f.printAreaLength.value,
+      printAreaWidth: this.crPrintRequestFormInfo.f.printAreaWidth.value,
+      printAreaHeight: this.crPrintRequestFormInfo.f.printAreaHeight.value,
+
+      comment: this.crPrintRequestFormInfo.f.comment.value,
+      useSupports: this.crPrintRequestFormInfo.f.useSupports.value,
+      wallThickness: this.crPrintRequestFormInfo.f.wallThickness.value
+    }
+
+    this.printRequestService.createPrintRequest(this.currentUser.id, printRequest)
+      .pipe(first())
+      .subscribe(
+        isUpdated => {
+          this.crPrintRequestFormInfo.loading = false;
+
+          if (isUpdated) {
+            this.toastrService.success("Print request created successfully");
+
+            this.crPrintRequestFormInfo.form.markAsUntouched();
+          } else {
+            this.toastrService.error("Unknown error! Please try again");
+          }
+        },
+        err => {
+          this.crPrintRequestFormInfo.loading = false;
+          this.toastrService.error("Unknown error! Please try again");
+        });
   }
 }
 

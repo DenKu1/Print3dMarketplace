@@ -196,7 +196,10 @@
           </div>
           <div class="row mt-3">
             <div class="col-12">
-              <button type="button" id="btnSubmit" class="p3d-button float-end">Submit</button>
+              <!--submit-->
+              <button type="submit" [disabled]="crPrintRequestFormInfo.form.disabled || !crPrintRequestFormInfo.form.touched || crPrintRequestFormInfo.loading" class="p3d-button float-end mx-2">
+                <span *ngIf="crPrintRequestFormInfo.loading" class="spinner-border spinner-border-sm mr-1"></span> Create
+              </button>
             </div>
           </div>
         </div>
