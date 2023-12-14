@@ -8,6 +8,7 @@ import { CreatorProfileComponent } from './components/creator-profile/creator-pr
 import { RoleSelectionComponent } from './components/role-selection/role-selection.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { CustomerPrintRequestCreationComponent } from './components/customer-print-request-creation/customer-print-request-creation.component';
+import { CustomerPrintRequestsComponent } from './components/customer-print-requests/customer-print-requests.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,10 @@ const routes: Routes = [
   {
     path: 'customer/print-request-creation',
     component: CustomerPrintRequestCreationComponent
+  },
+  {
+    path: 'customer/print-requests',
+    component: CustomerPrintRequestsComponent
   },
   {
     path: '**',
