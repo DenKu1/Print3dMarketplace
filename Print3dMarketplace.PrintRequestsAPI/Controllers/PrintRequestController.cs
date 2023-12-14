@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Print3dMarketplace.Common.DTOs;
+using Print3dMarketplace.Common.Extensions;
 using Print3dMarketplace.PrintRequestsAPI.Contracts.DTOs;
 using Print3dMarketplace.PrintRequestsAPI.Services.Interfaces;
 
@@ -25,13 +26,24 @@ public class PrintRequestController : ControllerBase
 		return Ok(ResponseDto.SuccessResponse(result));
 	}
 
-	[HttpPost("{userId}")]
-	public async Task<IActionResult> CreatePrintRequest(CreatePrintRequestDto newPrintRequestDto, Guid userId)
+	[HttpPost]
+	public async Task<IActionResult> CreatePrintRequest(CreatePrintRequestDto newPrintRequestDto)
 	{
-		var isSuccess = await _printRequestService.CreatePrintRequest(newPrintRequestDto, userId);
+		var isSuccess = await _printRequestService.CreatePrintRequest(newPrintRequestDto, User.GetUserId());
 
 		if (!isSuccess)
-			return NotFound(ResponseDto.ErrorResponse($"Print request was for user {userId} was not created"));
+			return NotFound(ResponseDto.ErrorResponse($"Print request was for user {User.GetUserId()} was not created"));
+
+		return Ok(ResponseDto.SuccessResponse());
+	}
+
+	[HttpPost("{printRequestId}/cancel")]
+	public async Task<IActionResult> CancelPrintRequest(Guid printRequestId)
+	{
+		var isSuccess = await _printRequestService.CancelPrintRequest(printRequestId);
+
+		if (!isSuccess)
+			return NotFound(ResponseDto.ErrorResponse($"Print request was for user {User.GetUserId()} was not created"));
 
 		return Ok(ResponseDto.SuccessResponse());
 	}

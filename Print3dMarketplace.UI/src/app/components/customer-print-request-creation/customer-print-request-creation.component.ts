@@ -80,7 +80,7 @@ export class CustomerPrintRequestCreationComponent implements OnInit {
       wallThickness: this.crPrintRequestFormInfo.f.wallThickness.value
     }
 
-    this.printRequestService.createPrintRequest(this.currentUser.id, printRequest)
+    this.printRequestService.createPrintRequest(printRequest)
       .pipe(first())
       .subscribe(
         isUpdated => {

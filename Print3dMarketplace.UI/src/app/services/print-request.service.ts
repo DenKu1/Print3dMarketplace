@@ -24,8 +24,8 @@ export class PrintRequestService {
       }));
   }
 
-  createPrintRequest(userId: string, printRequest: CreatePrintRequestModel): Observable<boolean> {
-    return this.http.post<ResponseModel>(`${environment.printRequestsApiUrl}/print-requests/${userId}`, printRequest)
+  createPrintRequest(printRequest: CreatePrintRequestModel): Observable<boolean> {
+    return this.http.post<ResponseModel>(`${environment.printRequestsApiUrl}/print-requests/`, printRequest)
       .pipe(map(response => {
         return response.isSuccess;
       }));

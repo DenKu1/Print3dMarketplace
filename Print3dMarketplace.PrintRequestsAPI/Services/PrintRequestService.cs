@@ -52,6 +52,25 @@ public class PrintRequestService : IPrintRequestService
 		}
 	}
 
+	public async Task<bool> CancelPrintRequest(Guid printRequestId)
+	{
+		try
+		{
+			var printRequestToUpdate = await _context.PrintRequests.FirstOrDefaultAsync(x => x.Id == printRequestId);
+
+			if (printRequestToUpdate == null) 
+				return false;
+
+			await SetPrintRequestStatus(printRequestToUpdate, KnownPrintRequestStatuses.Canceled);
+
+			return await _context.SaveChangesAsync() > 0;
+		}
+		catch (Exception)
+		{
+			return false;
+		}
+	}
+
 	private async Task SetPrintRequestStatus(PrintRequest printRequest, KnownPrintRequestStatuses newStatus)
 	{
 		if (printRequest == null)
