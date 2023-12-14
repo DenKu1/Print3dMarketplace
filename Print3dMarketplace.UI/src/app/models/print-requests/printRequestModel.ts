@@ -18,5 +18,5 @@ export interface PrintRequestModel {
   useSupports: boolean | null;
   wallThickness: number | null;
 
-  IsActive: boolean;
+  isActive: boolean;
 }

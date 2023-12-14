@@ -50,7 +50,7 @@ export class CustomerPrintRequestCreationComponent implements OnInit {
       colors: this.materialService.getAllColors(),
       templateMaterials: this.materialService.getAllTemplateMaterials()
     }).subscribe(({ colors, templateMaterials }) => {
-      this.crPrintRequestFormInfo.initialize(colors, templateMaterials);
+      this.crPrintRequestFormInfo.initialize(templateMaterials, colors);
     });
   }
 

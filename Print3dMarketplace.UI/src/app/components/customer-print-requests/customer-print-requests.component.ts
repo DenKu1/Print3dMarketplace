@@ -44,14 +44,24 @@ export class CustomerPrintRequestsComponent {
       colors: this.materialService.getAllColors(),
       templateMaterials: this.materialService.getAllTemplateMaterials(),
       printRequests: this.printRequestService.getCustomerPrintRequests()
-    }).subscribe(({ colors, templateMaterials, printRequests }) => {
-      this.colors = colors;
-      this.templateMaterials = templateMaterials;
-      this.printRequests = printRequests;
-    });
+    })
+      .subscribe(({ colors, templateMaterials, printRequests }) => {
+        this.colors = colors;
+        this.templateMaterials = templateMaterials;
+        this.printRequests = printRequests;
+      });
   }
+
 
   getCurrentUser(): void {
     this.userService.currentUser.subscribe(user => this.currentUser = user);
+  }
+
+  getColorName(id: string): string {
+    return this.colors.find(color => color.id === id)?.name
+  }
+
+  getMaterialName(id: string): string {
+    return this.templateMaterials.find(material => material.id === id)?.name
   }
 }

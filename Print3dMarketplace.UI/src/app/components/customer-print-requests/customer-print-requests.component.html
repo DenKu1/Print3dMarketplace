@@ -5,6 +5,39 @@
     <i class="fa fa-award"></i>&nbsp;&nbsp;With this purchase you will earn <strong>2,549</strong> Reward Points.
   </div>
 
+  <div class="cart-item d-md-flex justify-content-between mb-3"
+       *ngFor="let printRequest of printRequests; let i=index">
+    <!-- PrintRequest Info -->
+    <div class="px-3 my-3">
+      <a class="cart-item-product" href="#">
+        <div class="cart-item-product-info">
+          <h4 class="cart-item-product-title">Print Request #{{i + 1}}</h4>
+          <!-- Material and Color from printRequest -->
+          <span>
+            <strong>Material:</strong>
+            {{getMaterialName(printRequest.templateMaterialId)}}
+          </span>
+          <span>
+            <strong>Color:</strong>
+            {{getColorName(printRequest.colorId)}}
+          </span>
+          <span><strong>Print Request Status:</strong> {{printRequest.printRequestStatusName}}</span>
+          <span><strong>Layer Height:</strong> {{printRequest.layerHeight}}</span>
+          <span><strong>Infill:</strong> {{printRequest.infill}}</span>
+          <span><strong>Printing Area Length:</strong> {{printRequest.printAreaLength}}</span>
+          <span><strong>Printing Area Width:</strong> {{printRequest.printAreaWidth}}</span>
+          <span><strong>Printing Area Height:</strong> {{printRequest.printAreaHeight}}</span>
+          <span><strong>Use Supports:</strong> {{printRequest.useSupports}}</span>
+          <span><strong>Wall Thickness:</strong> {{printRequest.wallThickness}}</span>
+          <span><strong>Comment:</strong> {{printRequest.comment}}</span>
+          <span><strong>Is Active:</strong> {{printRequest.isActive}}</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+
   <!-- Cart Item 1 -->
   <div class="cart-item d-md-flex justify-content-between mb-3">
     <span class="remove-item"><i class="fa fa-times"></i></span>
