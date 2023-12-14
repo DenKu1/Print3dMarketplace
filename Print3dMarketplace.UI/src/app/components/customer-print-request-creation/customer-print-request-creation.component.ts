@@ -9,7 +9,7 @@ import { ColorModel } from '../../models/material/colorModel';
 import { first, forkJoin } from 'rxjs';
 import { UserModel } from '../../models/user/userModel';
 import { PrintRequestService } from '../../services/print-request.service';
-import { CreatePrintRequestModel } from '../../models/print-requests/printRequestModel';
+import { CreatePrintRequestModel } from '../../models/print-requests/createPrintRequestModel';
 
 @Component({
   selector: 'customer-print-request-creation',

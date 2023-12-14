@@ -21,11 +21,12 @@ public class PrintRequestService : IPrintRequestService
 		_context = context;
 	}
 
-	public async Task<IEnumerable<PrintRequestDto>> GetAllPrintRequests()
+	public async Task<IEnumerable<PrintRequestDto>> GetCustomerPrintRequests(Guid customerId)
 	{
 		var printRequests = await _context.Set<PrintRequest>()
 			.AsQueryable()
 			.Include(x => x.PrintRequestStatus)
+			.Where(x => x.ApplicationUserId == customerId)
 			.ToListAsync();
 
 		return _mapper.Map<IEnumerable<PrintRequestDto>>(printRequests);
@@ -61,6 +62,7 @@ public class PrintRequestService : IPrintRequestService
 			if (printRequestToUpdate == null) 
 				return false;
 
+			printRequestToUpdate.IsActive = false;
 			await SetPrintRequestStatus(printRequestToUpdate, KnownPrintRequestStatuses.Canceled);
 
 			return await _context.SaveChangesAsync() > 0;

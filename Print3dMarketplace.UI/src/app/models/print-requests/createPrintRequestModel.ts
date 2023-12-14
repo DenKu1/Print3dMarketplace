@@ -1,9 +1,4 @@
-export interface PrintRequestModel {
-  id: string;
-  applicationUserId: string;
-
-  printRequestStatusName: string;
-
+export interface CreatePrintRequestModel {
   templateMaterialId: string;
   colorId: string;
 
@@ -17,6 +12,4 @@ export interface PrintRequestModel {
   comment: string | null;
   useSupports: boolean | null;
   wallThickness: number | null;
-
-  IsActive: boolean;
 }

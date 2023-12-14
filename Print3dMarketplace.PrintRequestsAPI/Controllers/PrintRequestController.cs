@@ -19,9 +19,9 @@ public class PrintRequestController : ControllerBase
 	}
 
 	[HttpGet]
-	public async Task<IActionResult> GetAllPrintRequests()
+	public async Task<IActionResult> GetCustomerPrintRequests()
 	{
-		var result = await _printRequestService.GetAllPrintRequests();
+		var result = await _printRequestService.GetCustomerPrintRequests(User.GetUserId());
 
 		return Ok(ResponseDto.SuccessResponse(result));
 	}

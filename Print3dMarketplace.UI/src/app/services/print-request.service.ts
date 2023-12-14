@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../enviroments/environment';
 import { ResponseModel } from '../models/common/responseModel';
-import { CreatePrintRequestModel } from '../models/print-requests/printRequestModel';
+import { CreatePrintRequestModel } from '../models/print-requests/createPrintRequestModel';
+import { PrintRequestModel } from '../models/print-requests/printRequestModel';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,11 @@ export class PrintRequestService {
   {
   }
   
-  getAllPrintRequests(): Observable<CreatePrintRequestModel[]> {
+  getCustomerPrintRequests(): Observable<PrintRequestModel[]> {
     return this.http.get<ResponseModel>(`${environment.printRequestsApiUrl}/print-requests`)
       .pipe(map(response => {
         if (response.isSuccess) {
-          return response.result as CreatePrintRequestModel[];
+          return response.result as PrintRequestModel[];
         } else {
           return null;
         }
