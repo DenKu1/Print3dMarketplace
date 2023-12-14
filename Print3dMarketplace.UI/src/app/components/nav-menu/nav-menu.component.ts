@@ -34,7 +34,15 @@ export class NavMenuComponent implements OnInit {
   }
 
   profile() {
-    this.router.navigate(['/profile']);
+    if (this.currentUser) {
+
+      if (this.currentUser.isCreator) {
+        this.router.navigate(['creator/profile']);
+      }
+      else {
+        this.router.navigate(['customer/print-requests']);
+      }
+    }
   }
 
   logout() {

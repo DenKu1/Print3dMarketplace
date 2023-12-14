@@ -30,8 +30,15 @@ export class UserLoginComponent implements OnInit {
     // redirect to home if already logged in
     this.userService.currentUser.subscribe(x => this.currentUser = x);
     if (this.currentUser) {
-      this.router.navigate(['/users', this.currentUser.id, 'albums']);
-    }}
+
+      if (this.currentUser.isCreator) {
+        this.router.navigate(['creator/profile']);
+      }
+      else {
+        this.router.navigate(['customer/print-requests']);
+      }
+    }
+  }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
