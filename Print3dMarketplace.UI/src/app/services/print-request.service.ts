@@ -31,4 +31,11 @@ export class PrintRequestService {
         return response.isSuccess;
       }));
   }
+
+  cancelPrintRequest(printRequestId: string): Observable<boolean> {
+    return this.http.post<ResponseModel>(`${environment.printRequestsApiUrl}/print-requests/${printRequestId}/cancel`, null)
+      .pipe(map(response => {
+        return response.isSuccess;
+      }));
+  }
 }

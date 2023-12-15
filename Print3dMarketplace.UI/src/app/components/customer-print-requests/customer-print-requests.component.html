@@ -5,42 +5,14 @@
     <i class="fa fa-award"></i>&nbsp;&nbsp;With this purchase you will earn <strong>2,549</strong> Reward Points.
   </div>
 
-  <div class="cart-item d-md-flex justify-content-between mb-3"
-       *ngFor="let printRequest of printRequests; let i=index">
-    <!-- PrintRequest Info -->
-    <div class="px-3 my-3">
-      <a class="cart-item-product" href="#">
-        <div class="cart-item-product-info">
-          <h4 class="cart-item-product-title">Print Request #{{i + 1}}</h4>
-          <!-- Material and Color from printRequest -->
-          <span>
-            <strong>Material:</strong>
-            {{getMaterialName(printRequest.templateMaterialId)}}
-          </span>
-          <span>
-            <strong>Color:</strong>
-            {{getColorName(printRequest.colorId)}}
-          </span>
-          <span><strong>Print Request Status:</strong> {{printRequest.printRequestStatusName}}</span>
-          <span><strong>Layer Height:</strong> {{printRequest.layerHeight}}</span>
-          <span><strong>Infill:</strong> {{printRequest.infill}}</span>
-          <span><strong>Printing Area Length:</strong> {{printRequest.printAreaLength}}</span>
-          <span><strong>Printing Area Width:</strong> {{printRequest.printAreaWidth}}</span>
-          <span><strong>Printing Area Height:</strong> {{printRequest.printAreaHeight}}</span>
-          <span><strong>Use Supports:</strong> {{printRequest.useSupports}}</span>
-          <span><strong>Wall Thickness:</strong> {{printRequest.wallThickness}}</span>
-          <span><strong>Comment:</strong> {{printRequest.comment}}</span>
-          <span><strong>Is Active:</strong> {{printRequest.isActive}}</span>
-        </div>
-      </a>
-    </div>
-  </div>
+  <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+
+  <button (click)="refreshPrintRequests()"> Refresh </button>
 
 
-
-  <!-- Cart Item 1 -->
-  <div class="cart-item d-md-flex justify-content-between mb-3">
-    <span class="remove-item"><i class="fa fa-times"></i></span>
+  <!-- PrintRequest Info -->
+  <div class="cart-item d-md-flex justify-content-between mb-3" *ngFor="let printRequest of printRequests; let i=index">
+    <span class="remove-item" (click)="cancelPrintRequest(printRequest.id)"><i class="fa fa-times"></i></span>
     <div class="px-3 my-3">
       <a class="cart-item-product" href="#">
         <div class="cart-item-product-thumb"><img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Product"></div>
@@ -64,86 +36,37 @@
         </select>
       </div>
     </div>
-    <div class="px-3 my-3 text-center">
-      <div class="cart-item-label">Subtotal</div>
-      <span class="text-xl font-weight-medium">$910.00</span>
-    </div>
-    <div class="px-3 my-3 text-center">
-      <div class="cart-item-label">Discount</div>
-      <span class="text-xl font-weight-medium">$35.00</span>
-    </div>
-  </div>
 
-  <!-- Cart Item 2 -->
-  <div class="cart-item d-md-flex justify-content-between mb-3">
-    <span class="remove-item"><i class="fa fa-times"></i></span>
-    <div class="px-3 my-3">
-      <a class="cart-item-product" href="#">
-        <div class="cart-item-product-thumb"><img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="Product"></div>
-        <div class="cart-item-product-info">
-          <h4 class="cart-item-product-title">Apple iPhone X 256 GB Space Gray</h4>
-          <span><strong>Memory:</strong> 256GB</span>
-          <span><strong>Color:</strong> Space Gray</span>
-        </div>
-      </a>
-    </div>
+    <!--templateMaterialId-->
     <div class="px-3 my-3 text-center">
-      <div class="cart-item-label">Quantity</div>
-      <div class="count-input">
-        <select class="form-select">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-          <option>6</option>
-        </select>
-      </div>
+      <div class="cart-item-label">Material</div>
+      <span class="text-xl font-weight-medium">{{getMaterialName(printRequest.templateMaterialId)}}</span>
     </div>
-    <div class="px-3 my-3 text-center">
-      <div class="cart-item-label">Subtotal</div>
-      <span class="text-xl font-weight-medium">$1,450.00</span>
-    </div>
-    <div class="px-3 my-3 text-center">
-      <div class="cart-item-label">Discount</div>
-      <span class="text-xl font-weight-medium">—</span>
-    </div>
-  </div>
 
-  <!-- Cart Item 3 -->
-  <div class="cart-item d-md-flex justify-content-between mb-3">
-    <span class="remove-item"><i class="fa fa-times"></i></span>
-    <div class="px-3 my-3">
-      <a class="cart-item-product" href="#">
-        <div class="cart-item-product-thumb"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="Product"></div>
-        <div class="cart-item-product-info">
-          <h4 class="cart-item-product-title">HP LaserJet Pro Laser Printer</h4>
-          <span><strong>Type:</strong> Laser</span>
-          <span><strong>Color:</strong> White</span>
-        </div>
-      </a>
-    </div>
+    <!--colorId-->
     <div class="px-3 my-3 text-center">
-      <div class="cart-item-label">Quantity</div>
-      <div class="count-input">
-        <select class="form-select">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-          <option>6</option>
-        </select>
-      </div>
+      <div class="cart-item-label">Color</div>
+      <span class="text-xl font-weight-medium">{{getColorName(printRequest.colorId)}}</span>
     </div>
+
+    <!--printRequestStatusName-->
     <div class="px-3 my-3 text-center">
-      <div class="cart-item-label">Subtotal</div>
-      <span class="text-xl font-weight-medium">$188.50</span>
+      <div class="cart-item-label">Status</div>
+      <span class="text-xl font-weight-medium">{{printRequest.printRequestStatusName}}</span>
     </div>
+
+    <!--layerHeight-->
     <div class="px-3 my-3 text-center">
-      <div class="cart-item-label">Discount</div>
-      <span class="text-xl font-weight-medium">—</span>
+      <div class="cart-item-label">Layer Height</div>
+      <span class="text-xl font-weight-medium">{{printRequest.layerHeight}}</span>
     </div>
+
+    <!--infill-->
+    <div class="px-3 my-3 text-center">
+      <div class="cart-item-label">Infill, %</div>
+      <span class="text-xl font-weight-medium">{{printRequest.infill}}</span>
+    </div>
+
   </div>
 
   <!-- Coupon + Subtotal -->

@@ -17,6 +17,7 @@ import { PrintRequestModel } from '../../models/print-requests/printRequestModel
   styleUrls: ['./customer-print-requests.component.css']
 })
 export class CustomerPrintRequestsComponent {
+  isLoading: boolean = false;
   currentUser: UserModel;
 
   printRequests: PrintRequestModel[];
@@ -40,6 +41,13 @@ export class CustomerPrintRequestsComponent {
       this.router.navigate(['/user/login']);
     }
 
+    this.refreshPrintRequests();
+  }
+
+  refreshPrintRequests(): void {
+
+    this.isLoading = true;
+
     forkJoin({
       colors: this.materialService.getAllColors(),
       templateMaterials: this.materialService.getAllTemplateMaterials(),
@@ -49,9 +57,10 @@ export class CustomerPrintRequestsComponent {
         this.colors = colors;
         this.templateMaterials = templateMaterials;
         this.printRequests = printRequests;
+
+        this.isLoading = false;
       });
   }
-
 
   getCurrentUser(): void {
     this.userService.currentUser.subscribe(user => this.currentUser = user);
@@ -63,5 +72,21 @@ export class CustomerPrintRequestsComponent {
 
   getMaterialName(id: string): string {
     return this.templateMaterials.find(material => material.id === id)?.name
+  }
+
+  cancelPrintRequest(id: string): void {
+    this.printRequestService.cancelPrintRequest(id)
+      .subscribe(
+        isUpdated => {
+          if (isUpdated) {
+            this.toastrService.success("Print request canceled successfully");
+            this.refreshPrintRequests();
+          } else {
+            this.toastrService.error("Unknown error! Please try again");
+          }
+        },
+        err => {
+          this.toastrService.error("Unknown error! Please try again");
+        });
   }
 }
