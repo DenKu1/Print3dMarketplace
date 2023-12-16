@@ -35,8 +35,9 @@ public class PrintRequestService : IPrintRequestService
 	{
 		var printRequests = await _context.Set<PrintRequest>()
 			.AsQueryable()
-			.Include(x => x.PrintRequestStatus)
-			.Where(x => x.ApplicationUserId == customerId)
+			.Include(pr => pr.PrintRequestStatus)
+			.Include(pr => pr.SubmittedCreators)
+			.Where(pr => pr.ApplicationUserId == customerId)
 			.ToListAsync();
 
 		return _mapper.Map<IEnumerable<PrintRequestDto>>(printRequests);
@@ -113,7 +114,7 @@ public class PrintRequestService : IPrintRequestService
 		}
 	}
 
-	public async Task<bool> CreatorSubmitPrintRequest(Guid printRequestId)
+	public async Task<bool> CreatorSubmitPrintRequest(Guid printRequestId, Guid creatorId)
 	{
 		try
 		{
@@ -124,13 +125,25 @@ public class PrintRequestService : IPrintRequestService
 			if (printRequestToUpdate == null)
 				return false;
 
+			// Only New and CreatorSubmission PRs can be submitted by Creator
 			if (printRequestToUpdate.PrintRequestStatus.Name != KnownPrintRequestStatuses.New.ToString()
 				|| printRequestToUpdate.PrintRequestStatus.Name != KnownPrintRequestStatuses.CreatorSubmission.ToString())
-			{
-				return false; // Only New and CreatorSubmission can be submitted by Creator
-			}
+				return false;
 
-			// Add use to submitted users
+			// Check if creator already submitted this PR
+			if (printRequestToUpdate.SubmittedCreators.Any(c => c.CreatorId == creatorId))
+				return false;
+
+/*			var submittedCreator = new SubmittedCreator
+			{
+				CreatorId = creatorId,
+				CreatorName = 
+			};
+
+
+			printRequestToUpdate.SubmittedCreators.Append();*/
+
+
 
 			// If it is the first creator that submitted PR than we move to CreatorSubmission
 			if (printRequestToUpdate.PrintRequestStatus.Name == KnownPrintRequestStatuses.CreatorSubmission.ToString())

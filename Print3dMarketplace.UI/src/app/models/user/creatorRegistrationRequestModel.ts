@@ -1,5 +1,5 @@
 export interface CreatorRegistrationRequestModel {
-  name: string;
+  companyName: string;
   email: string;
   password: string;
   address: string;

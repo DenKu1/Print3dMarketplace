@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Print3dMarketplace.Common.Auth;
 using Print3dMarketplace.Common.DTOs;
-using Print3dMarketplace.Common.Extensions;
 using Print3dMarketplace.PrintRequestsAPI.Contracts.DTOs;
 using Print3dMarketplace.PrintRequestsAPI.Services.Interfaces;
 
@@ -29,7 +29,7 @@ public class CreatorPrintRequestController : ControllerBase
 	[HttpPost("{printRequestId}/submit")]
 	public async Task<IActionResult> CreatorSubmitPrintRequest(Guid printRequestId)
 	{
-		var isSuccess = await _printRequestService.CreatorSubmitPrintRequest(printRequestId);
+		var isSuccess = await _printRequestService.CreatorSubmitPrintRequest(printRequestId, User.GetUserId());
 
 		if (!isSuccess)
 			return NotFound(ResponseDto.ErrorResponse($"Print request for creator {User.GetUserId()} was not submitted"));

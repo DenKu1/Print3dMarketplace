@@ -12,12 +12,12 @@
       <form [formGroup]="registerForm" (submit)="onSubmit()" class="p-4 text-white">
 
         <div class="mb-3">
-          <label for="name"><i class="fa-solid fa-user"></i> Name</label>
-          <input type="text" class="form-control p3d-underlined-input" placeholder="Enter name" formControlName="name" id="name">
-          <span *ngIf="submitted && f.name.errors" class="text-danger">
-            <span *ngIf="f.name.errors.required">Username is required</span>
-            <span *ngIf="f.name.errors.minlength">Min length is 4 symbols</span>
-            <span *ngIf="f.name.errors.maxlength">Max length is 50 symbols</span>
+          <label for="companyName"><i class="fa-solid fa-user"></i> Company name</label>
+          <input type="text" class="form-control p3d-underlined-input" placeholder="Enter name" formControlName="companyName" id="companyName">
+          <span *ngIf="submitted && f.companyName.errors" class="text-danger">
+            <span *ngIf="f.companyName.errors.required">Company name is required</span>
+            <span *ngIf="f.companyName.errors.minlength">Min length is 4 symbols</span>
+            <span *ngIf="f.companyName.errors.maxlength">Max length is 15 symbols</span>
           </span>
         </div>
 

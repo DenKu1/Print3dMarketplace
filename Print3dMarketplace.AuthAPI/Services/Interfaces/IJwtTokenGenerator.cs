@@ -4,5 +4,5 @@ namespace Print3dMarketplace.AuthAPI.Services.Interfaces;
 
 public interface IJwtTokenGenerator
 {
-	string GenerateToken(ApplicationUser applicationUser, IEnumerable<string> roles);
+	Task<string> GenerateToken(ApplicationUser applicationUser, IEnumerable<string> roles);
 }

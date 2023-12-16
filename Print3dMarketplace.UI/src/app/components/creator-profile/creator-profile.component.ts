@@ -137,6 +137,7 @@ export class CreatorProfileComponent implements OnInit {
 
     var creatorModel: CreatorModel =
     {
+      companyName: this.upCreatorInfo.f.companyName.value,
       phoneNumber: this.upCreatorInfo.f.phoneNumber.value,
       alternativePhoneNumber: this.upCreatorInfo.f.alternativePhoneNumber.value,
       address: this.upCreatorInfo.f.address.value,
@@ -252,6 +253,7 @@ class UpdateCreatorInfo {
 
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
+      companyName: [{ value: '', disabled: true }, [Validators.required, Validators.maxLength(15)]],
       phoneNumber: [{ value: '', disabled: true }, [Validators.required, Validators.pattern("\\d{12}")]],
       alternativePhoneNumber: [{ value: '', disabled: true }, [Validators.required, Validators.pattern("\\d{12}")]],
       address: [{ value: '', disabled: true }, [Validators.required, Validators.maxLength(50)]],
@@ -263,6 +265,7 @@ class UpdateCreatorInfo {
 
   initialize(creatorInfo: CreatorModel): void {
     this.form.setValue({
+      companyName: creatorInfo.companyName,
       phoneNumber: creatorInfo.phoneNumber,
       alternativePhoneNumber: creatorInfo.alternativePhoneNumber,
       address: creatorInfo.address,

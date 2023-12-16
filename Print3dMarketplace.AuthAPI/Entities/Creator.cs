@@ -6,6 +6,7 @@ public class Creator : BaseEntity
 {
 	public Guid ApplicationUserId { get; set; }
 	public ApplicationUser ApplicationUser { get; set; }
+	public string CompanyName { get; set; }
 	public string PhoneNumber { get; set; }
 	public string AlternativePhoneNumber { get; set; }
 	public string Address { get; set; }

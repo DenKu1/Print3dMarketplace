@@ -7,6 +7,8 @@ public class PrintRequestDto
 
 	public string PrintRequestStatusName { get; set; }
 
+	public IEnumerable<SubmittedCreatorDto> SubmittedCreators { get; set; }
+
 	public Guid TemplateMaterialId { get; set; }
 	public Guid ColorId { get; set; }
 	public Guid ModelId { get; set; }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Print3dMarketplace.Common.Auth;
 using Print3dMarketplace.Common.DTOs;
-using Print3dMarketplace.Common.Extensions;
 using Print3dMarketplace.SchemeStorageAPI.Contracts.DTOs;
 using Print3dMarketplace.SchemeStorageAPI.Helpers.Interfaces;
 using Print3dMarketplace.SchemeStorageAPI.Services.Interfaces;

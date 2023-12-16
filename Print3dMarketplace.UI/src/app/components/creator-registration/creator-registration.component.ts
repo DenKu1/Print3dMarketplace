@@ -29,7 +29,7 @@ export class CreatorRegistrationComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      companyName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(15)]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
       phoneNumber: ['', [Validators.required, Validators.pattern("\\d{12}")]],
       address: ['', [Validators.required, Validators.maxLength(50)]],
@@ -53,7 +53,7 @@ export class CreatorRegistrationComponent implements OnInit {
 
 
     const creatorRegistrationModel: CreatorRegistrationRequestModel = {
-      name: this.f.name.value,
+      companyName: this.f.companyName.value,
       email: this.f.email.value,
       password: this.f.password.value,
       address: this.f.address.value,

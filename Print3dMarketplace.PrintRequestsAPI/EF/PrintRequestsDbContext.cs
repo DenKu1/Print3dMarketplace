@@ -11,6 +11,7 @@ public class PrintRequestsDbContext : DbContext
 
 	public DbSet<PrintRequest> PrintRequests { get; set; }
 	public DbSet<PrintRequestStatus> PrintRequestStatuses { get; set; }
+	public DbSet<SubmittedCreator> SubmittedCreators { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

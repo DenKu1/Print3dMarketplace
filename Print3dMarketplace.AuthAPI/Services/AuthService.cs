@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Print3dMarketplace.AuthAPI.Contracts.DTOs;
+using Print3dMarketplace.AuthAPI.Contracts.Enums;
 using Print3dMarketplace.AuthAPI.EF;
 using Print3dMarketplace.AuthAPI.Entities;
 using Print3dMarketplace.AuthAPI.Services.Interfaces;
@@ -35,22 +36,29 @@ public class AuthService : IAuthService
 
 	public async Task<IdentityResult> RegisterCustomer(CustomerRegistrationRequestDto registrationRequestDto)
 	{
-		var user = _mapper.Map<ApplicationUser>(registrationRequestDto);
-		return await _userManager.CreateAsync(user, registrationRequestDto.Password);
+		var customerToAdd = _mapper.Map<ApplicationUser>(registrationRequestDto);
+		var result = await _userManager.CreateAsync(customerToAdd, registrationRequestDto.Password);
+
+		if (result.Succeeded)
+			await _userManager.AddToRoleAsync(customerToAdd, KnownUserRoles.Customer.ToString());
+
+		return result;
 	}
 
 	public async Task<IdentityResult> RegisterCreator(CreatorRegistrationRequestDto registrationRequestDto)
 	{
-		var user = _mapper.Map<ApplicationUser>(registrationRequestDto);
-		var result = await _userManager.CreateAsync(user, registrationRequestDto.Password);
+		var creatorToAdd = _mapper.Map<ApplicationUser>(registrationRequestDto);
+		var result = await _userManager.CreateAsync(creatorToAdd, registrationRequestDto.Password);
 
 		if (result.Succeeded)
 		{
 			var createdUser = await _userManager.FindByEmailAsync(registrationRequestDto.Email);
 
 			await _creatorService.AddCreatorInfo(registrationRequestDto, createdUser.Id);
+
+			await _userManager.AddToRoleAsync(creatorToAdd, KnownUserRoles.Creator.ToString());
 		}
-		
+
 		return result;
 	}
 
@@ -65,7 +73,8 @@ public class AuthService : IAuthService
 			return null;
 
 		var roles = await _userManager.GetRolesAsync(user);
-		var token = _jwtTokenGenerator.GenerateToken(user, roles);
+
+		var token = await _jwtTokenGenerator.GenerateToken(user, roles);
 
 		var userDto = _mapper.Map<UserDto>(user);
 
@@ -76,10 +85,5 @@ public class AuthService : IAuthService
 		};
 
 		return loginResponseDto;
-	}
-
-	public Task<bool> AssignRole(string email, string roleName)
-	{
-		throw new NotImplementedException();
 	}
 }
