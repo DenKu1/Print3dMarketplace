@@ -43,9 +43,8 @@ export class CustomerPrintRequestsComponent {
 
     this.refreshPrintRequests();
   }
-
+  
   refreshPrintRequests(): void {
-
     this.isLoading = true;
 
     forkJoin({

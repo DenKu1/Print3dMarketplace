@@ -2,12 +2,9 @@
   <!-- Alert -->
   <div class="alert alert-info alert-dismissible fade show text-center mb-3" role="alert">
     <span class="alert-close" data-dismiss="alert"></span>
-    <i class="fa fa-award"></i>&nbsp;&nbsp;With this purchase you will earn <strong>2,549</strong> Reward Points.
+    <i class="fa fa-award"></i>&nbsp;&nbsp;Your currently have successfully created {{printRequests.length || 'no'}} print requests requests!
+      Click <a [routerLink]="['/customer/print-request-creation']">here</a> to add more
   </div>
-
-  <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
-
-  <button (click)="refreshPrintRequests()"> Refresh </button>
 
 
   <!-- PrintRequest Info -->
@@ -85,7 +82,13 @@
   <hr class="my-2">
   <div class="row pt-3 pb-5 mb-2">
     <div class="col-sm-6 mb-3">
-      <a class="btn btn-secondary btn-block" href="#"><i class="fa fa-refresh"></i>&nbsp;Update Cart</a>
+
+      <!-- Refresh -->
+      <button class="p3d-button" (click)="refreshPrintRequests()">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+        Refresh
+      </button>
+
     </div>
     <div class="col-sm-6 mb-3">
       <a class="btn btn-primary btn-block" href="checkout-address.html"><i class="fa fa-credit-card"></i>&nbsp;Checkout</a>
