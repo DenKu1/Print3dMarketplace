@@ -1,0 +1,84 @@
+<div class="container pb-5 mb-2">
+  <!-- Alert -->
+  <div class="alert alert-info alert-dismissible fade show text-center mb-3" role="alert">
+    <span class="alert-close" data-dismiss="alert"></span>
+    <i class="fa fa-award"></i>&nbsp;&nbsp;The {{printRequests.length || 'no'}} print requests are suitable for you. Feel free to submit them!
+  </div>
+
+  <!-- PrintRequest Info -->
+  <div class="cart-item d-md-flex justify-content-between mb-3" *ngFor="let printRequest of printRequests; let i=index">
+    <span class="submit-item" (click)="submitPrintRequest(printRequest.id)"><i class="fa-solid fa-check"></i></span>
+    <div class="px-3 my-3">
+      <a class="cart-item-product" href="#">
+        <div class="cart-item-product-thumb"><img src="../assets/customer-print-request.jpg" alt="Print Request Image"></div>
+        <div class="cart-item-product-info">
+          <h4 class="cart-item-product-title">Model name: file001.stl</h4>
+          <span><strong>Size, mm:</strong> {{printRequest.printAreaLength}} x {{printRequest.printAreaWidth}} x {{printRequest.printAreaHeight}}</span>
+          <span><strong>Using supports:</strong> {{printRequest.useSupports || 'Up to creator'}}</span>
+          <span><strong>Wall thickness, mm:</strong> {{printRequest.wallThickness || 'Up to creator'}}</span>
+        </div>
+      </a>
+    </div>
+
+    <!--templateMaterialId-->
+    <div class="px-3 my-3 text-center">
+      <div class="cart-item-label">Material</div>
+      <span class="text-xl font-weight-medium">{{getMaterialName(printRequest.templateMaterialId) || '-'}}</span>
+    </div>
+
+    <!--colorId-->
+    <div class="px-3 my-3 text-center">
+      <div class="cart-item-label">Color</div>
+      <span class="text-xl font-weight-medium">{{getColorName(printRequest.colorId) || '-'}}</span>
+    </div>
+
+    <!--printRequestStatusName-->
+    <div class="px-3 my-3 text-center">
+      <div class="cart-item-label">Status</div>
+      <span class="text-xl font-weight-medium">{{printRequest.printRequestStatusName || '-'}}</span>
+    </div>
+
+    <!--layerHeight-->
+    <div class="px-3 my-3 text-center">
+      <div class="cart-item-label">Layer Height, mm</div>
+      <span class="text-xl font-weight-medium">{{printRequest.layerHeight || '-'}}</span>
+    </div>
+
+    <!--infill-->
+    <div class="px-3 my-3 text-center">
+      <div class="cart-item-label">Infill, %</div>
+      <span class="text-xl font-weight-medium">{{printRequest.infill || '-'}}</span>
+    </div>
+
+  </div>
+
+  <!-- Coupon + Subtotal -->
+  <div class="d-sm-flex justify-content-between align-items-center text-center text-sm-left mb-3">
+    <form class="form-inline py-2">
+      <label class="sr-only">Coupon code</label>
+      <input class="form-control form-control-sm my-2 mr-3" type="text" placeholder="Coupon code" required>
+      <button class="btn btn-secondary btn-sm my-2 mx-auto mx-sm-0" type="submit">Apply Coupon</button>
+    </form>
+    <div class="py-2">
+      <span class="d-inline-block align-middle text-sm text-muted font-weight-medium text-uppercase mr-2">Subtotal:</span>
+      <span class="d-inline-block align-middle text-xl font-weight-medium">$188.50</span>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <hr class="my-2">
+  <div class="row pt-3 pb-5 mb-2">
+    <div class="col-sm-6 mb-3">
+
+      <!-- Refresh -->
+      <button class="p3d-button" (click)="refreshPrintRequests()">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+        Refresh
+      </button>
+
+    </div>
+    <div class="col-sm-6 mb-3">
+      <a class="btn btn-primary btn-block" href="checkout-address.html"><i class="fa fa-credit-card"></i>&nbsp;Checkout</a>
+    </div>
+  </div>
+</div>

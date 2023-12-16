@@ -47,19 +47,30 @@ public class PrintRequestService : IPrintRequestService
 		var materials = await _materialProxyService.GetAllCreatorMaterials(creatorId);
 		var printers = await _printerProxyService.GetAllCreatorPrinters(creatorId);
 
+		var materialIds = materials.Select(m => m.TemplateMaterialId).ToList();
+		var printerPrintAreaLengths = printers.Select(p => p.PrintAreaLength).ToList();
+		var printerPrintAreaWidths = printers.Select(p => p.PrintAreaWidth).ToList();
+		var printerPrintAreaHeights = printers.Select(p => p.PrintAreaHeight).ToList();
 
+		List<PrintRequest> applicablePrintRequests = [];
 
-		//get all print requests
-		var printRequests = await _context.Set<PrintRequest>()
-			.AsQueryable()
-			.Include(x => x.PrintRequestStatus)
-			.ToListAsync();
+		try
+		{
+			applicablePrintRequests = await _context.Set<PrintRequest>()
+				.AsQueryable()
+				.Include(pr => pr.PrintRequestStatus)
+				.Where(pr => pr.PrintRequestStatus.Name == KnownPrintRequestStatuses.New.ToString()
+					|| pr.PrintRequestStatus.Name == KnownPrintRequestStatuses.CreatorSubmission.ToString())
+				.Where(pr => materialIds.Contains(pr.TemplateMaterialId))
+				.Where(pr => printerPrintAreaLengths.Any(length => length > pr.PrintAreaLength)
+					&& printerPrintAreaWidths.Any(width => width > pr.PrintAreaWidth)
+					&& printerPrintAreaHeights.Any(height => height > pr.PrintAreaHeight))
+				.ToListAsync();
+		}
+		catch (Exception ex) { }
 
-		//Filter requests
-
-		return _mapper.Map<IEnumerable<PrintRequestDto>>(printRequests);
+		return _mapper.Map<IEnumerable<PrintRequestDto>>(applicablePrintRequests);
 	}
-
 
 	public async Task<bool> CreatePrintRequest(CreatePrintRequestDto newPrintRequestDto, Guid userId)
 	{
@@ -95,6 +106,41 @@ public class PrintRequestService : IPrintRequestService
 			await SetPrintRequestStatus(printRequestToUpdate, KnownPrintRequestStatuses.Canceled);
 
 			return await _context.SaveChangesAsync() > 0;
+		}
+		catch (Exception)
+		{
+			return false;
+		}
+	}
+
+	public async Task<bool> CreatorSubmitPrintRequest(Guid printRequestId)
+	{
+		try
+		{
+			var printRequestToUpdate = await _context.PrintRequests
+				.Include(x => x.PrintRequestStatus)
+				.FirstOrDefaultAsync(x => x.Id == printRequestId);
+
+			if (printRequestToUpdate == null)
+				return false;
+
+			if (printRequestToUpdate.PrintRequestStatus.Name != KnownPrintRequestStatuses.New.ToString()
+				|| printRequestToUpdate.PrintRequestStatus.Name != KnownPrintRequestStatuses.CreatorSubmission.ToString())
+			{
+				return false; // Only New and CreatorSubmission can be submitted by Creator
+			}
+
+			// Add use to submitted users
+
+			// If it is the first creator that submitted PR than we move to CreatorSubmission
+			if (printRequestToUpdate.PrintRequestStatus.Name == KnownPrintRequestStatuses.CreatorSubmission.ToString())
+			{
+				await SetPrintRequestStatus(printRequestToUpdate, KnownPrintRequestStatuses.CreatorSubmission);
+
+				return await _context.SaveChangesAsync() > 0;
+			}
+
+			return true; //... User should see that he submitted it already
 		}
 		catch (Exception)
 		{

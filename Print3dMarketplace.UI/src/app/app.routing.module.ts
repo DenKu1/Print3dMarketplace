@@ -9,6 +9,7 @@ import { RoleSelectionComponent } from './components/role-selection/role-selecti
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { CustomerPrintRequestCreationComponent } from './components/customer-print-request-creation/customer-print-request-creation.component';
 import { CustomerPrintRequestsComponent } from './components/customer-print-requests/customer-print-requests.component';
+import { CreatorPrintRequestsComponent } from './components/creator-print-requests/creator-print-requests.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
   {
     path: 'creator/profile',
     component: CreatorProfileComponent
+  },
+  {
+    path: 'creator/print-requests',
+    component: CreatorPrintRequestsComponent
   },
   {
     path: 'customer/register',

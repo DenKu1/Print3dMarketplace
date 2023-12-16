@@ -25,6 +25,17 @@ export class PrintRequestService {
       }));
   }
 
+  getCreatorPrintRequests(): Observable<PrintRequestModel[]> {
+    return this.http.get<ResponseModel>(`${environment.printRequestsApiUrl}/creator/print-requests`)
+      .pipe(map(response => {
+        if (response.isSuccess) {
+          return response.result as PrintRequestModel[];
+        } else {
+          return null;
+        }
+      }));
+  }
+
   createPrintRequest(printRequest: CreatePrintRequestModel): Observable<boolean> {
     return this.http.post<ResponseModel>(`${environment.printRequestsApiUrl}/customer/print-requests/`, printRequest)
       .pipe(map(response => {
@@ -34,6 +45,13 @@ export class PrintRequestService {
 
   cancelPrintRequest(printRequestId: string): Observable<boolean> {
     return this.http.post<ResponseModel>(`${environment.printRequestsApiUrl}/customer/print-requests/${printRequestId}/cancel`, null)
+      .pipe(map(response => {
+        return response.isSuccess;
+      }));
+  }
+
+  creatorSubmitPrintRequest(printRequestId: string): Observable<boolean> {
+    return this.http.post<ResponseModel>(`${environment.printRequestsApiUrl}/creator/print-requests/${printRequestId}/submit`, null)
       .pipe(map(response => {
         return response.isSuccess;
       }));

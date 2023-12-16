@@ -19,6 +19,7 @@ import { ErrorInterceptor } from './helpers/error.interceptor';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { CustomerPrintRequestsComponent } from './components/customer-print-requests/customer-print-requests.component';
+import { CreatorPrintRequestsComponent } from './components/creator-print-requests/creator-print-requests.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { CustomerPrintRequestsComponent } from './components/customer-print-requ
     RoleSelectionComponent,
     CustomerPrintRequestCreationComponent,
     CustomerPrintRequestsComponent,
+    CreatorPrintRequestsComponent,
     NotFoundComponent
   ],
   imports: [

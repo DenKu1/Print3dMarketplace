@@ -18,12 +18,22 @@ public class CreatorPrintRequestController : ControllerBase
 		_printRequestService = printRequestService;
 	}
 
-
 	[HttpGet]
 	public async Task<IActionResult> GetPrintRequests()
 	{
 		var result = await _printRequestService.GetCreatorPrintRequests(User.GetUserId());
 
 		return Ok(ResponseDto<IEnumerable<PrintRequestDto>>.SuccessResponse(result));
+	}
+
+	[HttpPost("{printRequestId}/submit")]
+	public async Task<IActionResult> CreatorSubmitPrintRequest(Guid printRequestId)
+	{
+		var isSuccess = await _printRequestService.CreatorSubmitPrintRequest(printRequestId);
+
+		if (!isSuccess)
+			return NotFound(ResponseDto.ErrorResponse($"Print request for creator {User.GetUserId()} was not submitted"));
+
+		return Ok(ResponseDto.SuccessResponse());
 	}
 }
