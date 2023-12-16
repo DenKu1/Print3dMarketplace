@@ -21,8 +21,8 @@ public class PrintRequestDto
 	public double PrintAreaHeight { get; set; }
 
 	public string? Comment { get; set; }
-	public bool? UseSupports { get; set; }
 	public double? WallThickness { get; set; }
+	public bool? UseSupports { get; set; }
 
 	public bool IsActive { get; set; }
 }

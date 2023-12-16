@@ -167,9 +167,9 @@
                 <div class="d-flex align-items-center">
                   <select class="form-select" formControlName="useSupports">
                     <option selected [value]="null">-- Use supports --</option>
-                    <option [value]="true">Yes</option>
-                    <option [value]="false">No</option>
-                    <option [value]="null">Not sure</option>
+                    <option [ngValue]="true">Yes</option>
+                    <option [ngValue]="false">No</option>
+                    <option [ngValue]="null">Not sure</option>
                   </select>
                   <i class="fa-solid fa-circle-info fa-xl p-1 text-info" title="Supports are necessary for the construction of overhanging elements of the model"></i>
                 </div>

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Print3dMarketplace.PrintRequestsAPI.Contracts.DTOs;
 using Print3dMarketplace.PrintRequestsAPI.EF;
 using Print3dMarketplace.PrintRequestsAPI.Entities;
-using Print3dMarketplace.PrintRequestsAPI.ProxyServices;
 using Print3dMarketplace.PrintRequestsAPI.ProxyServices.Interfaces;
 using Print3dMarketplace.PrintRequestsAPI.Services.Interfaces;
 
@@ -60,6 +59,7 @@ public class PrintRequestService : IPrintRequestService
 			applicablePrintRequests = await _context.Set<PrintRequest>()
 				.AsQueryable()
 				.Include(pr => pr.PrintRequestStatus)
+				.Include(pr => pr.SubmittedCreators)
 				.Where(pr => pr.PrintRequestStatus.Name == KnownPrintRequestStatuses.New.ToString()
 					|| pr.PrintRequestStatus.Name == KnownPrintRequestStatuses.CreatorSubmission.ToString())
 				.Where(pr => materialIds.Contains(pr.TemplateMaterialId))
@@ -114,7 +114,7 @@ public class PrintRequestService : IPrintRequestService
 		}
 	}
 
-	public async Task<bool> CreatorSubmitPrintRequest(Guid printRequestId, Guid creatorId)
+	public async Task<bool> CreatorSubmitPrintRequest(Guid printRequestId, Guid creatorId, string companyName)
 	{
 		try
 		{
@@ -134,26 +134,23 @@ public class PrintRequestService : IPrintRequestService
 			if (printRequestToUpdate.SubmittedCreators.Any(c => c.CreatorId == creatorId))
 				return false;
 
-/*			var submittedCreator = new SubmittedCreator
+			var submittedCreatorToAdd = new SubmittedCreator
 			{
 				CreatorId = creatorId,
-				CreatorName = 
+				CreatorName = companyName
 			};
 
-
-			printRequestToUpdate.SubmittedCreators.Append();*/
-
-
+			printRequestToUpdate.SubmittedCreators.Append(submittedCreatorToAdd);
 
 			// If it is the first creator that submitted PR than we move to CreatorSubmission
-			if (printRequestToUpdate.PrintRequestStatus.Name == KnownPrintRequestStatuses.CreatorSubmission.ToString())
+			if (printRequestToUpdate.PrintRequestStatus.Name == KnownPrintRequestStatuses.New.ToString())
 			{
 				await SetPrintRequestStatus(printRequestToUpdate, KnownPrintRequestStatuses.CreatorSubmission);
 
 				return await _context.SaveChangesAsync() > 0;
 			}
 
-			return true; //... User should see that he submitted it already
+			return true;
 		}
 		catch (Exception)
 		{

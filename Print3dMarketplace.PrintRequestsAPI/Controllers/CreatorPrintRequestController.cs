@@ -29,7 +29,7 @@ public class CreatorPrintRequestController : ControllerBase
 	[HttpPost("{printRequestId}/submit")]
 	public async Task<IActionResult> CreatorSubmitPrintRequest(Guid printRequestId)
 	{
-		var isSuccess = await _printRequestService.CreatorSubmitPrintRequest(printRequestId, User.GetUserId());
+		var isSuccess = await _printRequestService.CreatorSubmitPrintRequest(printRequestId, User.GetUserId(), User.GetCompanyName());
 
 		if (!isSuccess)
 			return NotFound(ResponseDto.ErrorResponse($"Print request for creator {User.GetUserId()} was not submitted"));

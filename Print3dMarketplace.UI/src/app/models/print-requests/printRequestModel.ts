@@ -1,8 +1,12 @@
+import { SubmittedCreatorModel } from "./submittedCreatorModel";
+
 export interface PrintRequestModel {
   id: string;
   applicationUserId: string;
 
   printRequestStatusName: string;
+
+  submittedCreators: SubmittedCreatorModel[];
 
   templateMaterialId: string;
   colorId: string;
