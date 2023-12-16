@@ -32,7 +32,7 @@ public class PrintRequestController : ControllerBase
 		var isSuccess = await _printRequestService.CreatePrintRequest(newPrintRequestDto, User.GetUserId());
 
 		if (!isSuccess)
-			return NotFound(ResponseDto.ErrorResponse($"Print request was for user {User.GetUserId()} was not created"));
+			return NotFound(ResponseDto.ErrorResponse($"Print request for user {User.GetUserId()} was not created"));
 
 		return Ok(ResponseDto.SuccessResponse());
 	}
@@ -43,7 +43,7 @@ public class PrintRequestController : ControllerBase
 		var isSuccess = await _printRequestService.CancelPrintRequest(printRequestId);
 
 		if (!isSuccess)
-			return NotFound(ResponseDto.ErrorResponse($"Print request was for user {User.GetUserId()} was not created"));
+			return NotFound(ResponseDto.ErrorResponse($"Print request for user {User.GetUserId()} was not canceled"));
 
 		return Ok(ResponseDto.SuccessResponse());
 	}

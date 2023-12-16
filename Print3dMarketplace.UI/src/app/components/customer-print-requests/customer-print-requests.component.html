@@ -15,24 +15,23 @@
     <span class="remove-item" (click)="cancelPrintRequest(printRequest.id)"><i class="fa fa-times"></i></span>
     <div class="px-3 my-3">
       <a class="cart-item-product" href="#">
-        <div class="cart-item-product-thumb"><img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Product"></div>
+        <div class="cart-item-product-thumb"><img src="../assets/customer-print-request.jpg" alt="Print Request Image"></div>
         <div class="cart-item-product-info">
-          <h4 class="cart-item-product-title">Canon EOS M50 Mirrorless Camera</h4>
-          <span><strong>Type:</strong> Mirrorless</span>
-          <span><strong>Color:</strong> Black</span>
+          <h4 class="cart-item-product-title">Model name: file001.stl</h4>
+          <span><strong>Size, mm:</strong> {{printRequest.printAreaLength}} x {{printRequest.printAreaWidth}} x {{printRequest.printAreaHeight}}</span>
+          <span><strong>Using supports:</strong> {{printRequest.useSupports || 'Up to creator'}}</span>
+          <span><strong>Wall thickness, mm:</strong> {{printRequest.wallThickness || 'Up to creator'}}</span>
         </div>
       </a>
     </div>
+
+    <!--Choose creator-->
     <div class="px-3 my-3 text-center">
-      <div class="cart-item-label">Quantity</div>
+      <div class="cart-item-label">Choose creator</div>
       <div class="count-input">
         <select class="form-select">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-          <option>6</option>
+          <option>Creator 1</option>
+          <option>Creator 2</option>
         </select>
       </div>
     </div>
@@ -40,31 +39,31 @@
     <!--templateMaterialId-->
     <div class="px-3 my-3 text-center">
       <div class="cart-item-label">Material</div>
-      <span class="text-xl font-weight-medium">{{getMaterialName(printRequest.templateMaterialId)}}</span>
+      <span class="text-xl font-weight-medium">{{getMaterialName(printRequest.templateMaterialId) || '-'}}</span>
     </div>
 
     <!--colorId-->
     <div class="px-3 my-3 text-center">
       <div class="cart-item-label">Color</div>
-      <span class="text-xl font-weight-medium">{{getColorName(printRequest.colorId)}}</span>
+      <span class="text-xl font-weight-medium">{{getColorName(printRequest.colorId) || '-'}}</span>
     </div>
 
     <!--printRequestStatusName-->
     <div class="px-3 my-3 text-center">
       <div class="cart-item-label">Status</div>
-      <span class="text-xl font-weight-medium">{{printRequest.printRequestStatusName}}</span>
+      <span class="text-xl font-weight-medium">{{printRequest.printRequestStatusName || '-'}}</span>
     </div>
 
     <!--layerHeight-->
     <div class="px-3 my-3 text-center">
-      <div class="cart-item-label">Layer Height</div>
-      <span class="text-xl font-weight-medium">{{printRequest.layerHeight}}</span>
+      <div class="cart-item-label">Layer Height, mm</div>
+      <span class="text-xl font-weight-medium">{{printRequest.layerHeight || '-'}}</span>
     </div>
 
     <!--infill-->
     <div class="px-3 my-3 text-center">
       <div class="cart-item-label">Infill, %</div>
-      <span class="text-xl font-weight-medium">{{printRequest.infill}}</span>
+      <span class="text-xl font-weight-medium">{{printRequest.infill || '-'}}</span>
     </div>
 
   </div>
