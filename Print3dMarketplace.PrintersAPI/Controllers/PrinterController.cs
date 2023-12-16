@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Print3dMarketplace.Common.DTOs;
-using Print3dMarketplace.PrintersAPI.Entities;
+using Print3dMarketplace.PrintersAPI.Contracts.DTOs;
 using Print3dMarketplace.PrintersAPI.Services.Interfaces;
 
 namespace Print3dMarketplace.PrintersAPI.Controllers;
@@ -22,7 +22,7 @@ public class PrinterController : ControllerBase
 	{
 		var printers = await _printerService.GetAllCreatorPrinters(userId);
 
-		return Ok(ResponseDto.SuccessResponse(printers));
+		return Ok(ResponseDto<IEnumerable<PrinterDto>>.SuccessResponse(printers));
 	}
 
 	[HttpPut("{userId}")]

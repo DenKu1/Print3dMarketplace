@@ -23,7 +23,7 @@ public class MaterialController : ControllerBase
 	{
 		var materials = await _materialService.GetAllCreatorMaterials(userId);
 
-		return Ok(ResponseDto.SuccessResponse(materials));
+		return Ok(ResponseDto<IEnumerable<MaterialDto>>.SuccessResponse(materials));
 	}
 
 	[HttpPut("{userId}")]

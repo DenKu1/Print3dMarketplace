@@ -8,4 +8,5 @@ public interface IPrintRequestService
 
 	Task<bool> CreatePrintRequest(CreatePrintRequestDto newPrintRequestDto, Guid userId);
 	Task<bool> CancelPrintRequest(Guid printRequestId);
+	Task<IEnumerable<PrintRequestDto>> GetCreatorPrintRequests(Guid creatorId);
 }

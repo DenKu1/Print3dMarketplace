@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  authApiUrl: 'https://localhost:7008/api/auth',
-  materialApiUrl: 'https://localhost:7059/api/materials',
-  printerApiUrl: 'https://localhost:7138/api/printers',
-  printRequestsApiUrl: 'https://localhost:7208/api/print-requests'
+  authApiUrl: 'https://localhost:7001/api/auth',
+  materialApiUrl: 'https://localhost:7002/api/materials',
+  printerApiUrl: 'https://localhost:7003/api/printers',
+  printRequestsApiUrl: 'https://localhost:7004/api/print-requests'
 };
 
 /*

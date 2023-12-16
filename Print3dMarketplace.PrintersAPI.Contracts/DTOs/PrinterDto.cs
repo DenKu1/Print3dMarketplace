@@ -1,4 +1,4 @@
-﻿namespace Print3dMarketplace.PrintersAPI.Entities;
+﻿namespace Print3dMarketplace.PrintersAPI.Contracts.DTOs;
 
 public class PrinterDto
 {

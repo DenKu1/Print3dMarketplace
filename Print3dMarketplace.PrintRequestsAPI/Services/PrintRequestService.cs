@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Print3dMarketplace.PrintRequestsAPI.Contracts.DTOs;
 using Print3dMarketplace.PrintRequestsAPI.EF;
 using Print3dMarketplace.PrintRequestsAPI.Entities;
+using Print3dMarketplace.PrintRequestsAPI.ProxyServices;
+using Print3dMarketplace.PrintRequestsAPI.ProxyServices.Interfaces;
 using Print3dMarketplace.PrintRequestsAPI.Services.Interfaces;
 
 namespace Print3dMarketplace.PrintRequestsAPI.Services;
@@ -13,12 +15,20 @@ public class PrintRequestService : IPrintRequestService
 
 	private readonly PrintRequestsDbContext _context;
 
+	private readonly IMaterialProxyService _materialProxyService;
+	private readonly IPrinterProxyService _printerProxyService;
+
+
 	public PrintRequestService(
 		IMapper mapper,
-		PrintRequestsDbContext context)
+		PrintRequestsDbContext context,
+		IMaterialProxyService materialProxyService,
+		IPrinterProxyService printerProxyService)
 	{
 		_mapper = mapper;
 		_context = context;
+		_materialProxyService = materialProxyService;
+		_printerProxyService = printerProxyService;
 	}
 
 	public async Task<IEnumerable<PrintRequestDto>> GetCustomerPrintRequests(Guid customerId)
@@ -31,6 +41,25 @@ public class PrintRequestService : IPrintRequestService
 
 		return _mapper.Map<IEnumerable<PrintRequestDto>>(printRequests);
 	}
+
+	public async Task<IEnumerable<PrintRequestDto>> GetCreatorPrintRequests(Guid creatorId)
+	{
+		var materials = await _materialProxyService.GetAllCreatorMaterials(creatorId);
+		var printers = await _printerProxyService.GetAllCreatorPrinters(creatorId);
+
+
+
+		//get all print requests
+		var printRequests = await _context.Set<PrintRequest>()
+			.AsQueryable()
+			.Include(x => x.PrintRequestStatus)
+			.ToListAsync();
+
+		//Filter requests
+
+		return _mapper.Map<IEnumerable<PrintRequestDto>>(printRequests);
+	}
+
 
 	public async Task<bool> CreatePrintRequest(CreatePrintRequestDto newPrintRequestDto, Guid userId)
 	{

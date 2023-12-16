@@ -6,24 +6,24 @@ using Print3dMarketplace.PrintRequestsAPI.Services.Interfaces;
 
 namespace Print3dMarketplace.PrintRequestsAPI.Controllers;
 
-[Route("api/print-requests/print-requests")]
+[Route("api/print-requests/customer/print-requests")]
 [ApiController]
-public class PrintRequestController : ControllerBase
+public class CustomerPrintRequestController : ControllerBase
 {
 	private readonly IPrintRequestService _printRequestService;
 
-	public PrintRequestController(
+	public CustomerPrintRequestController(
 		IPrintRequestService printRequestService)
 	{
 		_printRequestService = printRequestService;
 	}
 
 	[HttpGet]
-	public async Task<IActionResult> GetCustomerPrintRequests()
+	public async Task<IActionResult> GetPrintRequests()
 	{
 		var result = await _printRequestService.GetCustomerPrintRequests(User.GetUserId());
 
-		return Ok(ResponseDto.SuccessResponse(result));
+		return Ok(ResponseDto<IEnumerable<PrintRequestDto>>.SuccessResponse(result));
 	}
 
 	[HttpPost]

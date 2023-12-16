@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Print3dMarketplace.PrintersAPI.Contracts.DTOs;
 using Print3dMarketplace.PrintersAPI.EF;
 using Print3dMarketplace.PrintersAPI.Entities;
 using Print3dMarketplace.PrintersAPI.Services.Interfaces;

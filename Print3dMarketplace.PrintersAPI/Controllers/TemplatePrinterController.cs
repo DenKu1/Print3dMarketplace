@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Print3dMarketplace.Common.DTOs;
+using Print3dMarketplace.PrintersAPI.Contracts.DTOs;
 using Print3dMarketplace.PrintersAPI.Services.Interfaces;
 
 namespace Print3dMarketplace.PrintersAPI.Controllers;
@@ -21,7 +22,7 @@ public class TemplatePrinterController : ControllerBase
 	{
 		var result = await _templatePrinterService.GetAllTemplatePrinters();
 
-		return Ok(ResponseDto.SuccessResponse(result));
+		return Ok(ResponseDto<IEnumerable<TemplatePrinterDto>>.SuccessResponse(result));
 	}
 }
 

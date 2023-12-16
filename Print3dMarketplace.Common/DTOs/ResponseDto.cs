@@ -2,21 +2,30 @@
 
 public class ResponseDto
 {
-	public object? Result { get; set; }
 	public bool IsSuccess { get; set; }
 	public string Message { get; set; }
 
-	public static ResponseDto SuccessResponse(object? result = null) => new()
+	public static ResponseDto SuccessResponse(string message = "") => new()
 	{
 		IsSuccess = true,
-		Message = string.Empty,
-		Result = result
+		Message = message
 	};
 
 	public static ResponseDto ErrorResponse(string message = "") => new()
 	{
 		IsSuccess = false,
+		Message = message
+	};
+}
+
+public class ResponseDto<T> : ResponseDto where T : class
+{
+	public T Result { get; set; }
+
+	public static ResponseDto<T> SuccessResponse(T result, string message = "") => new()
+	{
+		IsSuccess = true,
 		Message = message,
-		Result = null
+		Result = result
 	};
 }

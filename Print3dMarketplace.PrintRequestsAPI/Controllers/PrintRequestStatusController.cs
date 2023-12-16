@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Print3dMarketplace.Common.DTOs;
+using Print3dMarketplace.PrintRequestsAPI.Contracts.DTOs;
 using Print3dMarketplace.PrintRequestsAPI.Services.Interfaces;
 
 namespace Print3dMarketplace.PrintRequestsAPI.Controllers;
@@ -21,6 +22,6 @@ public class PrintRequestStatusController : ControllerBase
 	{
 		var result = await _printRequestStatusService.GetAllPrintRequestStatuses();
 
-		return Ok(ResponseDto.SuccessResponse(result));
+		return Ok(ResponseDto<IEnumerable<PrintRequestStatusDto>>.SuccessResponse(result));
 	}
 }

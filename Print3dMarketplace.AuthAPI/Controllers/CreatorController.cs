@@ -28,7 +28,7 @@ public class CreatorController : ControllerBase
 		if (result == null)
 			return NotFound(ResponseDto.ErrorResponse($"Creator information for user {userId} not found"));
 
-		return Ok(ResponseDto.SuccessResponse(result));
+		return Ok(ResponseDto<CreatorDto>.SuccessResponse(result));
 	}
 
 	[HttpPut("{userId}")]

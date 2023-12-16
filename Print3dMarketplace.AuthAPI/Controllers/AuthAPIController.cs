@@ -47,6 +47,6 @@ public class AuthAPIController : ControllerBase
 		if (loginResponse == null)
 			return Unauthorized(ResponseDto.ErrorResponse("Username or password is incorrect"));
 		
-		return Ok(ResponseDto.SuccessResponse(loginResponse));
+		return Ok(ResponseDto<LoginResponseDto>.SuccessResponse(loginResponse));
 	}
 }

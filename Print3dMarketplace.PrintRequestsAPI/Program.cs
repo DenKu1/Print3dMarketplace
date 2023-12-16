@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Print3dMarketplace.Common.ProxyUtilities;
+using Print3dMarketplace.Common.ProxyUtilities.Enums;
 using Print3dMarketplace.Common.Startup;
 using Print3dMarketplace.PrintRequestsAPI.EF;
 using Print3dMarketplace.PrintRequestsAPI.Startup;
@@ -20,6 +22,7 @@ builder.RegisterMapper(assembly);
 builder.RegisterDependencies();
 builder.AddSwaggerGen();
 builder.AddAppAuthentication();
+builder.AddHttpClients(new[] { KnownHttpClients.PrintersAPI, KnownHttpClients.MaterialsAPI });
 
 var app = builder.Build();
 

@@ -6,7 +6,6 @@
       Click <a [routerLink]="['/customer/print-request-creation']">here</a> to add more
   </div>
 
-
   <!-- PrintRequest Info -->
   <div class="cart-item d-md-flex justify-content-between mb-3" *ngFor="let printRequest of printRequests; let i=index">
     <span class="remove-item" (click)="cancelPrintRequest(printRequest.id)"><i class="fa fa-times"></i></span>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Print3dMarketplace.Common.DTOs;
+using Print3dMarketplace.MaterialsAPI.Contracts.DTOs;
 using Print3dMarketplace.MaterialsAPI.Services.Interfaces;
 
 namespace Print3dMarketplace.MaterialsAPI.Controllers;
@@ -21,6 +22,6 @@ public class ColorController : ControllerBase
 	{
 		var result = await _colorService.GetAllColors();
 
-		return Ok(ResponseDto.SuccessResponse(result));
+		return Ok(ResponseDto<IEnumerable<ColorDto>>.SuccessResponse(result));
 	}
 }
