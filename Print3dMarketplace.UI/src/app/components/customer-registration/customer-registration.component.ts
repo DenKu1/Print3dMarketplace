@@ -29,7 +29,6 @@ export class CustomerRegistrationComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]]
@@ -50,7 +49,6 @@ export class CustomerRegistrationComponent implements OnInit {
     this.loading = true;
 
     const customerRegistrationModel: CustomerRegistrationRequestModel = {
-      name: this.f.name.value,
       email: this.f.email.value,
       password: this.f.password.value
     };
@@ -59,7 +57,7 @@ export class CustomerRegistrationComponent implements OnInit {
       .pipe(first())
       .subscribe(
         () => {
-          this.router.navigate(['/users/login']);
+          this.router.navigate(['/user/login']);
         },
         err => {
           this.error = err.status === 400 ? err.error.message : "Unknown error!";

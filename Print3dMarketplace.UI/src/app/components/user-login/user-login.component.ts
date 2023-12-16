@@ -30,13 +30,7 @@ export class UserLoginComponent implements OnInit {
     // redirect to home if already logged in
     this.userService.currentUser.subscribe(x => this.currentUser = x);
     if (this.currentUser) {
-
-      if (this.currentUser.isCreator) {
-        this.router.navigate(['creator/profile']);
-      }
-      else {
-        this.router.navigate(['customer/print-requests']);
-      }
+      this.navidateToHomePage(this.currentUser.isCreator);
     }
   }
 
@@ -66,11 +60,20 @@ export class UserLoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         user => {
-          this.router.navigate(['/users', user.id, 'albums']);
+          this.navidateToHomePage(user.isCreator);
         },
         err => {
           this.error = err.status === 401 ? err.error.message : "Unknown error!";
           this.loading = false;
         });
+  }
+
+  navidateToHomePage(isCreator: boolean) {
+    if (isCreator) {
+      this.router.navigate(['creator/profile']);
+    }
+    else {
+      this.router.navigate(['customer/print-requests']);
+    }
   }
 }

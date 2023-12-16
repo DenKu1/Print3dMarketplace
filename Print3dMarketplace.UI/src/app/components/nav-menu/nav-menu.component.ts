@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
-import { first } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 import { UserModel } from '../../models/user/userModel';
 
 @Component({
@@ -11,12 +10,6 @@ import { UserModel } from '../../models/user/userModel';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent implements OnInit {
-  loading = false;
-  submitted = false;
-  error: string = '';
-
-  userName: FormControl;
-
   currentUser: UserModel;
 
   constructor(
@@ -48,27 +41,5 @@ export class NavMenuComponent implements OnInit {
   logout() {
     this.userService.logout();
     this.router.navigate(['/user/login']);
-  }
-
-  findUser()
-  {
-    this.submitted = true;
-    this.error = '';
-
-    if (this.userName.invalid) {
-      return;
-    }
-
-    this.loading = true;
-/*    this.userService.getUserByUserName(this.userName.value)
-      .pipe(first())
-      .subscribe(
-        user => {
-          this.router.navigate(['/users', user.id, 'albums']);
-        },
-        err => {
-          this.error = "User was not found";
-          this.loading = false;
-        });*/
   }
 }

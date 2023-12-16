@@ -13,7 +13,7 @@
       
       <ul class="navbar-nav ms-auto">
         <li *ngIf="currentUser" class="nav-item dropdown">
-          <a class="navbar-text dropdown-toggle" id="navbardrop" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account: {{currentUser.name}}</a>
+          <a class="navbar-text dropdown-toggle" id="navbardrop" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account: {{currentUser.email  }}</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbardrop">
             <li><button (click)="profile()" class="dropdown-item">Profile</button></li>
             <li><button (click)="logout()" class="dropdown-item">Logout</button></li>
