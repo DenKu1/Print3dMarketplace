@@ -7,6 +7,7 @@ export interface PrintRequestModel {
   printRequestStatusName: string;
 
   submittedCreators: SubmittedCreatorModel[];
+  customerSubmittedCreatorId: string;
 
   templateMaterialId: string;
   colorId: string;

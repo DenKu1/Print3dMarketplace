@@ -7,14 +7,17 @@
       Click <a [routerLink]="['/creator', currentUser.id, 'profile']">here</a> to update your profile
     </span>
     <span *ngIf="printRequests?.length <= 0">
-      <i *ngIf="!printRequests.length" class="fa fa-award"></i>&nbsp;&nbsp;There are currently no print requests to submit. Update your profile to get more PRs available!
+      <i class="fa fa-award"></i>&nbsp;&nbsp;There are currently no print requests to submit. Update your profile to get more PRs available!
       Click <a [routerLink]="['/creator', currentUser.id, 'profile']">here</a> to update your profile
     </span>
   </div>
 
   <!-- PrintRequest Info -->
   <div class="cart-item d-md-flex justify-content-between mb-3" *ngFor="let printRequest of printRequests; let i=index">
-    <span class="submit-item" (click)="submitPrintRequest(printRequest.id)"><i class="fa-solid fa-check"></i></span>
+
+    <!-- Creator submit -->
+    <span *ngIf="canBeSubmitted(printRequest)" class="submit-item" (click)="submitPrintRequest(printRequest.id)"><i class="fa-solid fa-check"></i></span>
+
     <div class="px-3 my-3">
       <a class="cart-item-product" href="#">
         <div class="cart-item-product-thumb"><img src="../assets/customer-print-request.jpg" alt="Print Request Image"></div>
@@ -23,6 +26,11 @@
           <span><strong>Size, mm:</strong> {{printRequest.printAreaLength || 0}} x {{printRequest.printAreaWidth || 0}} x {{printRequest.printAreaHeight || 0}}</span>
           <span><strong>Using supports:</strong> {{printRequest.useSupports || 'Up to creator'}}</span>
           <span><strong>Wall thickness, mm:</strong> {{printRequest.wallThickness || 'Up to creator'}}</span>
+
+          <!--Promts to help creator on current PR status-->
+          <span *ngIf="canBeSubmitted(printRequest)"><strong>Note:</strong> Click 'Approve' button if ready to pick up this PR</span>
+          <span *ngIf="isCustomerSubmittedForCurrentCreator(printRequest)"><strong>Note:</strong> Congrats! Customer choose you for this PR. Now let him contact you via phone.</span>
+          <span *ngIf="isCurrentCreatorAlreadySubmitted(printRequest)"><strong>Note:</strong> You already submitted this PR. Waiting for customer decision</span>
         </div>
       </a>
     </div>

@@ -8,6 +8,7 @@ public class PrintRequestDto
 	public string PrintRequestStatusName { get; set; }
 
 	public IEnumerable<SubmittedCreatorDto> SubmittedCreators { get; set; }
+	public Guid CustomerSubmittedCreatorId { get; set; }
 
 	public Guid TemplateMaterialId { get; set; }
 	public Guid ColorId { get; set; }
@@ -21,7 +22,7 @@ public class PrintRequestDto
 
 	public string? Comment { get; set; }
 	public double? WallThickness { get; set; }
-	public bool? UseSupports { get; set; }
 
+	public bool? UseSupports { get; set; }
 	public bool IsActive { get; set; }
 }

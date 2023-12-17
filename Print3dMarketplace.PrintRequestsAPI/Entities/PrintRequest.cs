@@ -10,7 +10,6 @@ public class PrintRequest : BaseEntity
 	public Guid PrintRequestStatusId { get; set; }
 
 	public IEnumerable<SubmittedCreator> SubmittedCreators { get; set; }
-
 	public Guid CustomerSubmittedCreatorId { get; set; }
 
 	public Guid TemplateMaterialId { get; set; }

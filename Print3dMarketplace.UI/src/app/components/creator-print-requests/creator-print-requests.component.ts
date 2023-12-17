@@ -73,6 +73,29 @@ export class CreatorPrintRequestsComponent {
     return this.templateMaterials.find(material => material.id === id)?.name
   }
 
+  canBeSubmitted(printRequest: PrintRequestModel): boolean {
+
+    let newOrSubStatus: boolean = printRequest.printRequestStatusName === 'New' || printRequest.printRequestStatusName === 'CreatorSubmission';
+
+    return newOrSubStatus && !this.isCurrentCreatorAlreadySubmitted(printRequest);
+  }
+
+  isCustomerSubmittedForCurrentCreator(printRequest: PrintRequestModel): boolean {
+
+    let submittedByCustomer: boolean = printRequest.printRequestStatusName === 'CustomerSubmission';
+
+    let customerSubmittedCurrentUser: boolean = printRequest.customerSubmittedCreatorId === this.currentUser.id;
+
+    return submittedByCustomer && customerSubmittedCurrentUser;
+  }
+
+  isCurrentCreatorAlreadySubmitted(printRequest: PrintRequestModel): boolean {
+
+    let alredySubmitted: boolean = printRequest.submittedCreators && printRequest.submittedCreators.some(creator => creator.creatorId === this.currentUser.id);
+
+    return alredySubmitted;
+  }
+
   submitPrintRequest(id: string): void {
     this.printRequestService.creatorSubmitPrintRequest(id)
       .subscribe(
