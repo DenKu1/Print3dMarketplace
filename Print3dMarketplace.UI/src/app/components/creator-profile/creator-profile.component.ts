@@ -22,6 +22,7 @@ import { NozzleModel } from '../../models/printer/nozzleModel';
 })
 export class CreatorProfileComponent implements OnInit {
   isOwned: boolean;
+  ownerId: string;
 
   currentUser: UserModel;
   creatorInfo: CreatorModel;
@@ -62,11 +63,14 @@ export class CreatorProfileComponent implements OnInit {
 
   getCurrentUser(): void {
     this.userService.currentUser.subscribe(user => this.currentUser = user);
-    this.activeRoute.params.subscribe(routeParams => this.isOwned = this.currentUser.id == routeParams.id);
+    this.activeRoute.params.subscribe(routeParams => {
+      this.isOwned = this.currentUser.id == routeParams.id;
+      this.ownerId = routeParams.id;
+    });
   }
 
   initCreatorInfo(): void {
-    this.userService.getCreator(this.currentUser.id).subscribe(
+    this.userService.getCreator(this.ownerId).subscribe(
       creator =>
       {
         this.creatorInfo = creator;
@@ -78,7 +82,7 @@ export class CreatorProfileComponent implements OnInit {
     forkJoin({
       colors: this.materialService.getAllColors(),
       templateMaterials: this.materialService.getAllTemplateMaterials(),
-      materials: this.materialService.getAllCreatorMaterials(this.currentUser.id)
+      materials: this.materialService.getAllCreatorMaterials(this.ownerId)
     })
       .subscribe(({ colors, templateMaterials, materials }) => {
         this.colors = colors;
@@ -93,7 +97,7 @@ export class CreatorProfileComponent implements OnInit {
     forkJoin({
       nozzles: this.printerService.getAllNozzles(),
       templatePrinters: this.printerService.getAllTemplatePrinters(),
-      printers: this.printerService.getAllCreatorPrinters(this.currentUser.id)
+      printers: this.printerService.getAllCreatorPrinters(this.ownerId)
     })
       .subscribe(({ nozzles, templatePrinters, printers }) => {
         this.nozzles = nozzles;
@@ -105,7 +109,7 @@ export class CreatorProfileComponent implements OnInit {
   }
 
   updateCreatorInfo(): void {
-    if (this.upCreatorInfo.form.invalid) {
+    if (!this.isOwned || this.upCreatorInfo.form.invalid) {
       return;
     }
 
@@ -143,7 +147,7 @@ export class CreatorProfileComponent implements OnInit {
   }
 
   updateMaterials(): void {
-    if (this.upMaterials.form.invalid) {
+    if (!this.isOwned ||this.upMaterials.form.invalid) {
       return;
     }
 
@@ -179,7 +183,7 @@ export class CreatorProfileComponent implements OnInit {
   }
 
   updatePrinters(): void {
-    if (this.upPrinters.form.invalid) {
+    if (!this.isOwned ||this.upPrinters.form.invalid) {
       return;
     }
 

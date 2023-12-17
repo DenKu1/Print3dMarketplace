@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Print3dMarketplace.AuthAPI.Contracts.DTOs;
 using Print3dMarketplace.AuthAPI.Services.Interfaces;
 using Print3dMarketplace.Common.Auth;
 using Print3dMarketplace.Common.DTOs;
-using System.Security.Claims;
 
 namespace Print3dMarketplace.AuthAPI.Controllers;
 
