@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Blobs;
 using Print3dMarketplace.SchemeStorageAPI.Exceptions;
 using Print3dMarketplace.SchemeStorageAPI.Services.Interfaces;
+using System.Collections.Generic;
 
 namespace Print3dMarketplace.SchemeStorageAPI.Services;
 
@@ -50,8 +51,8 @@ public class STLBlobService : IBlobService
 				dict.Add(el, blob);
 			}
 			catch (Exception ex)
-			{ 
-				//Logger
+			{
+				return new Dictionary<string, byte[]>();
 			}
 		}
 

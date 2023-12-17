@@ -34,4 +34,17 @@ public class SchemeController : ControllerBase
 
 		return BadRequest(ResponseDto.ErrorResponse()); 
 	}
+
+	[HttpGet("download")]
+	public async Task<IActionResult> DownloadBlob(string fileName)
+	{
+		_guard.ValidateFileName(fileName);
+
+		var byteArray = await _schemeStorageService.DownloadScheme(fileName);
+
+		if (byteArray is null)
+			return BadRequest(ResponseDto.ErrorResponse());
+
+		return Ok(ResponseDto<byte[]>.SuccessResponse(byteArray));
+	}
 }
