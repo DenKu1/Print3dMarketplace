@@ -120,6 +120,7 @@ public class PrintRequestService : IPrintRequestService
 		{
 			var printRequestToUpdate = await _context.PrintRequests
 				.Include(x => x.PrintRequestStatus)
+				.Include(x => x.SubmittedCreators)
 				.FirstOrDefaultAsync(x => x.Id == printRequestId);
 
 			if (printRequestToUpdate == null)
@@ -127,7 +128,7 @@ public class PrintRequestService : IPrintRequestService
 
 			// Only New and CreatorSubmission PRs can be submitted by Creator
 			if (printRequestToUpdate.PrintRequestStatus.Name != KnownPrintRequestStatuses.New.ToString()
-				|| printRequestToUpdate.PrintRequestStatus.Name != KnownPrintRequestStatuses.CreatorSubmission.ToString())
+				&& printRequestToUpdate.PrintRequestStatus.Name != KnownPrintRequestStatuses.CreatorSubmission.ToString())
 				return false;
 
 			// Check if creator already submitted this PR
@@ -137,20 +138,19 @@ public class PrintRequestService : IPrintRequestService
 			var submittedCreatorToAdd = new SubmittedCreator
 			{
 				CreatorId = creatorId,
-				CreatorName = companyName
+				CreatorName = companyName,
+				PrintRequestId = printRequestId,
 			};
 
-			printRequestToUpdate.SubmittedCreators.Append(submittedCreatorToAdd);
+			await _context.SubmittedCreators.AddAsync(submittedCreatorToAdd);
 
 			// If it is the first creator that submitted PR than we move to CreatorSubmission
 			if (printRequestToUpdate.PrintRequestStatus.Name == KnownPrintRequestStatuses.New.ToString())
 			{
 				await SetPrintRequestStatus(printRequestToUpdate, KnownPrintRequestStatuses.CreatorSubmission);
-
-				return await _context.SaveChangesAsync() > 0;
 			}
 
-			return true;
+			return await _context.SaveChangesAsync() > 0;
 		}
 		catch (Exception)
 		{
