@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Print3dMarketplace.PrintRequestsAPI.Contracts.DTOs;
+﻿namespace Print3dMarketplace.PrintRequestsAPI.Contracts.DTOs;
 
 public class CreatePrintRequestDto
 {

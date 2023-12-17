@@ -22,7 +22,7 @@ builder.RegisterMapper(assembly);
 builder.RegisterDependencies();
 builder.AddSwaggerGen();
 builder.AddAppAuthentication();
-builder.AddHttpClients(new[] { KnownHttpClients.PrintersAPI, KnownHttpClients.MaterialsAPI });
+builder.AddHttpClients(new[] { KnownHttpClients.PrintersAPI, KnownHttpClients.MaterialsAPI, KnownHttpClients.SchemeStorageAPI });
 
 var app = builder.Build();
 

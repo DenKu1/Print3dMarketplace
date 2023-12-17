@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json;
-using Print3dMarketplace.Common.DTOs;
+﻿using Print3dMarketplace.Common.DTOs;
 using Print3dMarketplace.Common.ProxyUtilities.Enums;
 using System.Text;
 using System.Text.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Print3dMarketplace.Common.ProxyUtilities;
 public static class ProxyServiceExtensions
@@ -62,7 +60,7 @@ public static class ProxyServiceExtensions
 			.PostAsync
 				(
 					requestUri,
-					new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")
+					new StringContent(JsonSerializer.Serialize(model), Encoding.UTF8, "application/json")
 				);
 
 			var content = await response.Content.ReadAsStringAsync();
