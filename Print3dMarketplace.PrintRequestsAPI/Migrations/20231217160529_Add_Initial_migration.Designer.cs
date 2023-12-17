@@ -12,8 +12,8 @@ using Print3dMarketplace.PrintRequestsAPI.EF;
 namespace Print3dMarketplace.PrintRequestsAPI.Migrations
 {
     [DbContext(typeof(PrintRequestsDbContext))]
-    [Migration("20231213103344_Update_PrintRequest_Entity")]
-    partial class Update_PrintRequest_Entity
+    [Migration("20231217160529_Add_Initial_migration")]
+    partial class Add_Initial_migration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,12 @@ namespace Print3dMarketplace.PrintRequestsAPI.Migrations
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("CustomerSubmittedCreatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Infill")
                         .HasColumnType("int");
 
@@ -48,9 +54,6 @@ namespace Print3dMarketplace.PrintRequestsAPI.Migrations
 
                     b.Property<double>("LayerHeight")
                         .HasColumnType("float");
-
-                    b.Property<Guid>("ModelId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("PrintAreaHeight")
                         .HasColumnType("float");
@@ -97,39 +100,62 @@ namespace Print3dMarketplace.PrintRequestsAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a5f7bf59-9553-4634-989d-a36701c26c51"),
+                            Id = new Guid("1b4a0daa-3d27-4d7f-aaaa-fb23732c0e80"),
                             Name = "Undefined"
                         },
                         new
                         {
-                            Id = new Guid("d53a5231-574f-40d8-b440-bc0297bcb582"),
+                            Id = new Guid("127ab3c8-907d-45f8-af20-181130a06fd5"),
                             Name = "New"
                         },
                         new
                         {
-                            Id = new Guid("f4f2e6a7-090b-4668-880b-ceddf8695c60"),
+                            Id = new Guid("52241bda-b8b4-42ca-bc69-169f3b913359"),
                             Name = "Canceled"
                         },
                         new
                         {
-                            Id = new Guid("54aa8111-d4b4-4fa3-970c-73d26414e2c1"),
+                            Id = new Guid("725488bc-a383-412b-a167-740322c931f3"),
                             Name = "Pending"
                         },
                         new
                         {
-                            Id = new Guid("252986fb-f903-4eed-af7f-d9da58c17a26"),
+                            Id = new Guid("2b618945-d6c2-4519-85af-8e4af9ae41c5"),
                             Name = "CreatorSubmission"
                         },
                         new
                         {
-                            Id = new Guid("352fccfc-a0f1-49ff-9a72-512d634c1d93"),
+                            Id = new Guid("46a9c9c7-26ce-44dc-8746-74eb82a20f2e"),
                             Name = "UserSubmission"
                         },
                         new
                         {
-                            Id = new Guid("70efccfc-ab1f-41f7-bd0e-6ddfab8d4845"),
+                            Id = new Guid("01be8f83-ad78-47bc-a1e4-e064f4871c1b"),
                             Name = "Completed"
                         });
+                });
+
+            modelBuilder.Entity("Print3dMarketplace.PrintRequestsAPI.Entities.SubmittedCreator", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PrintRequestId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PrintRequestId");
+
+                    b.ToTable("SubmittedCreators");
                 });
 
             modelBuilder.Entity("Print3dMarketplace.PrintRequestsAPI.Entities.PrintRequest", b =>
@@ -141,6 +167,22 @@ namespace Print3dMarketplace.PrintRequestsAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("PrintRequestStatus");
+                });
+
+            modelBuilder.Entity("Print3dMarketplace.PrintRequestsAPI.Entities.SubmittedCreator", b =>
+                {
+                    b.HasOne("Print3dMarketplace.PrintRequestsAPI.Entities.PrintRequest", "PrintRequest")
+                        .WithMany("SubmittedCreators")
+                        .HasForeignKey("PrintRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PrintRequest");
+                });
+
+            modelBuilder.Entity("Print3dMarketplace.PrintRequestsAPI.Entities.PrintRequest", b =>
+                {
+                    b.Navigation("SubmittedCreators");
                 });
 #pragma warning restore 612, 618
         }

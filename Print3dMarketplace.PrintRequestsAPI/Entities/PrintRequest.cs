@@ -15,8 +15,6 @@ public class PrintRequest : BaseEntity
 
 	public Guid TemplateMaterialId { get; set; }
 	public Guid ColorId { get; set; }
-	public Guid ModelId { get; set; }
-
 	public double LayerHeight { get; set; }
 	public int Infill { get; set; }
 
