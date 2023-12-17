@@ -30,7 +30,7 @@ export class NavMenuComponent implements OnInit {
     if (this.currentUser) {
 
       if (this.currentUser.isCreator) {
-        this.router.navigate(['creator/profile']);
+        this.router.navigate(['/creator/', this.currentUser.id, '/profile']);
       }
       else {
         this.router.navigate(['customer/print-requests']);

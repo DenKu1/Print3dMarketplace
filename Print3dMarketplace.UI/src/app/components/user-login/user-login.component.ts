@@ -70,7 +70,7 @@ export class UserLoginComponent implements OnInit {
 
   navidateToHomePage(isCreator: boolean) {
     if (isCreator) {
-      this.router.navigate(['creator/profile']);
+      this.router.navigate(['/creator/', this.currentUser.id, '/profile']);
     }
     else {
       this.router.navigate(['customer/print-requests']);

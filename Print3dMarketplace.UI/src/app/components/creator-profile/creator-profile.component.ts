@@ -21,6 +21,8 @@ import { NozzleModel } from '../../models/printer/nozzleModel';
   styleUrls: ['./creator-profile.component.css']
 })
 export class CreatorProfileComponent implements OnInit {
+  isOwned: boolean;
+
   currentUser: UserModel;
   creatorInfo: CreatorModel;
 
@@ -53,11 +55,6 @@ export class CreatorProfileComponent implements OnInit {
   ngOnInit() {
     this.getCurrentUser();
 
-    if (this.currentUser.isCreator == false) {
-      this.userService.logout();
-      this.router.navigate(['/user/login']);
-    }
-
     this.initCreatorInfo();
     this.initMaterials();
     this.initPrinters();
@@ -65,6 +62,7 @@ export class CreatorProfileComponent implements OnInit {
 
   getCurrentUser(): void {
     this.userService.currentUser.subscribe(user => this.currentUser = user);
+    this.activeRoute.params.subscribe(routeParams => this.isOwned = this.currentUser.id == routeParams.id);
   }
 
   initCreatorInfo(): void {

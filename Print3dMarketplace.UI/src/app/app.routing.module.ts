@@ -29,7 +29,7 @@ const routes: Routes = [
     component: CreatorRegistrationComponent
   },
   {
-    path: 'creator/profile',
+    path: 'creator/:id/profile',
     component: CreatorProfileComponent
   },
   {

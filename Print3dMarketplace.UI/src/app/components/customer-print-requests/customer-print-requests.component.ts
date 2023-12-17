@@ -88,4 +88,12 @@ export class CustomerPrintRequestsComponent {
           this.toastrService.error("Unknown error! Please try again");
         });
   }
+
+  visitCreatorProfile(creatorId: string) {
+    this.router.navigate(['/creator/', creatorId, '/profile']);
+  }
+
+  chooseCreator(creatorId: string) {
+    // Implementation to choose creator for the print request.
+  }
 }

@@ -3,7 +3,7 @@
   <div class="alert alert-info alert-dismissible fade show text-center mb-3" role="alert">
     <span class="alert-close" data-dismiss="alert"></span>
     <i class="fa fa-award"></i>&nbsp;&nbsp;Your currently have successfully created {{printRequests?.length || 'no'}} print requests requests!
-      Click <a [routerLink]="['/customer/print-request-creation']">here</a> to add more
+    Click <a [routerLink]="['/customer/print-request-creation']">here</a> to add more
   </div>
 
   <!-- PrintRequest Info -->
@@ -19,17 +19,6 @@
           <span><strong>Wall thickness, mm:</strong> {{printRequest.wallThickness || 'Up to creator'}}</span>
         </div>
       </a>
-    </div>
-
-    <!--Choose creator-->
-    <div class="px-3 my-3 text-center">
-      <div class="cart-item-label">Choose creator</div>
-      <div class="count-input">
-        <select class="form-select">
-          <option>Creator 1</option>
-          <option>Creator 2</option>
-        </select>
-      </div>
     </div>
 
     <!--templateMaterialId-->
@@ -62,19 +51,28 @@
       <span class="text-xl font-weight-medium">{{printRequest.infill || '-'}}</span>
     </div>
 
-  </div>
+    <!-- Submitted creators -->
+    <div class="px-3 my-3">
+      <div class="cart-item-label">Submitted by</div>
 
-  <!-- Coupon + Subtotal -->
-  <div class="d-sm-flex justify-content-between align-items-center text-center text-sm-left mb-3">
-    <form class="form-inline py-2">
-      <label class="sr-only">Coupon code</label>
-      <input class="form-control form-control-sm my-2 mr-3" type="text" placeholder="Coupon code" required>
-      <button class="btn btn-secondary btn-sm my-2 mx-auto mx-sm-0" type="submit">Apply Coupon</button>
-    </form>
-    <div class="py-2">
-      <span class="d-inline-block align-middle text-sm text-muted font-weight-medium text-uppercase mr-2">Subtotal:</span>
-      <span class="d-inline-block align-middle text-xl font-weight-medium">$188.50</span>
+      <!-- Creators List -->
+      <ul *ngFor="let submittedCreator of printRequest.submittedCreators; let j=index">
+        <li>
+          <span class="text-xl font-weight-medium">{{submittedCreator.creatorName}}</span>
+          <!-- Navigate to profile icon -->
+          <a [routerLink]="['/creator', submittedCreator.creatorId, 'profile']">
+            <i class="fa-solid fa-arrow-up-right-from-square" style="cursor:pointer;"></i>
+          </a>
+          <!-- Choose Creator Icon -->
+          <i class="fa-solid fa-user-check" (click)="chooseCreator(submittedCreator.creatorId)" style="cursor:pointer;"></i>
+        </li>
+      </ul>
+      <!-- Conditions for no submitted creators -->
+      <div *ngIf="!printRequest.submittedCreators || !printRequest.submittedCreators.length">
+        <span class="text-xl font-weight-medium">No creators have submitted yet</span>
+      </div>
     </div>
+
   </div>
 
   <!-- Buttons -->
@@ -88,9 +86,6 @@
         Refresh
       </button>
 
-    </div>
-    <div class="col-sm-6 mb-3">
-      <a class="btn btn-primary btn-block" href="checkout-address.html"><i class="fa fa-credit-card"></i>&nbsp;Checkout</a>
     </div>
   </div>
 </div>
