@@ -2,7 +2,7 @@
   <!-- Alert -->
   <div class="alert alert-info alert-dismissible fade show text-center mb-3" role="alert">
     <span class="alert-close" data-dismiss="alert"></span>
-    <i class="fa fa-award"></i>&nbsp;&nbsp;The {{printRequests.length || 'no'}} print requests are suitable for you. Feel free to submit them!
+    <i class="fa fa-award"></i>&nbsp;&nbsp;The {{printRequests?.length || 'no'}} print requests are suitable for you. Feel free to submit them!
   </div>
 
   <!-- PrintRequest Info -->
@@ -13,7 +13,7 @@
         <div class="cart-item-product-thumb"><img src="../assets/customer-print-request.jpg" alt="Print Request Image"></div>
         <div class="cart-item-product-info">
           <h4 class="cart-item-product-title">Model name: file001.stl</h4>
-          <span><strong>Size, mm:</strong> {{printRequest.printAreaLength}} x {{printRequest.printAreaWidth}} x {{printRequest.printAreaHeight}}</span>
+          <span><strong>Size, mm:</strong> {{printRequest.printAreaLength || 0}} x {{printRequest.printAreaWidth || 0}} x {{printRequest.printAreaHeight || 0}}</span>
           <span><strong>Using supports:</strong> {{printRequest.useSupports || 'Up to creator'}}</span>
           <span><strong>Wall thickness, mm:</strong> {{printRequest.wallThickness || 'Up to creator'}}</span>
         </div>
