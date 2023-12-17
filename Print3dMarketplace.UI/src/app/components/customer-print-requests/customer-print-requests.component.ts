@@ -10,6 +10,7 @@ import { first, forkJoin } from 'rxjs';
 import { UserModel } from '../../models/user/userModel';
 import { PrintRequestService } from '../../services/print-request.service';
 import { PrintRequestModel } from '../../models/print-requests/printRequestModel';
+import { SubmitPrintRequestModel } from '../../models/print-requests/submitPrintRequestModel';
 
 @Component({
   selector: 'customer-print-requests',
@@ -89,11 +90,22 @@ export class CustomerPrintRequestsComponent {
         });
   }
 
-  visitCreatorProfile(creatorId: string) {
-    this.router.navigate(['/creator/', creatorId, '/profile']);
-  }
+  sumbitCreator(printRequestId: string, creatorId: string) {
 
-  chooseCreator(creatorId: string) {
-    // Implementation to choose creator for the print request.
+    let submitPrintRequestModel: SubmitPrintRequestModel = { creatorId: creatorId };
+
+    this.printRequestService.customerSubmitPrintRequest(printRequestId, submitPrintRequestModel)
+      .subscribe(
+        isUpdated => {
+          if (isUpdated) {
+            this.toastrService.success("Print request submitted successfully");
+            this.refreshPrintRequests();
+          } else {
+            this.toastrService.error("Unknown error! Please try again");
+          }
+        },
+        err => {
+          this.toastrService.error("Unknown error! Please try again");
+        });
   }
 }

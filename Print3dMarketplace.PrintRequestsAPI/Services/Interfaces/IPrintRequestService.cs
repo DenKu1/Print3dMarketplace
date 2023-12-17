@@ -10,4 +10,5 @@ public interface IPrintRequestService
 	Task<bool> CancelPrintRequest(Guid printRequestId);
 	Task<IEnumerable<PrintRequestDto>> GetCreatorPrintRequests(Guid creatorId);
 	Task<bool> CreatorSubmitPrintRequest(Guid printRequestId, Guid creatorId, string companyName);
+	Task<bool> CustomerSubmitPrintRequest(Guid printRequestId, Guid creatorId);
 }

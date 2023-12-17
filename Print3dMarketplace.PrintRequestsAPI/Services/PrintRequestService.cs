@@ -158,6 +158,39 @@ public class PrintRequestService : IPrintRequestService
 		}
 	}
 
+	public async Task<bool> CustomerSubmitPrintRequest(Guid printRequestId, Guid creatorId)
+	{
+		try
+		{
+			var printRequestToUpdate = await _context.PrintRequests
+				.Include(x => x.PrintRequestStatus)
+				.Include(x => x.SubmittedCreators)
+				.FirstOrDefaultAsync(x => x.Id == printRequestId);
+
+			if (printRequestToUpdate == null)
+				return false;
+
+			// Only CreatorSubmission PRs can be submitted by Customer
+			if (printRequestToUpdate.PrintRequestStatus.Name != KnownPrintRequestStatuses.CreatorSubmission.ToString())
+				return false;
+
+			var submittedCreator = printRequestToUpdate.SubmittedCreators.FirstOrDefault(x => x.CreatorId == creatorId);
+
+			if (submittedCreator == null)
+				return false;
+
+			printRequestToUpdate.CustomerSubmittedCreatorId = submittedCreator.Id;
+			
+			await SetPrintRequestStatus(printRequestToUpdate, KnownPrintRequestStatuses.UserSubmission);
+
+			return await _context.SaveChangesAsync() > 0;
+		}
+		catch (Exception)
+		{
+			return false;
+		}
+	}
+
 	private async Task SetPrintRequestStatus(PrintRequest printRequest, KnownPrintRequestStatuses newStatus)
 	{
 		if (printRequest == null)

@@ -47,4 +47,15 @@ public class CustomerPrintRequestController : ControllerBase
 
 		return Ok(ResponseDto.SuccessResponse());
 	}
+
+	[HttpPost("{printRequestId}/submit")]
+	public async Task<IActionResult> CreatorSubmitPrintRequest(Guid printRequestId, SubmitPrintRequestDto submitPrintRequestDto)
+	{
+		var isSuccess = await _printRequestService.CustomerSubmitPrintRequest(printRequestId, submitPrintRequestDto.CreatorId);
+
+		if (!isSuccess)
+			return NotFound(ResponseDto.ErrorResponse($"Print request for customer {User.GetUserId()} was not submitted"));
+
+		return Ok(ResponseDto.SuccessResponse());
+	}
 }

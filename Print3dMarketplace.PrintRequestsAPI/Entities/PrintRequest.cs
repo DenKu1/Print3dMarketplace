@@ -8,8 +8,10 @@ public class PrintRequest : BaseEntity
 
 	public PrintRequestStatus PrintRequestStatus { get; set; }
 	public Guid PrintRequestStatusId { get; set; }
-	
+
 	public IEnumerable<SubmittedCreator> SubmittedCreators { get; set; }
+
+	public Guid CustomerSubmittedCreatorId { get; set; }
 
 	public Guid TemplateMaterialId { get; set; }
 	public Guid ColorId { get; set; }

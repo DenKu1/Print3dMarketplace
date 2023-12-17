@@ -2,7 +2,14 @@
   <!-- Alert -->
   <div class="alert alert-info alert-dismissible fade show text-center mb-3" role="alert">
     <span class="alert-close" data-dismiss="alert"></span>
-    <i class="fa fa-award"></i>&nbsp;&nbsp;The {{printRequests?.length || 'no'}} print requests are suitable for you. Feel free to submit them!
+    <span *ngIf="printRequests?.length > 0">
+      <i class="fa fa-award"></i>&nbsp;&nbsp;The {{printRequests.length}} print requests are suitable for you. Feel free to submit them!
+      Click <a [routerLink]="['/creator', currentUser.id, 'profile']">here</a> to update your profile
+    </span>
+    <span *ngIf="printRequests?.length <= 0">
+      <i *ngIf="!printRequests.length" class="fa fa-award"></i>&nbsp;&nbsp;There are currently no print requests to submit. Update your profile to get more PRs available!
+      Click <a [routerLink]="['/creator', currentUser.id, 'profile']">here</a> to update your profile
+    </span>
   </div>
 
   <!-- PrintRequest Info -->
@@ -52,19 +59,6 @@
 
   </div>
 
-  <!-- Coupon + Subtotal -->
-  <div class="d-sm-flex justify-content-between align-items-center text-center text-sm-left mb-3">
-    <form class="form-inline py-2">
-      <label class="sr-only">Coupon code</label>
-      <input class="form-control form-control-sm my-2 mr-3" type="text" placeholder="Coupon code" required>
-      <button class="btn btn-secondary btn-sm my-2 mx-auto mx-sm-0" type="submit">Apply Coupon</button>
-    </form>
-    <div class="py-2">
-      <span class="d-inline-block align-middle text-sm text-muted font-weight-medium text-uppercase mr-2">Subtotal:</span>
-      <span class="d-inline-block align-middle text-xl font-weight-medium">$188.50</span>
-    </div>
-  </div>
-
   <!-- Buttons -->
   <hr class="my-2">
   <div class="row pt-3 pb-5 mb-2">
@@ -76,9 +70,5 @@
         Refresh
       </button>
 
-    </div>
-    <div class="col-sm-6 mb-3">
-      <a class="btn btn-primary btn-block" href="checkout-address.html"><i class="fa fa-credit-card"></i>&nbsp;Checkout</a>
-    </div>
   </div>
 </div>

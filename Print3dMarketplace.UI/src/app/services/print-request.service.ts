@@ -5,6 +5,7 @@ import { environment } from '../../enviroments/environment';
 import { ResponseModel } from '../models/common/responseModel';
 import { CreatePrintRequestModel } from '../models/print-requests/createPrintRequestModel';
 import { PrintRequestModel } from '../models/print-requests/printRequestModel';
+import { SubmitPrintRequestModel } from '../models/print-requests/submitPrintRequestModel';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +53,13 @@ export class PrintRequestService {
 
   creatorSubmitPrintRequest(printRequestId: string): Observable<boolean> {
     return this.http.post<ResponseModel>(`${environment.printRequestsApiUrl}/creator/print-requests/${printRequestId}/submit`, null)
+      .pipe(map(response => {
+        return response.isSuccess;
+      }));
+  }
+
+  customerSubmitPrintRequest(printRequestId: string, submitPrintRequestModel: SubmitPrintRequestModel): Observable<boolean> {
+    return this.http.post<ResponseModel>(`${environment.printRequestsApiUrl}/customer/print-requests/${printRequestId}/submit`, submitPrintRequestModel)
       .pipe(map(response => {
         return response.isSuccess;
       }));
