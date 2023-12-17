@@ -2,11 +2,8 @@
 
 public enum KnownPrintRequestStatuses
 {
-	Undefined,
 	New,
 	Canceled,
-	Pending,
 	CreatorSubmission,
-	UserSubmission,
-	Completed
+	CustomerSubmission
 }

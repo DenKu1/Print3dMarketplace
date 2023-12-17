@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Print3dMarketplace.Common.ProxyUtilities.Enums;
@@ -68,9 +68,17 @@ public class PrintRequestService : IPrintRequestService
 				.AsQueryable()
 				.Include(pr => pr.PrintRequestStatus)
 				.Include(pr => pr.SubmittedCreators)
+
+				// Show creator only New and CreatorSubmission statuses (already approved by this or other creator)
+				// or in case this Creator was choosen by Customer to do this PR
 				.Where(pr => pr.PrintRequestStatus.Name == KnownPrintRequestStatuses.New.ToString()
-					|| pr.PrintRequestStatus.Name == KnownPrintRequestStatuses.CreatorSubmission.ToString())
+					|| pr.PrintRequestStatus.Name == KnownPrintRequestStatuses.CreatorSubmission.ToString()
+					|| (pr.PrintRequestStatus.Name == KnownPrintRequestStatuses.CustomerSubmission.ToString() && pr.CustomerSubmittedCreatorId == creatorId))
+
+				// Filter out PRs that cannot be done due to absence of specific material type requested by Customer
 				.Where(pr => materialIds.Contains(pr.TemplateMaterialId))
+
+				// Filter out PRs that cannot be done due to absence of Printer that can print model of such size
 				.Where(pr => printerPrintAreaLengths.Any(length => length > pr.PrintAreaLength)
 					&& printerPrintAreaWidths.Any(width => width > pr.PrintAreaWidth)
 					&& printerPrintAreaHeights.Any(height => height > pr.PrintAreaHeight))
@@ -204,7 +212,7 @@ public class PrintRequestService : IPrintRequestService
 
 			printRequestToUpdate.CustomerSubmittedCreatorId = submittedCreator.Id;
 			
-			await SetPrintRequestStatus(printRequestToUpdate, KnownPrintRequestStatuses.UserSubmission);
+			await SetPrintRequestStatus(printRequestToUpdate, KnownPrintRequestStatuses.CustomerSubmission);
 
 			return await _context.SaveChangesAsync() > 0;
 		}

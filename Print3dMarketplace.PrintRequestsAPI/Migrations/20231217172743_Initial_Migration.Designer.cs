@@ -12,8 +12,8 @@ using Print3dMarketplace.PrintRequestsAPI.EF;
 namespace Print3dMarketplace.PrintRequestsAPI.Migrations
 {
     [DbContext(typeof(PrintRequestsDbContext))]
-    [Migration("20231217160529_Add_Initial_migration")]
-    partial class Add_Initial_migration
+    [Migration("20231217172743_Initial_Migration")]
+    partial class Initial_Migration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,38 +100,23 @@ namespace Print3dMarketplace.PrintRequestsAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1b4a0daa-3d27-4d7f-aaaa-fb23732c0e80"),
-                            Name = "Undefined"
-                        },
-                        new
-                        {
-                            Id = new Guid("127ab3c8-907d-45f8-af20-181130a06fd5"),
+                            Id = new Guid("b74f7ee1-2a40-4150-9d5c-a247eb0dc47f"),
                             Name = "New"
                         },
                         new
                         {
-                            Id = new Guid("52241bda-b8b4-42ca-bc69-169f3b913359"),
+                            Id = new Guid("a4c32814-cb53-4222-81eb-2da6de21e33a"),
                             Name = "Canceled"
                         },
                         new
                         {
-                            Id = new Guid("725488bc-a383-412b-a167-740322c931f3"),
-                            Name = "Pending"
-                        },
-                        new
-                        {
-                            Id = new Guid("2b618945-d6c2-4519-85af-8e4af9ae41c5"),
+                            Id = new Guid("9e78957b-352c-40f8-bc3a-327312e0f026"),
                             Name = "CreatorSubmission"
                         },
                         new
                         {
-                            Id = new Guid("46a9c9c7-26ce-44dc-8746-74eb82a20f2e"),
-                            Name = "UserSubmission"
-                        },
-                        new
-                        {
-                            Id = new Guid("01be8f83-ad78-47bc-a1e4-e064f4871c1b"),
-                            Name = "Completed"
+                            Id = new Guid("edce0867-a9ec-497f-a49a-1151ea0cfda7"),
+                            Name = "CustomerSubmission"
                         });
                 });
 
