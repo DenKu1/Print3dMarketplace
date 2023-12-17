@@ -1,36 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Arvo:wght@700&display=swap');
-
-.border-style-3 {
-  border-width: 0.5px;
-  border-color: var(--primary-color) !important;
+.split-container {
+  display: flex;
+  height: 100vh;
 }
 
-.sing-up-button {
-  max-height: 30px;
-  height: 100%;
-  padding: 2px;
-  color: var(--primary-color) !important;
-  background-color: white;
+.split {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.sing-up-button:hover {
-  color: white !important;
-  background-color: var(--primary-color) !important;
-}
-
-.p3d-button-lf {
-  width: 100px;
-  height: 50px;
-  background-color: var(--background-color);
-  border: none;
-  text-align: center;
-  font-size: 16px;
-  line-height: 25px;
-  cursor: pointer;
-  color: var(--primary-color);
-}
-
-.p3d-button-lf:hover {
-  transform: translateX(11px);
-  transition: transform 0.2s;
+.register-form h1 {
+  font-size: 42px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 60px;
+  font-family: 'Roboto-Bold';
 }
