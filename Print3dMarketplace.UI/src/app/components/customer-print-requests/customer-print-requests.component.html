@@ -3,17 +3,20 @@
   <div class="alert alert-info alert-dismissible fade show text-center mb-3" role="alert">
     <span *ngIf="printRequests?.length > 0">
       <i class="fa fa-award"></i>&nbsp;&nbsp;Your currently have successfully created {{printRequests.length}} print requests!
-      Click <a [routerLink]="['customer', currentUser.id, 'print-request-creation']">here</a> to add more
+      Click <a [routerLink]="['/customer', this.currentUser.id, 'print-request-creation']">here</a> to add more
     </span>
     <span *ngIf="printRequests?.length <= 0">
       <i class="fa fa-award"></i>&nbsp;&nbsp;There are currently no print requests created.
-      Click <a [routerLink]="['customer', currentUser.id, 'print-request-creation']">here</a> to add more
+      Click <a [routerLink]="['/customer', this.currentUser.id, 'print-request-creation']">here</a> to add more
     </span>
   </div>
 
   <!-- PrintRequest Info -->
   <div class="cart-item d-md-flex justify-content-between mb-3" *ngFor="let printRequest of printRequests; let i=index">
-    <span *ngIf="printRequest.isActive" class="remove-item" (click)="cancelPrintRequest(printRequest.id)"><i class="fa fa-times"></i></span>
+
+    <!-- Customer cancel -->
+    <span *ngIf="isCustomerAbleToCancel(printRequest)" class="remove-item" (click)="cancelPrintRequest(printRequest.id)"><i class="fa fa-times"></i></span>
+
     <div class="px-3 my-3">
       <a class="cart-item-product" href="#">
         <div class="cart-item-product-thumb"><img src="../assets/customer-print-request.jpg" alt="Print Request Image"></div>
@@ -22,6 +25,10 @@
           <span><strong>Size, mm:</strong> {{printRequest.printAreaLength || 0}} x {{printRequest.printAreaWidth || 0}} x {{printRequest.printAreaHeight || 0}}</span>
           <span><strong>Using supports:</strong> {{printRequest.useSupports || 'Up to creator'}}</span>
           <span><strong>Wall thickness, mm:</strong> {{printRequest.wallThickness || 'Up to creator'}}</span>
+
+          <!--Promts to help creator on current PR status-->
+          <span *ngIf="isAnyCreatorAlreadySubmitted(printRequest)"><strong>Note:</strong> At least one creator is will to complete your PR. Choose creator to continue</span>
+          <span *ngIf="isCustomerSubmittedForAnyCreator(printRequest)"><strong>Note:</strong> Congrats, you have choosen your creator. Contact him cia phone to continue</span>
         </div>
       </a>
     </div>
@@ -60,23 +67,32 @@
     <div class="px-3 my-3">
       <div class="cart-item-label">Submitted by</div>
 
-      <!-- Creators List -->
-      <ul *ngFor="let submittedCreator of printRequest.submittedCreators; let j=index">
-        <li>
-          <span class="text-xl font-weight-medium">{{submittedCreator.creatorName}}</span>
-          <!-- Navigate to profile -->
-          <a [routerLink]="['/creator', submittedCreator.creatorId, 'profile']">
-            <i class="fa-solid fa-arrow-up-right-from-square" style="cursor:pointer;"></i>
-          </a>
-          <!-- Choose Creator -->
-          <a (click)="sumbitCreator(printRequest.id, submittedCreator.creatorId)">
-            <i class="fa-solid fa-user-check" style="cursor:pointer;"></i>
-          </a>
-        </li>
-      </ul>
-      <!-- Conditions for no submitted creators -->
+
+      <div *ngIf="isAnyCreatorAlreadySubmitted(printRequest)">
+        <!-- Creators List -->
+        <ul *ngFor="let submittedCreator of printRequest.submittedCreators; let j=index">
+          <li>
+            <span class="text-xl font-weight-medium">{{submittedCreator.creatorName}}</span>
+            <!-- Navigate to profile -->
+            <a [routerLink]="['/creator', submittedCreator.creatorId, 'profile']">
+              <i class="fa-solid fa-arrow-up-right-from-square" style="cursor:pointer;"></i>
+            </a>
+            <!-- Choose Creator -->
+            <a (click)="sumbitCreator(printRequest.id, submittedCreator.creatorId)">
+              <i class="fa-solid fa-user-check" style="cursor:pointer;"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Condition for no submitted creators -->
       <div *ngIf="!printRequest.submittedCreators || !printRequest.submittedCreators.length">
         <span class="text-xl font-weight-medium">No creators have submitted yet</span>
+      </div>
+
+      <!-- Condition for already  submitted creators -->
+      <div *ngIf="isCustomerSubmittedForAnyCreator(printRequest)">
+        <span class="text-xl font-weight-medium">Creator already submitted!</span>
       </div>
     </div>
 

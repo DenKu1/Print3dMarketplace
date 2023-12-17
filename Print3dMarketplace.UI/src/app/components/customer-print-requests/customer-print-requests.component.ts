@@ -74,6 +74,24 @@ export class CustomerPrintRequestsComponent {
     return this.templateMaterials.find(material => material.id === id)?.name
   }
 
+  isCustomerAbleToCancel(printRequest: PrintRequestModel): boolean {
+    let newOrSubStatus: boolean = printRequest.printRequestStatusName === 'New' || printRequest.printRequestStatusName === 'CreatorSubmission';
+
+    return newOrSubStatus;
+  }
+
+  isAnyCreatorAlreadySubmitted(printRequest: PrintRequestModel): boolean {
+    let submittedByCreator: boolean = printRequest.printRequestStatusName === 'CreatorSubmission';
+
+    return submittedByCreator;
+  }
+
+  isCustomerSubmittedForAnyCreator(printRequest: PrintRequestModel): boolean {
+    let submittedByCustomer: boolean = printRequest.printRequestStatusName === 'CustomerSubmission';
+
+    return submittedByCustomer;
+  }
+
   cancelPrintRequest(id: string): void {
     this.printRequestService.cancelPrintRequest(id)
       .subscribe(
