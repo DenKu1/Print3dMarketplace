@@ -9,7 +9,6 @@ builder.Services.AddCors();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-builder.RegisterMapper(assembly);
 builder.RegisterDependencies();
 builder.AddSwaggerGen();
 builder.AddAppAuthentication();
