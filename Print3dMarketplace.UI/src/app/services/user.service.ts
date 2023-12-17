@@ -52,7 +52,13 @@ export class UserService {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
           localStorage.setItem('currentUser', JSON.stringify(loginResponse.user));
           localStorage.setItem('userToken', JSON.stringify(loginResponse.token));
+
+          // init the subjects and observables
           this.currentUserSubject.next(loginResponse.user);
+          this.currentTokenSubject.next(loginResponse.token);
+          this.currentUser = this.currentUserSubject.asObservable();
+          this.currentToken = this.currentTokenSubject.asObservable();
+
           return loginResponse.user;
         } else {
           throw new Error(response.message);
@@ -108,6 +114,10 @@ export class UserService {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userToken');
 
+    // reset the subjects and observables
     this.currentUserSubject.next(null);
+    this.currentTokenSubject.next(null);
+    this.currentUser = this.currentUserSubject.asObservable();
+    this.currentToken = this.currentTokenSubject.asObservable();
   }
 }

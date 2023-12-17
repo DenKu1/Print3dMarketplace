@@ -64,7 +64,7 @@ public class PrintRequestService : IPrintRequestService
 
 		try
 		{
-			applicablePrintRequests = await _context.Set<PrintRequest>()
+			var query = _context.Set<PrintRequest>()
 				.AsQueryable()
 				.Include(pr => pr.PrintRequestStatus)
 				.Include(pr => pr.SubmittedCreators)
@@ -81,8 +81,9 @@ public class PrintRequestService : IPrintRequestService
 				// Filter out PRs that cannot be done due to absence of Printer that can print model of such size
 				.Where(pr => printerPrintAreaLengths.Any(length => length > pr.PrintAreaLength)
 					&& printerPrintAreaWidths.Any(width => width > pr.PrintAreaWidth)
-					&& printerPrintAreaHeights.Any(height => height > pr.PrintAreaHeight))
-				.ToListAsync();
+					&& printerPrintAreaHeights.Any(height => height > pr.PrintAreaHeight));
+
+			applicablePrintRequests = await query.ToListAsync();
 		}
 		catch (Exception ex) { }
 

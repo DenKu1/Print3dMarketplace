@@ -73,7 +73,7 @@ export class UserLoginComponent implements OnInit {
       this.router.navigate(['creator', this.currentUser.id, 'profile']);
     }
     else {
-      this.router.navigate(['customer/print-requests']);
+      this.router.navigate(['customer', this.currentUser.id, 'print-requests']);
     }
   }
 }

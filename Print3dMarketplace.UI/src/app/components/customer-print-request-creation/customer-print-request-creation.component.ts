@@ -101,6 +101,8 @@ export class CustomerPrintRequestCreationComponent implements OnInit {
               this.toastrService.success("Print request created successfully");
 
               this.crPrintRequestFormInfo.form.markAsUntouched();
+
+              this.router.navigate(['customer', this.currentUser.id, 'print-requests']);
             } else {
               this.toastrService.error("Unknown error! Please try again");
             }

@@ -33,7 +33,7 @@ const routes: Routes = [
     component: CreatorProfileComponent
   },
   {
-    path: 'creator/print-requests',
+    path: 'creator/:id/print-requests',
     component: CreatorPrintRequestsComponent
   },
   {
@@ -41,11 +41,11 @@ const routes: Routes = [
     component: CustomerRegistrationComponent
   },
   {
-    path: 'customer/print-request-creation',
+    path: 'customer/:id/print-request-creation',
     component: CustomerPrintRequestCreationComponent
   },
   {
-    path: 'customer/print-requests',
+    path: 'customer/:id/print-requests',
     component: CustomerPrintRequestsComponent
   },
   {
