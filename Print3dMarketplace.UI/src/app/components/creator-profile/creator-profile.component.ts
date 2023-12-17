@@ -130,24 +130,21 @@ export class CreatorProfileComponent implements OnInit {
 
           if (isUpdated) {
             this.toastrService.success("Updated successfully");
-
             this.creatorInfo = creatorModel;
+          } else {
+            this.toastrService.error("Unknown error! Please try again");
           }
 
           this.upCreatorInfo.loading = false;
         },
         err => {
           this.upCreatorInfo.save();
-
           this.toastrService.error("Unknown error! Please try again");
-
           this.upCreatorInfo.loading = false;
         });
   }
 
   updateMaterials(): void {
-    this.upMaterials.submitted = true;
-
     if (this.upMaterials.form.invalid) {
       return;
     }
@@ -166,24 +163,24 @@ export class CreatorProfileComponent implements OnInit {
     this.materialService.updateCreatorMaterials(this.currentUser.id, materialModels)
       .pipe(first())
       .subscribe(isUpdated => {
-        this.upMaterials.loading = false;
+        this.upMaterials.save();
 
         if (isUpdated) {
           this.toastrService.success("Materials updated successfully");
           this.materials = materialModels;
-          this.upMaterials.disable();
         } else {
           this.toastrService.error("Unknown error! Please try again");
         }
-      }, error => {
+
         this.upMaterials.loading = false;
-        this.toastrService.error("An error occurred");
+      }, error => {
+        this.upMaterials.save();
+        this.toastrService.error("Unknown error! Please try again");
+        this.upMaterials.loading = false;
       });
   }
 
   updatePrinters(): void {
-    this.upPrinters.submitted = true;
-
     if (this.upPrinters.form.invalid) {
       return;
     }
@@ -205,18 +202,20 @@ export class CreatorProfileComponent implements OnInit {
     this.printerService.updateCreatorPrinters(this.currentUser.id, printerModels)
       .pipe(first())
       .subscribe(isUpdated => {
-        this.upPrinters.loading = false;
+        this.upPrinters.save();
 
         if (isUpdated) {
           this.toastrService.success("Printers updated successfully");
           this.printers = printerModels;
-          this.upPrinters.disable();
         } else {
           this.toastrService.error("Unknown error! Please try again");
         }
-      }, error => {
+
         this.upPrinters.loading = false;
+      }, error => {
+        this.upPrinters.save();
         this.toastrService.error("An error occurred");
+        this.upPrinters.loading = false;
       });
   }
 }
@@ -263,8 +262,8 @@ class UpdateCreatorInfo {
 }
 
 class UpdateMaterials {
-  loading = false;
-  submitted = false;
+  loading: boolean = false;
+  canBeEdited: boolean = false;
 
   form: FormGroup;
 
@@ -274,9 +273,7 @@ class UpdateMaterials {
 
     this.form = formBuilder.group({
       materials: formBuilder.array([])
-    })
-
-    this.form.disable();
+    });
   }
 
   initialize(materialModels: MaterialModel[]): void {
@@ -286,22 +283,14 @@ class UpdateMaterials {
     this.form.markAsUntouched();
   }
 
-  enable(): void {
-    this.form.enable();
-  }
-
-  disable(): void {
-    this.form.disable();
-  }
-
   addMaterialModel(materialModel: MaterialModel) {
     const formArray = this.form.get('materials') as FormArray;
 
     formArray.push(this.formBuilder.group({
-      colorId: [{ value: materialModel.colorId, disabled: true }, [Validators.required]],
-      templateMaterialId: [{ value: materialModel.templateMaterialId, disabled: true }, [Validators.required]],
-      name: [{ value: materialModel.name, disabled: true }, [Validators.required, Validators.maxLength(50)]],
-      isActive: [{ value: materialModel.isActive, disabled: true }, [Validators.required]]
+      colorId: [{ value: materialModel.colorId, disabled: !this.canBeEdited }, [Validators.required]],
+      templateMaterialId: [{ value: materialModel.templateMaterialId, disabled: !this.canBeEdited }, [Validators.required]],
+      name: [{ value: materialModel.name, disabled: !this.canBeEdited }, [Validators.required, Validators.maxLength(50)]],
+      isActive: [{ value: materialModel.isActive, disabled: !this.canBeEdited }, [Validators.required]]
     }))
   }
 
@@ -309,26 +298,37 @@ class UpdateMaterials {
     const formArray = this.form.get('materials') as FormArray;
 
     formArray.push(this.formBuilder.group({
-      colorId: [{ value: '', disabled: true }, [Validators.required]],
-      templateMaterialId: [{ value: '', disabled: true }, [Validators.required]],
-      name: [{ value: '', disabled: true }, [Validators.required, Validators.maxLength(50)]],
-      isActive: [{ value: false, disabled: true }, [Validators.required]]
+      colorId: [{ value: '', disabled: !this.canBeEdited }, [Validators.required]],
+      templateMaterialId: [{ value: '', disabled: !this.canBeEdited }, [Validators.required]],
+      name: [{ value: '', disabled: !this.canBeEdited }, [Validators.required, Validators.maxLength(50)]],
+      isActive: [{ value: false, disabled: !this.canBeEdited }, [Validators.required]]
     }))
   }
 
   deleteMaterialModel(index: number) {
     const formArray = this.form.get('materials') as FormArray;
-    formArray.removeAt(index)
+    formArray.removeAt(index);
   }
 
   get materialsFormGroupArray(): FormGroup[] {
     return (this.form.get('materials') as FormArray).controls as FormGroup[];
   }
+
+  edit(): void {
+    this.canBeEdited = true;
+    this.form.enable();
+  }
+
+  save(): void {
+    this.canBeEdited = false;
+    this.form.disable();
+    this.form.markAsUntouched();
+  }
 }
 
 class UpdatePrinters {
-  loading = false;
-  submitted = false;
+  loading: boolean = false;
+  canBeEdited: boolean = false;
 
   form: FormGroup;
 
@@ -338,9 +338,7 @@ class UpdatePrinters {
 
     this.form = formBuilder.group({
       printers: formBuilder.array([])
-    })
-
-    this.form.disable();
+    });
   }
 
   initialize(printerModels: PrinterModel[]): void {
@@ -350,25 +348,17 @@ class UpdatePrinters {
     this.form.markAsUntouched();
   }
 
-  enable(): void {
-    this.form.enable();
-  }
-
-  disable(): void {
-    this.form.disable();
-  }
-
   addPrinterModel(printerModel: PrinterModel) {
     const formArray = this.form.get('printers') as FormArray;
 
     formArray.push(this.formBuilder.group({
-      nozzleId: [{ value: printerModel.nozzleId, disabled: true }, [Validators.required]],
-      templatePrinterId: [{ value: printerModel.templatePrinterId, disabled: true }, [Validators.required]],
-      modelName: [{ value: printerModel.modelName, disabled: true }, [Validators.required, Validators.maxLength(50)]],
-      printAreaLength: [{ value: printerModel.printAreaLength, disabled: true }, [Validators.required, Validators.min(0), Validators.max(1000)]],
-      printAreaWidth: [{ value: printerModel.printAreaWidth, disabled: true }, [Validators.required, Validators.min(0), Validators.max(1000)]],
-      printAreaHeight: [{ value: printerModel.printAreaHeight, disabled: true }, [Validators.required, Validators.min(0), Validators.max(1000)]],
-      isActive: [{ value: printerModel.isActive, disabled: true }, [Validators.required]]
+      nozzleId: [{ value: printerModel.nozzleId, disabled: !this.canBeEdited }, [Validators.required]],
+      templatePrinterId: [{ value: printerModel.templatePrinterId, disabled: !this.canBeEdited }, [Validators.required]],
+      modelName: [{ value: printerModel.modelName, disabled: !this.canBeEdited }, [Validators.required, Validators.maxLength(50)]],
+      printAreaLength: [{ value: printerModel.printAreaLength, disabled: !this.canBeEdited }, [Validators.required, Validators.min(0), Validators.max(1000)]],
+      printAreaWidth: [{ value: printerModel.printAreaWidth, disabled: !this.canBeEdited }, [Validators.required, Validators.min(0), Validators.max(1000)]],
+      printAreaHeight: [{ value: printerModel.printAreaHeight, disabled: !this.canBeEdited }, [Validators.required, Validators.min(0), Validators.max(1000)]],
+      isActive: [{ value: printerModel.isActive, disabled: !this.canBeEdited }, [Validators.required]]
     }))
   }
 
@@ -376,13 +366,13 @@ class UpdatePrinters {
     const formArray = this.form.get('printers') as FormArray;
 
     formArray.push(this.formBuilder.group({
-      nozzleId: [{ value: '', disabled: true }, [Validators.required]],
-      templatePrinterId: [{ value: '', disabled: true }, [Validators.required]],
-      modelName: [{ value: '', disabled: true }, [Validators.required, Validators.maxLength(50)]],
-      printAreaLength: [{ value: '', disabled: true }, [Validators.required, Validators.min(0), Validators.max(1000)]],
-      printAreaWidth: [{ value: '', disabled: true }, [Validators.required, Validators.min(0), Validators.max(1000)]],
-      printAreaHeight: [{ value: '', disabled: true }, [Validators.required, Validators.min(0), Validators.max(1000)]],
-      isActive: [{ value: false, disabled: true }, [Validators.required]]
+      nozzleId: [{ value: '', disabled: !this.canBeEdited }, [Validators.required]],
+      templatePrinterId: [{ value: '', disabled: !this.canBeEdited }, [Validators.required]],
+      modelName: [{ value: '', disabled: !this.canBeEdited }, [Validators.required, Validators.maxLength(50)]],
+      printAreaLength: [{ value: 0, disabled: !this.canBeEdited }, [Validators.required, Validators.min(0), Validators.max(1000)]],
+      printAreaWidth: [{ value: 0, disabled: !this.canBeEdited }, [Validators.required, Validators.min(0), Validators.max(1000)]],
+      printAreaHeight: [{ value: 0, disabled: !this.canBeEdited }, [Validators.required, Validators.min(0), Validators.max(1000)]],
+      isActive: [{ value: false, disabled: !this.canBeEdited }, [Validators.required]]
     }))
   }
 
@@ -393,5 +383,16 @@ class UpdatePrinters {
 
   get printersFormGroupArray(): FormGroup[] {
     return (this.form.get('printers') as FormArray).controls as FormGroup[];
+  }
+
+  edit(): void {
+    this.canBeEdited = true;
+    this.form.enable();
+  }
+
+  save(): void {
+    this.canBeEdited = false;
+    this.form.disable();
+    this.form.markAsUntouched();
   }
 }

@@ -135,7 +135,7 @@
                   </button>
 
                   <!--Update creator form: submit-->
-                  <button type="button" [disabled]="!upCreatorInfo.canBeEdited || !upCreatorInfo.form.touched || upCreatorInfo.loading" class="p3d-button float-end mx-2"
+                  <button type="button" [disabled]="upCreatorInfo.form.invalid || !upCreatorInfo.canBeEdited || !upCreatorInfo.form.touched || upCreatorInfo.loading" class="p3d-button float-end mx-2"
                           (click)="updateCreatorInfo()">
                     <span *ngIf="upCreatorInfo.loading" class="spinner-border spinner-border-sm mr-1"></span>
                     Save
@@ -178,7 +178,7 @@
                               <select id="colorId" class="form-select" formControlName="colorId">
                                 <option *ngFor="let color of colors" [value]="color.id">{{color.name}}</option>
                               </select>
-                              <div *ngIf="upMaterials.submitted && materialFormGroup.controls.colorId.errors" class="invalid-feedback d-block">
+                              <div *ngIf="materialFormGroup.controls.colorId.errors" class="invalid-feedback d-block">
                                 <div *ngIf="materialFormGroup.controls.colorId.errors.required">Color is required.</div>
                               </div>
                             </div>
@@ -188,7 +188,7 @@
                               <select id="templateMaterialId" class="form-select" formControlName="templateMaterialId">
                                 <option *ngFor="let templateMaterial of templateMaterials" [value]="templateMaterial.id">{{templateMaterial.name}}</option>
                               </select>
-                              <div *ngIf="upMaterials.submitted && materialFormGroup.controls.templateMaterialId.errors" class="invalid-feedback d-block">
+                              <div *ngIf="materialFormGroup.controls.templateMaterialId.errors" class="invalid-feedback d-block">
                                 <div *ngIf="materialFormGroup.controls.templateMaterialId.errors.required">Template Material is required.</div>
                               </div>
                             </div>
@@ -196,7 +196,7 @@
                             <div class="mb-3">
                               <label for="name" class="form-label">Name:</label>
                               <input id="name" type="text" class="form-control" formControlName="name" placeholder="Enter Name" />
-                              <div *ngIf="upMaterials.submitted && materialFormGroup.controls.name.errors" class="invalid-feedback d-block">
+                              <div *ngIf="materialFormGroup.controls.name.errors" class="invalid-feedback d-block">
                                 <div *ngIf="materialFormGroup.controls.name.errors.required">Name material is required.</div>
                                 <div *ngIf="materialFormGroup.controls.name.errors.maxlength">Max length is 50 symbols.</div>
                               </div>
@@ -205,7 +205,7 @@
                             <div class="mb-3 form-check">
                               <input id="isActive" type="checkbox" class="form-check-input" formControlName="isActive" />
                               <label for="isActive" class="form-check-label">Is Active:</label>
-                              <div *ngIf="upMaterials.submitted && materialFormGroup.controls.isActive.errors" class="invalid-feedback d-block">
+                              <div *ngIf="materialFormGroup.controls.isActive.errors" class="invalid-feedback d-block">
                                 <div *ngIf="materialFormGroup.controls.isActive.errors.required">Activity flag is required.</div>
                               </div>
                             </div>
@@ -215,7 +215,7 @@
                         <div class="card-footer">
                           <!-- Delete Button -->
                           <div class="d-flex justify-content-end">
-                            <button type="button" class="p3d-button p3d-button-square" [disabled]="upMaterials.form.disabled || upMaterials.loading" (click)="upMaterials.deleteMaterialModel(i)"><i class="fa-solid fa-xmark text-danger"></i></button>
+                            <button type="button" class="p3d-button p3d-button-square" [disabled]="!upMaterials.canBeEdited || upMaterials.loading" (click)="upMaterials.deleteMaterialModel(i)"><i class="fa-solid fa-xmark text-danger"></i></button>
                           </div>
                         </div>
                       </div>
@@ -225,13 +225,13 @@
                   <!-- Add, Save and Edit Buttons -->
                   <div class="d-flex justify-content-between">
                     <div>
-                      <button type="button" class="p3d-button" [disabled]="upMaterials.form.disabled || upMaterials.loading" (click)="upMaterials.addEmptyMaterialModel()">Add</button>
+                      <button type="button" class="p3d-button" [disabled]="!upMaterials.canBeEdited || upMaterials.loading" (click)="upMaterials.addEmptyMaterialModel()">Add</button>
 
-                      <button type="submit" class="p3d-button mx-2" [disabled]="upMaterials.form.disabled || !upMaterials.form.touched || upMaterials.loading" (click)="updateMaterials()">
+                      <button type="submit" class="p3d-button mx-2" [disabled]="upMaterials.form.invalid ||!upMaterials.canBeEdited || !upMaterials.form.touched || upMaterials.loading" (click)="updateMaterials()">
                         <span *ngIf="upMaterials.loading" class="spinner-border spinner-border-sm me-2"></span> Save
                       </button>
                     </div>
-                    <button type="button" class="p3d-button" [disabled]="!upMaterials.form.disabled || upMaterials.loading" (click)="upMaterials.enable()">Edit</button>
+                    <button type="button" class="p3d-button" [disabled]="upMaterials.canBeEdited || upMaterials.loading" (click)="upMaterials.edit()">Edit</button>
 
                   </div>
 
@@ -271,7 +271,7 @@
                               <select id="nozzleId" class="form-select" formControlName="nozzleId">
                                 <option *ngFor="let nozzle of nozzles" [value]="nozzle.id">{{nozzle.size}}</option>
                               </select>
-                              <div *ngIf="upPrinters.submitted && printerFormGroup.controls.nozzleId.errors" class="invalid-feedback d-block">
+                              <div *ngIf="printerFormGroup.controls.nozzleId.errors" class="invalid-feedback d-block">
                                 <div *ngIf="printerFormGroup.controls.nozzleId.errors.required">Nozzle is required.</div>
                               </div>
                             </div>
@@ -282,7 +282,7 @@
                               <select id="templatePrinterId" class="form-select" formControlName="templatePrinterId">
                                 <option *ngFor="let templatePrinter of templatePrinters" [value]="templatePrinter.id">{{templatePrinter.modelName}}</option>
                               </select>
-                              <div *ngIf="upPrinters.submitted && printerFormGroup.controls.templatePrinterId.errors" class="invalid-feedback d-block">
+                              <div *ngIf="printerFormGroup.controls.templatePrinterId.errors" class="invalid-feedback d-block">
                                 <div *ngIf="printerFormGroup.controls.templatePrinterId.errors.required">Template Printer is required.</div>
                               </div>
                             </div>
@@ -291,7 +291,7 @@
                             <div class="mb-3">
                               <label for="modelName" class="form-label">Model name:</label>
                               <input id="modelName" type="text" class="form-control" formControlName="modelName" placeholder="Enter model name" />
-                              <div *ngIf="upPrinters.submitted && printerFormGroup.controls.modelName.errors" class="invalid-feedback d-block">
+                              <div *ngIf="printerFormGroup.controls.modelName.errors" class="invalid-feedback d-block">
                                 <div *ngIf="printerFormGroup.controls.modelName.errors.required">Model name printer is required.</div>
                                 <div *ngIf="printerFormGroup.controls.modelName.errors.maxlength">Max length is 50 symbols.</div>
                               </div>
@@ -301,7 +301,7 @@
                             <div class="mb-3">
                               <label for="printAreaLength" class="form-label">Print area length (mm):</label>
                               <input id="printAreaLength" type="text" class="form-control" formControlName="printAreaLength" placeholder="Enter print area length" />
-                              <div *ngIf="upPrinters.submitted && printerFormGroup.controls.printAreaLength.errors" class="invalid-feedback d-block">
+                              <div *ngIf="printerFormGroup.controls.printAreaLength.errors" class="invalid-feedback d-block">
                                 <div *ngIf="printerFormGroup.controls.printAreaLength.errors.required">Print area length is required.</div>
                                 <div *ngIf="printerFormGroup.controls.printAreaLength.errors.max">Max length is 1000 mm.</div>
                                 <div *ngIf="printerFormGroup.controls.printAreaLength.errors.min">Min length is 0 mm.</div>
@@ -312,7 +312,7 @@
                             <div class="mb-3">
                               <label for="printAreaWidth" class="form-label">Print area width (mm):</label>
                               <input id="printAreaWidth" type="text" class="form-control" formControlName="printAreaWidth" placeholder="Enter print area width" />
-                              <div *ngIf="upPrinters.submitted && printerFormGroup.controls.printAreaWidth.errors" class="invalid-feedback d-block">
+                              <div *ngIf="printerFormGroup.controls.printAreaWidth.errors" class="invalid-feedback d-block">
                                 <div *ngIf="printerFormGroup.controls.printAreaWidth.errors.required">Print area width is required.</div>
                                 <div *ngIf="printerFormGroup.controls.printAreaWidth.errors.max">Max width is 1000 mm.</div>
                                 <div *ngIf="printerFormGroup.controls.printAreaWidth.errors.min">Min width is 0 mm.</div>
@@ -323,7 +323,7 @@
                             <div class="mb-3">
                               <label for="printAreaHeight" class="form-label">Print area height (mm):</label>
                               <input id="printAreaHeight" type="text" class="form-control" formControlName="printAreaHeight" placeholder="Enter print area height" />
-                              <div *ngIf="upPrinters.submitted && printerFormGroup.controls.printAreaHeight.errors" class="invalid-feedback d-block">
+                              <div *ngIf="printerFormGroup.controls.printAreaHeight.errors" class="invalid-feedback d-block">
                                 <div *ngIf="printerFormGroup.controls.printAreaHeight.errors.required">Print area height is required.</div>
                                 <div *ngIf="printerFormGroup.controls.printAreaHeight.errors.max">Max height is 1000 mm.</div>
                                 <div *ngIf="printerFormGroup.controls.printAreaHeight.errors.min">Min height is 0 mm.</div>
@@ -334,7 +334,7 @@
                             <div class="mb-3 form-check">
                               <input id="isActive" type="checkbox" class="form-check-input" formControlName="isActive" />
                               <label for="isActive" class="form-check-label">Is Active:</label>
-                              <div *ngIf="upPrinters.submitted && printerFormGroup.controls.isActive.errors" class="invalid-feedback d-block">
+                              <div *ngIf="printerFormGroup.controls.isActive.errors" class="invalid-feedback d-block">
                                 <div *ngIf="printerFormGroup.controls.isActive.errors.required">Activity flag is required.</div>
                               </div>
                             </div>
@@ -344,7 +344,7 @@
                         <div class="card-footer">
                           <!-- Delete Button -->
                           <div class="d-flex justify-content-end">
-                            <button type="button" class="p3d-button p3d-button-square" [disabled]="upPrinters.form.disabled || upPrinters.loading" (click)="upPrinters.deletePrinterModel(i)"><i class="fa-solid fa-xmark text-danger"></i></button>
+                            <button type="button" class="p3d-button p3d-button-square" [disabled]="!upPrinters.canBeEdited || upPrinters.loading" (click)="upPrinters.deletePrinterModel(i)"><i class="fa-solid fa-xmark text-danger"></i></button>
                           </div>
                         </div>
                       </div>
@@ -354,13 +354,13 @@
                   <!-- Add, Save and Edit Buttons -->
                   <div class="d-flex justify-content-between">
                     <div>
-                      <button type="button" class="p3d-button" [disabled]="upPrinters.form.disabled || upPrinters.loading" (click)="upPrinters.addEmptyPrinterModel()">Add</button>
+                      <button type="button" class="p3d-button" [disabled]="!upPrinters.canBeEdited || upPrinters.loading" (click)="upPrinters.addEmptyPrinterModel()">Add</button>
 
-                      <button type="submit" class="p3d-button mx-2" [disabled]="upPrinters.form.disabled || !upPrinters.form.touched || upPrinters.loading" (click)="updatePrinters()">
+                      <button type="submit" class="p3d-button mx-2" [disabled]="upPrinters.form.invalid || !upPrinters.canBeEdited || !upPrinters.form.touched || upPrinters.loading" (click)="updatePrinters()">
                         <span *ngIf="upPrinters.loading" class="spinner-border spinner-border-sm me-2"></span> Save
                       </button>
                     </div>
-                    <button type="button" class="p3d-button" [disabled]="!upPrinters.form.disabled || upPrinters.loading" (click)="upPrinters.enable()">Edit</button>
+                    <button type="button" class="p3d-button" [disabled]="upPrinters.canBeEdited || upPrinters.loading" (click)="upPrinters.edit()">Edit</button>
 
                   </div>
 
