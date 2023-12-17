@@ -18,7 +18,7 @@
     <!-- Creator submit -->
     <span *ngIf="isCurrentCreatorNotYetSubmitted(printRequest)" class="submit-item" (click)="submitPrintRequest(printRequest.id)"><i class="fa-solid fa-check"></i></span>
 
-    <div class="px-3 my-3">
+    <div class="px-3 my-3 col-4">
       <a class="cart-item-product" href="#">
         <div class="cart-item-product-thumb"><img src="../assets/customer-print-request.jpg" alt="Print Request Image"></div>
         <div class="cart-item-product-info">
@@ -36,31 +36,31 @@
     </div>
 
     <!--templateMaterialId-->
-    <div class="px-3 my-3 text-center">
+    <div class="px-3 my-3 text-center col-1">
       <div class="cart-item-label">Material</div>
       <span class="text-xl font-weight-medium">{{getMaterialName(printRequest.templateMaterialId) || '-'}}</span>
     </div>
 
     <!--colorId-->
-    <div class="px-3 my-3 text-center">
+    <div class="px-3 my-3 text-center col-1">
       <div class="cart-item-label">Color</div>
       <span class="text-xl font-weight-medium">{{getColorName(printRequest.colorId) || '-'}}</span>
     </div>
 
     <!--printRequestStatusName-->
-    <div class="px-3 my-3 text-center">
+    <div class="px-3 my-3 text-center col-2">
       <div class="cart-item-label">Status</div>
       <span class="text-xl font-weight-medium">{{printRequest.printRequestStatusName || '-'}}</span>
     </div>
 
     <!--layerHeight-->
-    <div class="px-3 my-3 text-center">
-      <div class="cart-item-label">Layer Height, mm</div>
+    <div class="px-3 my-3 text-center col-2">
+      <div class="cart-item-label">Layer, mm</div>
       <span class="text-xl font-weight-medium">{{printRequest.layerHeight || '-'}}</span>
     </div>
 
     <!--infill-->
-    <div class="px-3 my-3 text-center">
+    <div class="px-3 my-3 text-center col-2">
       <div class="cart-item-label">Infill, %</div>
       <span class="text-xl font-weight-medium">{{printRequest.infill || '-'}}</span>
     </div>

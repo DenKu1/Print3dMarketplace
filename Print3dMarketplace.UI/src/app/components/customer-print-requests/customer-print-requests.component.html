@@ -13,11 +13,11 @@
 
   <!-- PrintRequest Info -->
   <div class="cart-item d-md-flex justify-content-between mb-3" *ngFor="let printRequest of printRequests; let i=index">
-
+ 
     <!-- Customer cancel -->
     <span *ngIf="isCustomerAbleToCancel(printRequest)" class="remove-item" (click)="cancelPrintRequest(printRequest.id)"><i class="fa fa-times"></i></span>
 
-    <div class="px-3 my-3">
+    <div class="px-3 my-3 col-4">
       <a class="cart-item-product" href="#">
         <div class="cart-item-product-thumb"><img src="../assets/customer-print-request.jpg" alt="Print Request Image"></div>
         <div class="cart-item-product-info">
@@ -34,45 +34,45 @@
     </div>
 
     <!--templateMaterialId-->
-    <div class="px-3 my-3 text-center">
+    <div class="px-3 my-3 text-center col-1">
       <div class="cart-item-label">Material</div>
       <span class="text-xl font-weight-medium">{{getMaterialName(printRequest.templateMaterialId) || '-'}}</span>
     </div>
 
     <!--colorId-->
-    <div class="px-3 my-3 text-center">
+    <div class="px-3 my-3 text-center col-1">
       <div class="cart-item-label">Color</div>
       <span class="text-xl font-weight-medium">{{getColorName(printRequest.colorId) || '-'}}</span>
     </div>
 
     <!--printRequestStatusName-->
-    <div class="px-3 my-3 text-center">
+    <div class="px-3 my-3 text-center col-2">
       <div class="cart-item-label">Status</div>
       <span class="text-xl font-weight-medium">{{printRequest.printRequestStatusName || '-'}}</span>
     </div>
 
     <!--layerHeight-->
-    <div class="px-3 my-3 text-center">
-      <div class="cart-item-label">Layer Height, mm</div>
+    <div class="px-3 my-3 text-center col-1">
+      <div class="cart-item-label">Layer, mm</div>
       <span class="text-xl font-weight-medium">{{printRequest.layerHeight || '-'}}</span>
     </div>
 
     <!--infill-->
-    <div class="px-3 my-3 text-center">
+    <div class="px-3 my-3 text-center col-1">
       <div class="cart-item-label">Infill, %</div>
       <span class="text-xl font-weight-medium">{{printRequest.infill || '-'}}</span>
     </div>
 
     <!-- Submitted creators -->
-    <div class="px-3 my-3">
+    <div class="px-3 my-3 col-2">
       <div class="cart-item-label">Submitted by</div>
 
 
       <div *ngIf="isAnyCreatorAlreadySubmitted(printRequest)">
         <!-- Creators List -->
-        <ul *ngFor="let submittedCreator of printRequest.submittedCreators; let j=index">
-          <li>
-            <span class="text-xl font-weight-medium">{{submittedCreator.creatorName}}</span>
+        <div *ngFor="let submittedCreator of printRequest.submittedCreators; let j=index">
+          <div>
+            <span class="text-xl font-weight-medium px-1">{{submittedCreator.creatorName}}</span>
             <!-- Navigate to profile -->
             <a [routerLink]="['/creator', submittedCreator.creatorId, 'profile']">
               <i class="fa-solid fa-arrow-up-right-from-square" style="cursor:pointer;"></i>
@@ -81,8 +81,8 @@
             <a (click)="sumbitCreator(printRequest.id, submittedCreator.creatorId)">
               <i class="fa-solid fa-user-check" style="cursor:pointer;"></i>
             </a>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
 
       <!-- Condition for no submitted creators -->
