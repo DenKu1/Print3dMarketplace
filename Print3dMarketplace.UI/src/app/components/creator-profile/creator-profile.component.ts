@@ -4,7 +4,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreatorModel } from '../../models/user/creatorModel';
-import { first } from 'rxjs';
+import { first, forkJoin } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { MaterialModel } from '../../models/material/materialModel';
 import { MaterialService } from '../../services/material.service';
@@ -58,22 +58,16 @@ export class CreatorProfileComponent implements OnInit {
       this.router.navigate(['/user/login']);
     }
 
-    this.getCreatorInfo();
-
-    this.getTemplateMaterials();
-    this.getColors();
-    this.getMaterials();
-
-    this.getTemplatePrinters();
-    this.getNozzles();
-    this.getPrinters();
+    this.initCreatorInfo();
+    this.initMaterials();
+    this.initPrinters();
   }
 
   getCurrentUser(): void {
     this.userService.currentUser.subscribe(user => this.currentUser = user);
   }
 
-  getCreatorInfo(): void {
+  initCreatorInfo(): void {
     this.userService.getCreator(this.currentUser.id).subscribe(
       creator =>
       {
@@ -82,53 +76,37 @@ export class CreatorProfileComponent implements OnInit {
       })
   }
 
-  getMaterials(): void {
-    this.materialService.getAllCreatorMaterials(this.currentUser.id).subscribe(
-      materials => {
-        this.materials = materials;
-        this.upMaterials.initialize(materials);
-      })
-  }
-
-  getTemplateMaterials(): void {
-    this.materialService.getAllTemplateMaterials().subscribe(
-      templateMaterials => {
-        this.templateMaterials = templateMaterials;
-      })
-  }
-
-  getColors(): void {
-    this.materialService.getAllColors().subscribe(
-      colors => {
+  initMaterials(): void {
+    forkJoin({
+      colors: this.materialService.getAllColors(),
+      templateMaterials: this.materialService.getAllTemplateMaterials(),
+      materials: this.materialService.getAllCreatorMaterials(this.currentUser.id)
+    })
+      .subscribe(({ colors, templateMaterials, materials }) => {
         this.colors = colors;
-      })
+        this.templateMaterials = templateMaterials;
+        this.materials = materials;
+
+        this.upMaterials.initialize(materials);
+      });
   }
 
-  getPrinters(): void {
-    this.printerService.getAllCreatorPrinters(this.currentUser.id).subscribe(
-      printers => {
-        this.printers = printers;
-        this.upPrinters.initialize(printers);
-      })
-  }
-
-  getTemplatePrinters(): void {
-    this.printerService.getAllTemplatePrinters().subscribe(
-      templatePrinters => {
-        this.templatePrinters = templatePrinters;
-      })
-  }
-
-  getNozzles(): void {
-    this.printerService.getAllNozzles().subscribe(
-      nozzles => {
+  initPrinters(): void {
+    forkJoin({
+      nozzles: this.printerService.getAllNozzles(),
+      templatePrinters: this.printerService.getAllTemplatePrinters(),
+      printers: this.printerService.getAllCreatorPrinters(this.currentUser.id)
+    })
+      .subscribe(({ nozzles, templatePrinters, printers }) => {
         this.nozzles = nozzles;
-      })
+        this.templatePrinters = templatePrinters;
+        this.printers = printers;
+
+        this.upPrinters.initialize(printers);
+      });
   }
 
   updateCreatorInfo(): void {
-    this.upCreatorInfo.submitted = true;
-
     if (this.upCreatorInfo.form.invalid) {
       return;
     }
@@ -148,22 +126,22 @@ export class CreatorProfileComponent implements OnInit {
       .pipe(first())
       .subscribe(
         isUpdated => {
+          this.upCreatorInfo.save();
+
           if (isUpdated) {
             this.toastrService.success("Updated successfully");
-
-            this.upCreatorInfo.form.markAsUntouched();
 
             this.creatorInfo = creatorModel;
           }
 
           this.upCreatorInfo.loading = false;
-          this.upCreatorInfo.disable();
         },
         err => {
+          this.upCreatorInfo.save();
+
           this.toastrService.error("Unknown error! Please try again");
 
           this.upCreatorInfo.loading = false;
-          this.upCreatorInfo.disable();
         });
   }
 
@@ -244,8 +222,8 @@ export class CreatorProfileComponent implements OnInit {
 }
 
 class UpdateCreatorInfo {
-  loading = false;
-  submitted = false;
+  loading: boolean = false;
+  canBeEdited: boolean = false;
 
   form: FormGroup;
 
@@ -253,14 +231,12 @@ class UpdateCreatorInfo {
 
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
-      companyName: [{ value: '', disabled: true }, [Validators.required, Validators.maxLength(15)]],
-      phoneNumber: [{ value: '', disabled: true }, [Validators.required, Validators.pattern("\\d{12}")]],
-      alternativePhoneNumber: [{ value: '', disabled: true }, [Validators.required, Validators.pattern("\\d{12}")]],
-      address: [{ value: '', disabled: true }, [Validators.required, Validators.maxLength(50)]],
-      description: [{ value: '', disabled: true }, [Validators.required, Validators.maxLength(50)]],
+      companyName: [{ value: '', disabled: !this.canBeEdited }, [Validators.required, Validators.maxLength(15)]],
+      phoneNumber: [{ value: '', disabled: !this.canBeEdited }, [Validators.required, Validators.pattern("\\d{12}")]],
+      alternativePhoneNumber: [{ value: '', disabled: !this.canBeEdited }, [Validators.required, Validators.pattern("\\d{12}")]],
+      address: [{ value: '', disabled: !this.canBeEdited }, [Validators.required, Validators.maxLength(50)]],
+      description: [{ value: '', disabled: !this.canBeEdited }, [Validators.required, Validators.maxLength(50)]],
     });
-
-    this.form.disable();
   }
 
   initialize(creatorInfo: CreatorModel): void {
@@ -274,12 +250,15 @@ class UpdateCreatorInfo {
     this.form.markAsUntouched();
   }
 
-  enable(): void {
+  edit(): void {
+    this.canBeEdited = true;
     this.form.enable();
   }
 
-  disable(): void {
+  save(): void {
+    this.canBeEdited = false;
     this.form.disable();
+    this.form.markAsUntouched();
   }
 }
 

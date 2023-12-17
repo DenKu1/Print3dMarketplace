@@ -29,7 +29,7 @@ export class CreatorRegistrationComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
-      companyName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(15)]],
+      companyName: ['', [Validators.required, Validators.maxLength(15)]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
       phoneNumber: ['', [Validators.required, Validators.pattern("\\d{12}")]],
       address: ['', [Validators.required, Validators.maxLength(50)]],

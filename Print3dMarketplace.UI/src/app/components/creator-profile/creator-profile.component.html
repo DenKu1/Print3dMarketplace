@@ -10,7 +10,7 @@
                    class="rounded-circle"
                    width="150">
               <div class="mt-3">
-                <h4>{{creatorInfo.companyName}}</h4>
+                <h4>{{creatorInfo?.companyName || ''}}</h4>
                 <p class="text-secondary mb-1">Welcome to your creators profile!</p>
                 <p class="text-muted small">You have added (2) printers currently</p>
               </div>
@@ -21,19 +21,19 @@
           <ul class="list-group list-group-flush color-card">
             <li class="list-group-item d-flex justify-content-between align-items-center p3d-bg-color-light-accent">
               <span><i class="fa-solid fa-user"></i> Company name</span>
-              <span class="text-secondary">{{creatorInfo.companyName}}</span>
+              <span class="text-secondary">{{creatorInfo?.companyName || ''}}</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center p3d-bg-color-light-accent">
               <span><i class="fa-solid fa-envelope"></i> Email</span>
-              <span class="text-secondary">{{currentUser.email}}</span>
+              <span class="text-secondary">{{currentUser?.email || ''}}</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center p3d-bg-color-light-accent">
               <span><i class="fa-solid fa-map-location-dot"></i> Address</span>
-              <span class="text-secondary">{{creatorInfo.address}}</span>
+              <span class="text-secondary">{{creatorInfo?.address || ''}}</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center p3d-bg-color-light-accent">
               <span><i class="fa-solid fa-phone"></i> Phone Number</span>
-              <span class="text-secondary">{{creatorInfo.phoneNumber}}</span>
+              <span class="text-secondary">{{creatorInfo?.phoneNumber || ''}}</span>
             </li>
           </ul>
         </div>
@@ -42,34 +42,19 @@
         <div class="card mb-3">
 
           <!--Update creator form-->
-          <form [formGroup]="upCreatorInfo.form" (submit)="updateCreatorInfo()">
+          <form [formGroup]="upCreatorInfo.form">
             <div class="card-body p3d-bg-color-light-accent">
-              <div class="row">
-                <div class="col-sm-3">
-                  <h6 class="mb-0">Main phone number</h6>
-                </div>
-
-                <!--Update creator form: phoneNumber-->
-                <input [disabled]="upCreatorInfo.form.disabled || upCreatorInfo.loading" type="text" class="col-sm-9 text-secondary" formControlName="phoneNumber">
-                <span *ngIf="upCreatorInfo.submitted && upCreatorInfo.f.phoneNumber.errors" class="text-danger">
-                  <span *ngIf="upCreatorInfo.f.phoneNumber.errors.required">Phone number is required</span>
-                  <span *ngIf="upCreatorInfo.f.phoneNumber.errors.pattern">Phone numer has invalid format</span>
-                </span>
-
-              </div>
-
-              <hr>
 
               <div class="row">
                 <div class="col-sm-3">
-                  <h6 class="mb-0">Alternative phone number</h6>
+                  <h6 class="mb-0">Company name</h6>
                 </div>
 
-                <!--Update creator form: alternativePhoneNumber-->
-                <input [disabled]="upCreatorInfo.form.disabled || upCreatorInfo.loading" type="text" class="col-sm-9 text-secondary" formControlName="alternativePhoneNumber">
-                <span *ngIf="upCreatorInfo.submitted && upCreatorInfo.f.alternativePhoneNumber.errors" class="text-danger">
-                  <span *ngIf="upCreatorInfo.f.alternativePhoneNumber.errors.required">Alternative phone number is required</span>
-                  <span *ngIf="upCreatorInfo.f.alternativePhoneNumber.errors.pattern">Alternative phone numer has invalid format</span>
+                <!--Update creator form: companyName-->
+                <input [disabled]="upCreatorInfo.form.disabled || upCreatorInfo.loading" type="text" class="col-sm-9 text-secondary" formControlName="companyName">
+                <span *ngIf="upCreatorInfo.f.companyName.errors" class="text-danger">
+                  <span *ngIf="upCreatorInfo.f.companyName.errors.required">Address is required</span>
+                  <span *ngIf="upCreatorInfo.f.companyName.errors.maxlength">Max length is 15 symbols</span>
                 </span>
 
               </div>
@@ -83,7 +68,7 @@
 
                 <!--Update creator form: address-->
                 <input [disabled]="upCreatorInfo.form.disabled || upCreatorInfo.loading" type="text" class="col-sm-9 text-secondary" formControlName="address">
-                <span *ngIf="upCreatorInfo.submitted && upCreatorInfo.f.address.errors" class="text-danger">
+                <span *ngIf="upCreatorInfo.f.address.errors" class="text-danger">
                   <span *ngIf="upCreatorInfo.f.address.errors.required">Address is required</span>
                   <span *ngIf="upCreatorInfo.f.address.errors.maxlength">Max length is 50 symbols</span>
                 </span>
@@ -99,25 +84,61 @@
 
                 <!--Update creator form: description-->
                 <input [disabled]="upCreatorInfo.form.disabled || upCreatorInfo.loading" type="text" class="col-sm-9 text-secondary" formControlName="description">
-                <span *ngIf="upCreatorInfo.submitted && upCreatorInfo.f.description.errors" class="text-danger">
+                <span *ngIf="upCreatorInfo.f.description.errors" class="text-danger">
                   <span *ngIf="upCreatorInfo.f.description.errors.required">Address is required</span>
                   <span *ngIf="upCreatorInfo.f.description.errors.maxlength">Max length is 50 symbols</span>
                 </span>
 
               </div>
+
               <hr>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Main phone number</h6>
+                </div>
+
+                <!--Update creator form: phoneNumber-->
+                <input [disabled]="upCreatorInfo.form.disabled || upCreatorInfo.loading" type="text" class="col-sm-9 text-secondary" formControlName="phoneNumber">
+                <span *ngIf="upCreatorInfo.f.phoneNumber.errors" class="text-danger">
+                  <span *ngIf="upCreatorInfo.f.phoneNumber.errors.required">Phone number is required</span>
+                  <span *ngIf="upCreatorInfo.f.phoneNumber.errors.pattern">Phone numer has invalid format</span>
+                </span>
+
+              </div>
+
+              <hr>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Alternative phone number</h6>
+                </div>
+
+                <!--Update creator form: alternativePhoneNumber-->
+                <input [disabled]="upCreatorInfo.form.disabled || upCreatorInfo.loading" type="text" class="col-sm-9 text-secondary" formControlName="alternativePhoneNumber">
+                <span *ngIf="upCreatorInfo.f.alternativePhoneNumber.errors" class="text-danger">
+                  <span *ngIf="upCreatorInfo.f.alternativePhoneNumber.errors.required">Alternative phone number is required</span>
+                  <span *ngIf="upCreatorInfo.f.alternativePhoneNumber.errors.pattern">Alternative phone numer has invalid format</span>
+                </span>
+
+              </div>
+
+              <hr>
+
               <div class="row">
 
                 <div class="col-sm-12">
                   <!--Update creator form: edit-->
-                  <button type="button" [disabled]="!upCreatorInfo.form.disabled || upCreatorInfo.loading" class="p3d-button float-end"
-                          (click)="upCreatorInfo.enable()">
+                  <button type="button" [disabled]="upCreatorInfo.canBeEdited || upCreatorInfo.loading" class="p3d-button float-end"
+                          (click)="upCreatorInfo.edit()">
                     Edit
                   </button>
 
                   <!--Update creator form: submit-->
-                  <button type="submit" [disabled]="upCreatorInfo.form.disabled || !upCreatorInfo.form.touched || upCreatorInfo.loading" class="p3d-button float-end mx-2">
-                    <span *ngIf="upCreatorInfo.loading" class="spinner-border spinner-border-sm mr-1"></span> Save
+                  <button type="button" [disabled]="!upCreatorInfo.canBeEdited || !upCreatorInfo.form.touched || upCreatorInfo.loading" class="p3d-button float-end mx-2"
+                          (click)="updateCreatorInfo()">
+                    <span *ngIf="upCreatorInfo.loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Save
                   </button>
                 </div>
               </div>
@@ -171,13 +192,13 @@
                                 <div *ngIf="materialFormGroup.controls.templateMaterialId.errors.required">Template Material is required.</div>
                               </div>
                             </div>
-                            <!-- company name -->
+                            <!-- name -->
                             <div class="mb-3">
-                              <label for="companyName" class="form-label">Company name:</label>
-                              <input id="companyName" type="text" class="form-control" formControlName="companyName" placeholder="Enter company name" />
-                              <div *ngIf="upMaterials.submitted && materialFormGroup.controls.companyName.errors" class="invalid-feedback d-block">
-                                <div *ngIf="materialFormGroup.controls.companyName.errors.required">Company name material is required.</div>
-                                <div *ngIf="materialFormGroup.controls.companyName.errors.maxlength">Max length is 15 symbols.</div>
+                              <label for="name" class="form-label">Name:</label>
+                              <input id="name" type="text" class="form-control" formControlName="name" placeholder="Enter Name" />
+                              <div *ngIf="upMaterials.submitted && materialFormGroup.controls.name.errors" class="invalid-feedback d-block">
+                                <div *ngIf="materialFormGroup.controls.name.errors.required">Name material is required.</div>
+                                <div *ngIf="materialFormGroup.controls.name.errors.maxlength">Max length is 50 symbols.</div>
                               </div>
                             </div>
                             <!-- isActive -->
