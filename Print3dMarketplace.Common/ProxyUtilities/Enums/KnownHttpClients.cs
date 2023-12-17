@@ -3,4 +3,5 @@ public enum KnownHttpClients
 {
 	MaterialsAPI,
 	PrintersAPI,
+	SchemeStorageAPI
 }

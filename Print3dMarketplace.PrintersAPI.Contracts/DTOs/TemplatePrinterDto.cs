@@ -1,5 +1,5 @@
 ﻿namespace Print3dMarketplace.PrintersAPI.Contracts.DTOs;
-
+ 
 public class TemplatePrinterDto
 {
 	public Guid Id { get; set; }

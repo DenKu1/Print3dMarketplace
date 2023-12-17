@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { MaterialService } from '../../services/material.service';
@@ -40,9 +40,13 @@ export class CustomerPrintRequestCreationComponent implements OnInit {
 
     this.initPrintRequestForm();
   }
-
+  
   getCurrentUser(): void {
     this.userService.currentUser.subscribe(user => this.currentUser = user);
+  }
+
+  onFileChange(event: any) {
+    this.crPrintRequestFormInfo.form.get('formFile')?.setValue(event.target.files[0]);
   }
 
   initPrintRequestForm(): void {
@@ -60,44 +64,54 @@ export class CustomerPrintRequestCreationComponent implements OnInit {
     if (this.crPrintRequestFormInfo.form.invalid) {
       return;
     }
-
+    
     this.crPrintRequestFormInfo.loading = true;
+    
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const filecontent = (event.target as FileReader).result as string
 
-    var printRequest: CreatePrintRequestModel =
-    {
-      templateMaterialId: this.crPrintRequestFormInfo.f.templateMaterialId.value,
-      colorId: this.crPrintRequestFormInfo.f.colorId.value,
+      var printRequest: CreatePrintRequestModel =
+      {
+        templateMaterialId: this.crPrintRequestFormInfo.f.templateMaterialId.value,
+        colorId: this.crPrintRequestFormInfo.f.colorId.value,
 
-      layerHeight: this.crPrintRequestFormInfo.f.layerHeight.value,
-      infill: this.crPrintRequestFormInfo.f.infill.value,
+        layerHeight: this.crPrintRequestFormInfo.f.layerHeight.value,
+        infill: this.crPrintRequestFormInfo.f.infill.value,
 
-      printAreaLength: this.crPrintRequestFormInfo.f.printAreaLength.value,
-      printAreaWidth: this.crPrintRequestFormInfo.f.printAreaWidth.value,
-      printAreaHeight: this.crPrintRequestFormInfo.f.printAreaHeight.value,
+        printAreaLength: this.crPrintRequestFormInfo.f.printAreaLength.value,
+        printAreaWidth: this.crPrintRequestFormInfo.f.printAreaWidth.value,
+        printAreaHeight: this.crPrintRequestFormInfo.f.printAreaHeight.value,
 
-      comment: this.crPrintRequestFormInfo.f.comment.value,
-      useSupports: this.crPrintRequestFormInfo.f.useSupports.value,
-      wallThickness: this.crPrintRequestFormInfo.f.wallThickness.value
-    }
+        fileName: this.crPrintRequestFormInfo.f.formFile.value.name,
+        fileContent: filecontent,
 
-    this.printRequestService.createPrintRequest(printRequest)
-      .pipe(first())
-      .subscribe(
-        isUpdated => {
-          this.crPrintRequestFormInfo.loading = false;
+        comment: this.crPrintRequestFormInfo.f.comment.value,
+        useSupports: this.crPrintRequestFormInfo.f.useSupports.value,
+        wallThickness: this.crPrintRequestFormInfo.f.wallThickness.value
+      }
 
-          if (isUpdated) {
-            this.toastrService.success("Print request created successfully");
+      this.printRequestService.createPrintRequest(printRequest)
+        .pipe(first())
+        .subscribe(
+          isUpdated => {
+            this.crPrintRequestFormInfo.loading = false;
 
-            this.crPrintRequestFormInfo.form.markAsUntouched();
-          } else {
+            if (isUpdated) {
+              this.toastrService.success("Print request created successfully");
+
+              this.crPrintRequestFormInfo.form.markAsUntouched();
+            } else {
+              this.toastrService.error("Unknown error! Please try again");
+            }
+          },
+          err => {
+            this.crPrintRequestFormInfo.loading = false;
             this.toastrService.error("Unknown error! Please try again");
-          }
-        },
-        err => {
-          this.crPrintRequestFormInfo.loading = false;
-          this.toastrService.error("Unknown error! Please try again");
-        });
+          });
+    };
+
+    reader.readAsDataURL(this.crPrintRequestFormInfo.f.formFile.value);
   }
 }
 
@@ -124,12 +138,26 @@ class CreatePrintRequestFormInfo {
       printAreaWidth: [0, [Validators.required, Validators.min(0), Validators.max(1000)]],
       printAreaHeight: [0, [Validators.required, Validators.min(0), Validators.max(1000)]],
 
+      formFile: ['', [Validators.required, this.validateFileExtension]],
+
       comment: [null, [Validators.maxLength(200)]],
       useSupports: [null, []],
       wallThickness: [null, [Validators.min(0), Validators.max(1)]],
     });
 
     this.form.disable();
+  }
+
+  validateFileExtension(control: AbstractControl): ValidationErrors | null {
+    const allowedExtensions = ['stl'];
+    if (control.value) {
+      const fileExtension = control.value.name.split('.').pop()?.toLowerCase();
+      if (fileExtension && allowedExtensions.indexOf(fileExtension) === -1) {
+        return { invalidExtension: true };
+      }
+    }
+
+    return null;
   }
 
   initialize(

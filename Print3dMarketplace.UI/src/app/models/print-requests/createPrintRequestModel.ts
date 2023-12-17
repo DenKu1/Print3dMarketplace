@@ -9,6 +9,9 @@ export interface CreatePrintRequestModel {
   printAreaWidth: number;
   printAreaHeight: number;
 
+  fileName: string | null;
+  fileContent: string | null;
+
   comment: string | null;
   useSupports: boolean | null;
   wallThickness: number | null;

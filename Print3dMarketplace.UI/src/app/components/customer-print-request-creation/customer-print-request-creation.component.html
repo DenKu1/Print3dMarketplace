@@ -128,12 +128,19 @@
             </div>
           </div>
 
+          <!--Upload file-->
           <div class="row mt-3 mx-4">
             <div class="col-12">
               <label class="order-form-label">Upload stl model</label>
             </div>
             <div class="col-12">
-              <input class="form-control" type="file" id="formFile">
+              <input class="form-control" type="file" id="formFile" (change)="onFileChange($event)" accept="*.stl" contextmenu="asdasd">
+
+
+
+              <!-- <div *ngIf="fileForm.get('file').hasError('invalidExtension') && fileForm.get('file').touched">
+                <p>File extension should be .stl</p>
+              </div> -->
             </div>
           </div>
 
