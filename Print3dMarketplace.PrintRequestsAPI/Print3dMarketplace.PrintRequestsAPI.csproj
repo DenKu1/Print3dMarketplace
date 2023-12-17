@@ -30,6 +30,7 @@
 		<ProjectReference Include="..\Print3dMarketplace.MaterialsAPI.Contracts\Print3dMarketplace.MaterialsAPI.Contracts.csproj" />
 		<ProjectReference Include="..\Print3dMarketplace.PrintersAPI.Contracts\Print3dMarketplace.PrintersAPI.Contracts.csproj" />
 		<ProjectReference Include="..\Print3dMarketplace.PrintRequestsAPI.Contracts\Print3dMarketplace.PrintRequestsAPI.Contracts.csproj" />
+		<ProjectReference Include="..\Print3dMarketplace.SchemeStorageAPI.Contracts\Print3dMarketplace.SchemeStorageAPI.Contracts.csproj" />
 	</ItemGroup>
 
 </Project>

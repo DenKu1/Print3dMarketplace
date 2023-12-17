@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Print3dMarketplace.Common.Auth;
+using Microsoft.IdentityModel.Tokens;
 using Print3dMarketplace.Common.DTOs;
 using Print3dMarketplace.SchemeStorageAPI.Contracts.DTOs;
 using Print3dMarketplace.SchemeStorageAPI.Helpers.Interfaces;
@@ -27,10 +27,10 @@ public class SchemeController : ControllerBase
 	{
 		_guard.ValidateStlModel(stlScheme);
 
-		await _schemeStorageService.UploadScheme(User.GetUserId(), stlScheme);
+		var fileName = await _schemeStorageService.UploadScheme(stlScheme);
 
-		if (await _schemeStorageService.UploadScheme(User.GetUserId(), stlScheme))
-			return Ok(ResponseDto.SuccessResponse());
+		if (!fileName.IsNullOrEmpty())
+			return Ok(ResponseDto<string>.SuccessResponse(fileName));
 
 		return BadRequest(ResponseDto.ErrorResponse()); 
 	}

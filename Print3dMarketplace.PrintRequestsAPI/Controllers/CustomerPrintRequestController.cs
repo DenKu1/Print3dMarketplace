@@ -27,7 +27,7 @@ public class CustomerPrintRequestController : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> CreatePrintRequest(CreatePrintRequestDto newPrintRequestDto)
+	public async Task<IActionResult> CreatePrintRequest([FromBody]CreatePrintRequestDto newPrintRequestDto)
 	{
 		var isSuccess = await _printRequestService.CreatePrintRequest(newPrintRequestDto, User.GetUserId());
 

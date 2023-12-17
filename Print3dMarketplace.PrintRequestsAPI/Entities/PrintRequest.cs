@@ -28,5 +28,6 @@ public class PrintRequest : BaseEntity
 	public bool? UseSupports { get; set; }
 	public double? WallThickness { get; set; }
 
+	public string? FileName { get; set; }
 	public bool IsActive { get; set; }
 }

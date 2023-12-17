@@ -10,8 +10,7 @@ public interface ISchemeStorageService
 	/// <summary>
 	/// 
 	/// </summary>
-	/// <param name="userId"></param>
 	/// <param name="stlScheme"></param>
 	/// <returns></returns>
-	public Task<bool> UploadScheme(Guid userId, StlSchemeRequestDTO stlScheme);
+	public Task<string> UploadScheme(StlSchemeRequestDTO stlScheme);
 }

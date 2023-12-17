@@ -1,4 +1,6 @@
-﻿namespace Print3dMarketplace.PrintRequestsAPI.Contracts.DTOs;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Print3dMarketplace.PrintRequestsAPI.Contracts.DTOs;
 
 public class CreatePrintRequestDto
 {
@@ -12,6 +14,9 @@ public class CreatePrintRequestDto
 	public double PrintAreaLength { get; set; }
 	public double PrintAreaWidth { get; set; }
 	public double PrintAreaHeight { get; set; }
+
+	public string? FileName { get; set; }
+	public string? FileContent { get; set; }
 
 	public string? Comment { get; set; }
 	public bool? UseSupports { get; set; }

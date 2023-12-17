@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Print3dMarketplace.SchemeStorageAPI.Migrations
-{
+namespace Print3dMarketplace.SchemeStorageAPI.Migrations;
+
     /// <inheritdoc />
     public partial class InitialCreate : Migration
     {
@@ -33,4 +33,3 @@ namespace Print3dMarketplace.SchemeStorageAPI.Migrations
                 name: "Schemes");
         }
     }
-}

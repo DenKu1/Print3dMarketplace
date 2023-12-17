@@ -1,10 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Print3dMarketplace.Common.ProxyUtilities.Enums;
+using Print3dMarketplace.Common.ProxyUtilities;
 using Print3dMarketplace.PrintRequestsAPI.Contracts.DTOs;
 using Print3dMarketplace.PrintRequestsAPI.EF;
 using Print3dMarketplace.PrintRequestsAPI.Entities;
 using Print3dMarketplace.PrintRequestsAPI.ProxyServices.Interfaces;
 using Print3dMarketplace.PrintRequestsAPI.Services.Interfaces;
+using Print3dMarketplace.SchemeStorageAPI.Contracts.Integration;
+using Print3dMarketplace.SchemeStorageAPI.Contracts.DTOs;
 
 namespace Print3dMarketplace.PrintRequestsAPI.Services;
 
@@ -13,6 +18,7 @@ public class PrintRequestService : IPrintRequestService
 	private readonly IMapper _mapper;
 
 	private readonly PrintRequestsDbContext _context;
+	private readonly IHttpClientFactory _httpClientFactory;
 
 	private readonly IMaterialProxyService _materialProxyService;
 	private readonly IPrinterProxyService _printerProxyService;
@@ -22,12 +28,14 @@ public class PrintRequestService : IPrintRequestService
 		IMapper mapper,
 		PrintRequestsDbContext context,
 		IMaterialProxyService materialProxyService,
-		IPrinterProxyService printerProxyService)
+		IPrinterProxyService printerProxyService,
+		IHttpClientFactory clientFactory)
 	{
 		_mapper = mapper;
 		_context = context;
 		_materialProxyService = materialProxyService;
 		_printerProxyService = printerProxyService;
+		_httpClientFactory = clientFactory;
 	}
 
 	public async Task<IEnumerable<PrintRequestDto>> GetCustomerPrintRequests(Guid customerId)
@@ -77,6 +85,8 @@ public class PrintRequestService : IPrintRequestService
 	{
 		try
 		{
+			ArgumentNullException.ThrowIfNull(newPrintRequestDto);
+
 			var newPrintRequest = _mapper.Map<PrintRequest>(newPrintRequestDto);
 
 			newPrintRequest.ApplicationUserId = userId;
@@ -84,6 +94,19 @@ public class PrintRequestService : IPrintRequestService
 
 			await SetPrintRequestStatus(newPrintRequest, KnownPrintRequestStatuses.New);
 			
+			if (!newPrintRequestDto.FileName.IsNullOrEmpty() && !newPrintRequestDto.FileContent.IsNullOrEmpty()) 
+			{
+				var requstModel = new StlSchemeRequestDTO
+				{
+					Data = Convert.FromBase64String(newPrintRequestDto.FileContent.Substring(newPrintRequestDto.FileContent.IndexOf(',') + 1)),
+					FileName = newPrintRequestDto.FileName,
+					UserId = userId.ToString()
+				};
+
+				newPrintRequest.FileName = await _httpClientFactory.ClientPostAsync<string, StlSchemeRequestDTO>(KnownHttpClients.SchemeStorageAPI,
+									KnownSchemeStorageEndpoints.UploadSTLFile, requstModel);
+			}
+
 			await _context.PrintRequests.AddAsync(newPrintRequest);
 
 			return await _context.SaveChangesAsync() > 0;

@@ -16,7 +16,7 @@ public class StlSchemeRequestDTO
 	public string FileName { get; set; }
 
 	/// <summary>
-	/// Card Id
+	/// Guid User ID
 	/// </summary>
-	public Guid TemplateMaterialId { get; set; }
+	public string UserId { get; set; }
 }
