@@ -73,27 +73,26 @@ export class CreatorPrintRequestsComponent {
     return this.templateMaterials.find(material => material.id === id)?.name
   }
 
-  canBeSubmitted(printRequest: PrintRequestModel): boolean {
-
+  isCurrentCreatorNotYetSubmitted(
+    printRequest: PrintRequestModel): boolean {
     let newOrSubStatus: boolean = printRequest.printRequestStatusName === 'New' || printRequest.printRequestStatusName === 'CreatorSubmission';
+    let alredySubmitted: boolean = printRequest.submittedCreators && printRequest.submittedCreators.some(creator => creator.creatorId === this.currentUser.id);
 
-    return newOrSubStatus && !this.isCurrentCreatorAlreadySubmitted(printRequest);
-  }
-
-  isCustomerSubmittedForCurrentCreator(printRequest: PrintRequestModel): boolean {
-
-    let submittedByCustomer: boolean = printRequest.printRequestStatusName === 'CustomerSubmission';
-
-    let customerSubmittedCurrentUser: boolean = printRequest.customerSubmittedCreatorId === this.currentUser.id;
-
-    return submittedByCustomer && customerSubmittedCurrentUser;
+    return newOrSubStatus && !alredySubmitted;
   }
 
   isCurrentCreatorAlreadySubmitted(printRequest: PrintRequestModel): boolean {
-
+    let newOrSubStatus: boolean = printRequest.printRequestStatusName === 'New' || printRequest.printRequestStatusName === 'CreatorSubmission';
     let alredySubmitted: boolean = printRequest.submittedCreators && printRequest.submittedCreators.some(creator => creator.creatorId === this.currentUser.id);
 
-    return alredySubmitted;
+    return newOrSubStatus && alredySubmitted;
+  }
+
+  isCustomerSubmittedForCurrentCreator(printRequest: PrintRequestModel): boolean {
+    let submittedByCustomer: boolean = printRequest.printRequestStatusName === 'CustomerSubmission';
+    let customerSubmittedCurrentUser: boolean = printRequest.customerSubmittedCreatorId === this.currentUser.id;
+
+    return submittedByCustomer && customerSubmittedCurrentUser;
   }
 
   submitPrintRequest(id: string): void {

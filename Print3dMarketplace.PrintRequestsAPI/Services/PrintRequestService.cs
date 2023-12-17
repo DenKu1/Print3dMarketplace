@@ -210,7 +210,7 @@ public class PrintRequestService : IPrintRequestService
 			if (submittedCreator == null)
 				return false;
 
-			printRequestToUpdate.CustomerSubmittedCreatorId = submittedCreator.Id;
+			printRequestToUpdate.CustomerSubmittedCreatorId = submittedCreator.CreatorId;
 			
 			await SetPrintRequestStatus(printRequestToUpdate, KnownPrintRequestStatuses.CustomerSubmission);
 
