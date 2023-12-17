@@ -185,7 +185,10 @@
                             <!-- templateMaterialId -->
                             <div class="mb-3">
                               <label for="templateMaterialId" class="form-label">Template Material:</label>
-                              <select id="templateMaterialId" class="form-select" formControlName="templateMaterialId">
+                              <select id="templateMaterialId"
+                                      class="form-select"
+                                      formControlName="templateMaterialId"
+                                      (change)="onTemplateMaterialSelected(i, $event)">
                                 <option *ngFor="let templateMaterial of templateMaterials" [value]="templateMaterial.id">{{templateMaterial.name}}</option>
                               </select>
                               <div *ngIf="materialFormGroup.controls.templateMaterialId.errors" class="invalid-feedback d-block">
@@ -279,7 +282,10 @@
                             <!-- templatePrinterId -->
                             <div class="mb-3">
                               <label for="templatePrinterId" class="form-label">Template Printer:</label>
-                              <select id="templatePrinterId" class="form-select" formControlName="templatePrinterId">
+                              <select id="templatePrinterId"
+                                      class="form-select"
+                                      formControlName="templatePrinterId"
+                                      (change)="onTemplatePrinterSelected(i, $event)">
                                 <option *ngFor="let templatePrinter of templatePrinters" [value]="templatePrinter.id">{{templatePrinter.modelName}}</option>
                               </select>
                               <div *ngIf="printerFormGroup.controls.templatePrinterId.errors" class="invalid-feedback d-block">

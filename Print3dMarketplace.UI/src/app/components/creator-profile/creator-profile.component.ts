@@ -218,6 +218,32 @@ export class CreatorProfileComponent implements OnInit {
         this.upPrinters.loading = false;
       });
   }
+
+  onTemplateMaterialSelected(index: number, event: any): void {
+    if (event.target.value) {
+      const selectedTemplateMaterial = this.templateMaterials.find(t => t.id === event.target.value);
+      if (selectedTemplateMaterial) {
+        const formArray = this.upMaterials.form.get('materials') as FormArray;
+        const formGroup = formArray.at(index) as FormGroup;
+        formGroup.controls['name'].setValue(selectedTemplateMaterial.name);
+      }
+    }
+  }
+
+  onTemplatePrinterSelected(index: number, event: any): void {
+    if (event.target.value) {
+      const selectedTemplatePrinter = this.templatePrinters.find(t => t.id === event.target.value);
+      if (selectedTemplatePrinter) {
+        const formArray = this.upPrinters.form.get('printers') as FormArray;
+        const formGroup = formArray.at(index) as FormGroup;
+
+        formGroup.controls['modelName'].setValue(selectedTemplatePrinter.modelName);
+        formGroup.controls['printAreaLength'].setValue(selectedTemplatePrinter.printAreaLength);
+        formGroup.controls['printAreaWidth'].setValue(selectedTemplatePrinter.printAreaWidth);
+        formGroup.controls['printAreaHeight'].setValue(selectedTemplatePrinter.printAreaHeight);
+      }
+    }
+  }
 }
 
 class UpdateCreatorInfo {
@@ -291,7 +317,7 @@ class UpdateMaterials {
       templateMaterialId: [{ value: materialModel.templateMaterialId, disabled: !this.canBeEdited }, [Validators.required]],
       name: [{ value: materialModel.name, disabled: !this.canBeEdited }, [Validators.required, Validators.maxLength(50)]],
       isActive: [{ value: materialModel.isActive, disabled: !this.canBeEdited }, [Validators.required]]
-    }))
+    }));
   }
 
   addEmptyMaterialModel() {
@@ -359,7 +385,7 @@ class UpdatePrinters {
       printAreaWidth: [{ value: printerModel.printAreaWidth, disabled: !this.canBeEdited }, [Validators.required, Validators.min(0), Validators.max(1000)]],
       printAreaHeight: [{ value: printerModel.printAreaHeight, disabled: !this.canBeEdited }, [Validators.required, Validators.min(0), Validators.max(1000)]],
       isActive: [{ value: printerModel.isActive, disabled: !this.canBeEdited }, [Validators.required]]
-    }))
+    }));
   }
 
   addEmptyPrinterModel() {
@@ -373,12 +399,12 @@ class UpdatePrinters {
       printAreaWidth: [{ value: 0, disabled: !this.canBeEdited }, [Validators.required, Validators.min(0), Validators.max(1000)]],
       printAreaHeight: [{ value: 0, disabled: !this.canBeEdited }, [Validators.required, Validators.min(0), Validators.max(1000)]],
       isActive: [{ value: false, disabled: !this.canBeEdited }, [Validators.required]]
-    }))
+    }));
   }
 
   deletePrinterModel(index: number) {
     const formArray = this.form.get('printers') as FormArray;
-    formArray.removeAt(index)
+    formArray.removeAt(index);
   }
 
   get printersFormGroupArray(): FormGroup[] {
