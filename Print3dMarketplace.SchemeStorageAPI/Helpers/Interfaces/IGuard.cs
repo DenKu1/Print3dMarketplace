@@ -17,7 +17,7 @@ public interface IGuard
 	/// <summary>
 	/// Method verify if the model is suitable for preservation
 	/// </summary>
-	/// <param name="fileName">Path to blob</param>
+	/// <param name="stlScheme">Request model which contains key to data</param>
 	/// <exception cref="ValidationException">Throw when file name have inccorect data pattern</exception>
-	void ValidateFileName(string fileName);
+	void ValidateStlModelWithoudData(StlSchemeRequestDTO stlScheme);
 }

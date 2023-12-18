@@ -2,6 +2,7 @@
 using Print3dMarketplace.Common.Auth;
 using Print3dMarketplace.Common.DTOs;
 using Print3dMarketplace.PrintRequestsAPI.Contracts.DTOs;
+using Print3dMarketplace.PrintRequestsAPI.Entities;
 using Print3dMarketplace.PrintRequestsAPI.Services.Interfaces;
 
 namespace Print3dMarketplace.PrintRequestsAPI.Controllers;
@@ -24,6 +25,14 @@ public class CustomerPrintRequestController : ControllerBase
 		var result = await _printRequestService.GetCustomerPrintRequests(User.GetUserId());
 
 		return Ok(ResponseDto<IEnumerable<PrintRequestDto>>.SuccessResponse(result));
+	}
+
+	[HttpGet("{modelId}/download")]
+	public async Task<IActionResult> GetStlScheme(Guid modelId)
+	{
+		var result = await _printRequestService.GetStlScheme(User.GetUserId(), modelId);
+
+		return Ok(ResponseDto<FileResonse>.SuccessResponse(result));
 	}
 
 	[HttpPost]

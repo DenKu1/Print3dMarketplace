@@ -20,6 +20,7 @@ public class PrintRequestDto
 	public double PrintAreaWidth { get; set; }
 	public double PrintAreaHeight { get; set; }
 
+	public string? FileName { get; set; }
 	public string? Comment { get; set; }
 	public double? WallThickness { get; set; }
 

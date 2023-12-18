@@ -19,4 +19,9 @@ public class StlSchemeRequestDTO
 	/// Guid User ID
 	/// </summary>
 	public string UserId { get; set; }
+
+	/// <summary>
+	/// Unic model ID
+	/// </summary>
+	public string ModelID { get; set; }
 }

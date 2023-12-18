@@ -134,13 +134,11 @@
               <label class="order-form-label">Upload stl model</label>
             </div>
             <div class="col-12">
-              <input class="form-control" type="file" id="formFile" (change)="onFileChange($event)" accept="*.stl" contextmenu="asdasd">
-
-
-
-              <!-- <div *ngIf="fileForm.get('file').hasError('invalidExtension') && fileForm.get('file').touched">
-                <p>File extension should be .stl</p>
-              </div> -->
+              <input class="form-control" type="file" id="formFile" formControlName="formFile" (change)="onFileChange($event)" accept=".stl" required>
+              <div *ngIf="crPrintRequestFormInfo.submitted && crPrintRequestFormInfo.f.formFile.errors" class="invalid-feedback d-block">
+                <div *ngIf="crPrintRequestFormInfo.f.formFile.errors.required">File is required</div>
+                <div *ngIf="crPrintRequestFormInfo.f.formFile.errors.validateExtension">File extension should be .stl</div>
+              </div>
             </div>
           </div>
 

@@ -2,19 +2,17 @@
 using Print3dMarketplace.SchemeStorageAPI.Contracts.DTOs;
 using Print3dMarketplace.SchemeStorageAPI.Helpers.Interfaces;
 using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
 
 namespace Print3dMarketplace.SchemeStorageAPI.Helpers;
 
 public class Guard : IGuard
 {
-	public void ValidateFileName(string fileName)
+	public void ValidateStlModelWithoudData(StlSchemeRequestDTO stlScheme)
 	{
-		Regex regex = new Regex(@"[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}/[^/]+\.stl
-									_[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}");
-		
-		if (fileName.IsNullOrEmpty() || !regex.Match(fileName).Success)
-			throw new ValidationException("fileName have another Pattern");
+		if (stlScheme is null
+				|| stlScheme.FileName.IsNullOrEmpty()
+				|| stlScheme.ModelID.IsNullOrEmpty())
+			throw new ValidationException("Validation of stlScheme model failed");
 	}
 
 	public void ValidateStlModel(StlSchemeRequestDTO stlScheme)
@@ -22,7 +20,8 @@ public class Guard : IGuard
 		if (stlScheme is null
 				|| stlScheme.Data is null
 				|| stlScheme.Data.Length.Equals("0")
-				|| stlScheme.FileName.IsNullOrEmpty())
+				|| stlScheme.FileName.IsNullOrEmpty()
+				|| stlScheme.ModelID.IsNullOrEmpty())
 			throw new ValidationException("Validation of uploaded file failed");
 	}
 }

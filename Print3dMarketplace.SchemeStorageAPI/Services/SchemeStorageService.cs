@@ -12,17 +12,18 @@ public class SchemeStorageService : ISchemeStorageService
 			?? throw new ArgumentNullException(nameof(stlBlobService));
 	}
 
-	public async Task<string> UploadScheme(StlSchemeRequestDTO stlSchemeRequest)
+	public async Task UploadScheme(StlSchemeRequestDTO stlSchemeRequest)
 	{
-		var blobRecordId = $"{stlSchemeRequest.UserId}/{stlSchemeRequest.FileName}_{Guid.NewGuid()}";
-		
-		await _stlBlobService.UploadAsync(stlSchemeRequest.Data, blobRecordId);
-
-		return blobRecordId;
+		await _stlBlobService.UploadAsync(stlSchemeRequest.Data, CreateBlobStorageKey(stlSchemeRequest));
 	}
 
-	public async Task<byte[]> DownloadScheme(string fileName)
+	public async Task<byte[]> DownloadScheme(StlSchemeRequestDTO stlSchemeRequest)
 	{
-		return await _stlBlobService.DownloadAsync(fileName);
+		return await _stlBlobService.DownloadAsync(CreateBlobStorageKey(stlSchemeRequest));
+	}
+
+	private static string CreateBlobStorageKey(StlSchemeRequestDTO stlSchemeRequest)
+	{
+		return $"{stlSchemeRequest.UserId}/{stlSchemeRequest.FileName}_{stlSchemeRequest.ModelID}";
 	}
 }

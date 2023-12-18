@@ -12,12 +12,12 @@ public interface ISchemeStorageService
 	/// </summary>
 	/// <param name="stlScheme"></param>
 	/// <returns></returns>
-	public Task<string> UploadScheme(StlSchemeRequestDTO stlScheme);
+	public Task UploadScheme(StlSchemeRequestDTO stlScheme);
 
 	/// <summary>
 	/// Donwload file by fileName
 	/// </summary>
-	/// <param name="fileName">fileName that correspond pattern</param>
+	/// <param name="stlScheme"></param>
 	/// <returns>Byte array that can be convert into file</returns>
-	public Task<byte[]> DownloadScheme(string fileName);
+	public Task<byte[]> DownloadScheme(StlSchemeRequestDTO stlScheme);
 }

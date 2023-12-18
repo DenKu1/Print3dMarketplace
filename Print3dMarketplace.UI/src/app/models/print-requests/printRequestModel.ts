@@ -19,6 +19,7 @@ export interface PrintRequestModel {
   printAreaWidth: number;
   printAreaHeight: number;
   formFile: File;
+  fileName: string | null;
 
   comment: string | null;
   useSupports: boolean | null;

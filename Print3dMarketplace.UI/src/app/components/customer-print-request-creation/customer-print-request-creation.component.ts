@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { MaterialService } from '../../services/material.service';
@@ -10,6 +10,23 @@ import { first, forkJoin } from 'rxjs';
 import { UserModel } from '../../models/user/userModel';
 import { PrintRequestService } from '../../services/print-request.service';
 import { CreatePrintRequestModel } from '../../models/print-requests/createPrintRequestModel';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
+
+
+export function ValidateFileExtension(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+
+    var fileExtension = control.value?.split('.')?.at(-1);
+
+    if (fileExtension === "undefine")
+      return null;
+
+    if (fileExtension === "stl")
+      return null;
+
+    return { validateExtension: true };
+  }
+}
 
 @Component({
   selector: 'customer-print-request-creation',
@@ -46,7 +63,7 @@ export class CustomerPrintRequestCreationComponent implements OnInit {
   }
 
   onFileChange(event: any) {
-    this.crPrintRequestFormInfo.form.get('formFile')?.setValue(event.target.files[0]);
+    this.crPrintRequestFormInfo.f.fileName?.setValue(event.target.files[0]);
   }
 
   initPrintRequestForm(): void {
@@ -64,8 +81,6 @@ export class CustomerPrintRequestCreationComponent implements OnInit {
     if (this.crPrintRequestFormInfo.form.invalid) {
       return;
     }
-    
-    this.crPrintRequestFormInfo.loading = true;
     
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -116,15 +131,15 @@ export class CustomerPrintRequestCreationComponent implements OnInit {
     reader.readAsDataURL(this.crPrintRequestFormInfo.f.formFile.value);
   }
 }
-
 class CreatePrintRequestFormInfo {
   loading = false;
   submitted = false;
 
   form: FormGroup;
-
+  fileExtensionError: boolean = false;
   templateMaterials: TemplateMaterialModel[];
   colors: ColorModel[];
+  allowedExtensions: string[];
 
   get f() { return this.form.controls; }
 
@@ -140,7 +155,7 @@ class CreatePrintRequestFormInfo {
       printAreaWidth: [0, [Validators.required, Validators.min(0), Validators.max(1000)]],
       printAreaHeight: [0, [Validators.required, Validators.min(0), Validators.max(1000)]],
 
-      formFile: ['', [Validators.required, this.validateFileExtension]],
+      formFile: ['', [Validators.required, ValidateFileExtension()]],
 
       comment: [null, [Validators.maxLength(200)]],
       useSupports: [null, []],
@@ -148,18 +163,6 @@ class CreatePrintRequestFormInfo {
     });
 
     this.form.disable();
-  }
-
-  validateFileExtension(control: AbstractControl): ValidationErrors | null {
-    const allowedExtensions = ['stl'];
-    if (control.value) {
-      const fileExtension = control.value.name.split('.').pop()?.toLowerCase();
-      if (fileExtension && allowedExtensions.indexOf(fileExtension) === -1) {
-        return { invalidExtension: true };
-      }
-    }
-
-    return null;
   }
 
   initialize(

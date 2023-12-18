@@ -90,6 +90,28 @@ public class PrintRequestService : IPrintRequestService
 		return _mapper.Map<IEnumerable<PrintRequestDto>>(applicablePrintRequests);
 	}
 
+	public async Task<FileResonse> GetStlScheme(Guid userId, Guid ModelId)
+	{
+	   var model = await _context.PrintRequests.FirstOrDefaultAsync(el => el.Id.Equals(ModelId));
+
+	   ArgumentNullException.ThrowIfNull(model);
+
+		var requstModel = new StlSchemeRequestDTO
+		{
+			FileName = model.FileName,
+			UserId = userId.ToString(),
+			ModelID = ModelId.ToString()
+		};
+
+		var data = await _httpClientFactory.ClientPostAsync<byte[], StlSchemeRequestDTO>(KnownHttpClients.SchemeStorageAPI,
+								KnownSchemeStorageEndpoints.DownloadSTLFile, requstModel) ?? [];
+
+		return new FileResonse
+		{
+			Data = data
+		};
+	}
+
 	public async Task<bool> CreatePrintRequest(CreatePrintRequestDto newPrintRequestDto, Guid userId)
 	{
 		try
@@ -100,30 +122,38 @@ public class PrintRequestService : IPrintRequestService
 
 			newPrintRequest.ApplicationUserId = userId;
 			newPrintRequest.IsActive = true;
+			newPrintRequest.FileName = newPrintRequestDto.FileName;
 
 			await SetPrintRequestStatus(newPrintRequest, KnownPrintRequestStatuses.New);
-			
-			if (!newPrintRequestDto.FileName.IsNullOrEmpty() && !newPrintRequestDto.FileContent.IsNullOrEmpty()) 
-			{
-				var requstModel = new StlSchemeRequestDTO
-				{
-					Data = Convert.FromBase64String(newPrintRequestDto.FileContent.Substring(newPrintRequestDto.FileContent.IndexOf(',') + 1)),
-					FileName = newPrintRequestDto.FileName,
-					UserId = userId.ToString()
-				};
-
-				newPrintRequest.FileName = await _httpClientFactory.ClientPostAsync<string, StlSchemeRequestDTO>(KnownHttpClients.SchemeStorageAPI,
-									KnownSchemeStorageEndpoints.UploadSTLFile, requstModel);
-			}
-
 			await _context.PrintRequests.AddAsync(newPrintRequest);
 
-			return await _context.SaveChangesAsync() > 0;
+			var result = await _context.SaveChangesAsync() > 0;
+			await SaveStlScheme(newPrintRequestDto, userId, newPrintRequest);
+
+			return result;
+
 		}
 		catch (Exception)
 		{
 			return false;
 		}
+	}
+
+	private async Task SaveStlScheme(CreatePrintRequestDto newPrintRequestDto, Guid userId, PrintRequest newPrintRequest)
+	{
+		if (newPrintRequestDto.FileName.IsNullOrEmpty() || newPrintRequestDto.FileContent.IsNullOrEmpty())
+			throw new InvalidOperationException("File not save because FileName or FileContent is empty");
+
+		var requstModel = new StlSchemeRequestDTO
+		{
+			Data = Convert.FromBase64String(newPrintRequestDto.FileContent.Substring(newPrintRequestDto.FileContent.IndexOf(',') + 1)),
+			FileName = newPrintRequestDto.FileName,
+			UserId = userId.ToString(),
+			ModelID = newPrintRequest.Id.ToString()
+		};
+			
+		await _httpClientFactory.ClientPostAsync<string, StlSchemeRequestDTO>(KnownHttpClients.SchemeStorageAPI,
+								KnownSchemeStorageEndpoints.UploadSTLFile, requstModel);
 	}
 
 	public async Task<bool> CancelPrintRequest(Guid printRequestId)

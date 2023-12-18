@@ -26,21 +26,17 @@ public class SchemeController : ControllerBase
 	public async Task<IActionResult> UploadBlob([FromBody] StlSchemeRequestDTO stlScheme)
 	{
 		_guard.ValidateStlModel(stlScheme);
-
-		var fileName = await _schemeStorageService.UploadScheme(stlScheme);
-
-		if (!fileName.IsNullOrEmpty())
-			return Ok(ResponseDto<string>.SuccessResponse(fileName));
-
-		return BadRequest(ResponseDto.ErrorResponse()); 
+		await _schemeStorageService.UploadScheme(stlScheme);
+		
+		return Ok(ResponseDto.SuccessResponse("Successfully saved"));
 	}
 
 	[HttpGet("download")]
-	public async Task<IActionResult> DownloadBlob(string fileName)
+	public async Task<IActionResult> DownloadBlob([FromBody] StlSchemeRequestDTO stlScheme)
 	{
-		_guard.ValidateFileName(fileName);
+		_guard.ValidateStlModelWithoudData(stlScheme);
 
-		var byteArray = await _schemeStorageService.DownloadScheme(fileName);
+		var byteArray = await _schemeStorageService.DownloadScheme(stlScheme);
 
 		if (byteArray is null)
 			return BadRequest(ResponseDto.ErrorResponse());
