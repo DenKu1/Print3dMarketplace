@@ -16,13 +16,15 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 export function ValidateFileExtension(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
 
-    var fileExtension = control.value?.split('.')?.at(-1);
+    var fileExtension = control.value?.split('.').slice(-1)[0];
 
-    if (fileExtension === "undefine")
+    if (fileExtension === undefined) {
       return null;
+    }
 
-    if (fileExtension === "stl")
+    if (fileExtension === "stl") {
       return null;
+    }
 
     return { validateExtension: true };
   }
@@ -136,7 +138,6 @@ class CreatePrintRequestFormInfo {
   submitted = false;
 
   form: FormGroup;
-  fileExtensionError: boolean = false;
   templateMaterials: TemplateMaterialModel[];
   colors: ColorModel[];
   allowedExtensions: string[];
