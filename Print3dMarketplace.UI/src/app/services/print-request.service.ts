@@ -45,7 +45,7 @@ export class PrintRequestService {
       }));
   }
 
-  downloadStlScheme(printRequestId: string): Observable<FileResponseModel> {
+  customerDownloadStlScheme(printRequestId: string): Observable<FileResponseModel> {
     return this.http.get<ResponseModel>(`${environment.printRequestsApiUrl}/customer/print-requests/${printRequestId}/download`)
     .pipe(map(response => {
       if (response.isSuccess) {
@@ -54,6 +54,17 @@ export class PrintRequestService {
         return null;
       }
     }));
+  }
+
+  creatorDownloadStlScheme(printRequestId: string, printRequestOwnerId: string): Observable<FileResponseModel> {
+    return this.http.get<ResponseModel>(`${environment.printRequestsApiUrl}/creator/print-requests/${printRequestId}/download/${printRequestOwnerId}`)
+      .pipe(map(response => {
+        if (response.isSuccess) {
+          return response.result as FileResponseModel;
+        } else {
+          return null;
+        }
+      }));
   }
 
   cancelPrintRequest(printRequestId: string): Observable<boolean> {

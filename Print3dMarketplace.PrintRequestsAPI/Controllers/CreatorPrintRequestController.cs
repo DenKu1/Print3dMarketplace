@@ -27,10 +27,10 @@ public class CreatorPrintRequestController : ControllerBase
 		return Ok(ResponseDto<IEnumerable<PrintRequestDto>>.SuccessResponse(result));
 	}
 
-	[HttpGet("{modelId}/download")]
-	public async Task<IActionResult> GetStlScheme(Guid modelId)
+	[HttpGet("{modelId}/download/{printRequestOwnerId}/")]
+	public async Task<IActionResult> GetStlScheme([FromRoute] Guid modelId, [FromRoute] Guid printRequestOwnerId)
 	{
-		var result = await _printRequestService.GetStlScheme(User.GetUserId(), modelId);
+		var result = await _printRequestService.GetStlScheme(printRequestOwnerId, modelId);
 
 		return Ok(ResponseDto<FileResonse>.SuccessResponse(result));
 	}

@@ -69,6 +69,54 @@ export class CreatorPrintRequestsComponent {
     return this.colors.find(color => color.id === id)?.name
   }
 
+  downloadSTLScheme(printRequestId: string, printRequestOwnerId: string): void {
+    this.printRequestService.creatorDownloadStlScheme(printRequestId, printRequestOwnerId).subscribe(
+      model => {
+        if (!model || !model.data || !model.fileName) {
+          this.toastrService.error("Error! File not found");
+        }
+        else {
+          const blob = this.dataURItoBlob(model.data);
+          const url = window.URL.createObjectURL(blob);
+
+          var anchor = document.createElement("a");
+          anchor.download = model.fileName;
+          anchor.href = url;
+          anchor.click();
+        }
+      },
+      err => {
+        this.toastrService.error("Unknown error! Please try again");
+      });
+  }
+
+  dataURItoBlob(dataURI: string): Blob {
+    const byteString = window.atob(dataURI);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
+
+    const blob = new Blob([int8Array], { type: 'file/stl' });
+
+    return blob;
+  }
+
+  modifyModelTitle(fileName: string): string {
+    if (!fileName) {
+      return null;
+    }
+
+    var fileExtension = fileName.split('.').slice(-1)[0];
+
+    if (fileName.length > 20)
+      return fileName.substring(0, 20) + "..." + fileExtension;
+
+    return fileName;
+  }
+
   getMaterialName(id: string): string {
     return this.templateMaterials.find(material => material.id === id)?.name
   }

@@ -19,11 +19,14 @@
     <span *ngIf="isCurrentCreatorNotYetSubmitted(printRequest)" class="submit-item" (click)="submitPrintRequest(printRequest.id)"><i class="fa-solid fa-check"></i></span>
 
     <div class="px-3 my-3 col-4">
-      <a class="cart-item-product" href="#">
+      <span class="cart-item-product">
         <div class="cart-item-product-thumb"><img src="../assets/customer-print-request.jpg" alt="Print Request Image"></div>
         <div class="cart-item-product-info">
-          <h1 class="cart-item-product-title">Model name:</h1>
-          <span>{{printRequest.fileName || 'Empty file'}}</span>
+          <span>
+            <strong>Model name: </strong>{{modifyModelTitle(printRequest.fileName) || 'Empty file'}}
+            <!--Download STL file-->
+            <span *ngIf="printRequest.fileName" (click)="downloadSTLScheme(printRequest.id, printRequest.applicationUserId)"><i class="fa-solid fa-download"></i></span>
+          </span>
           <span><strong>Size, mm:</strong> {{printRequest.printAreaLength || 0}} x {{printRequest.printAreaWidth || 0}} x {{printRequest.printAreaHeight || 0}}</span>
           <span><strong>Using supports:</strong> {{printRequest.useSupports || 'Up to creator'}}</span>
           <span><strong>Wall thickness, mm:</strong> {{printRequest.wallThickness || 'Up to creator'}}</span>
@@ -33,7 +36,7 @@
           <span *ngIf="isCustomerSubmittedForCurrentCreator(printRequest)"><strong>Note:</strong> Congrats! Customer choose you for this PR. Now let him contact you via phone.</span>
           <span *ngIf="isCurrentCreatorAlreadySubmitted(printRequest)"><strong>Note:</strong> You already submitted this PR. Waiting for customer decision</span>
         </div>
-      </a>
+      </span>
     </div>
 
     <!--templateMaterialId-->

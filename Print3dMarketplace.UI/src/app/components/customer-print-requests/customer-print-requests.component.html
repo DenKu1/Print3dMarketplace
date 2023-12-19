@@ -18,13 +18,13 @@
     <span *ngIf="isCustomerAbleToCancel(printRequest)" class="remove-item" (click)="cancelPrintRequest(printRequest.id)"><i class="fa fa-times"></i></span>
 
     <div class="px-3 my-3 col-4">
-      <a class="cart-item-product">
+      <span class="cart-item-product">
         <div class="cart-item-product-thumb"><img src="../assets/customer-print-request.jpg" alt="Print Request Image"></div>
         <div class="cart-item-product-info">
           <span>
             <strong>Model name: </strong>{{modifyModelTitle(printRequest.fileName) || 'Empty file'}}
             <!--Download STL file-->
-            <a *ngIf="printRequest.fileName" (click)="downloadSTLScheme(printRequest.id)"><i class="fa-solid fa-download"></i></a>
+            <span *ngIf="printRequest.fileName" (click)="downloadSTLScheme(printRequest.id)"><i class="fa-solid fa-download"></i></span>
           </span>
           <span><strong>Size, mm:</strong> {{printRequest.printAreaLength || 0}} x {{printRequest.printAreaWidth || 0}} x {{printRequest.printAreaHeight || 0}}</span>
           <span><strong>Using supports:</strong> {{printRequest.useSupports || 'Up to creator'}}</span>
@@ -34,7 +34,7 @@
           <span *ngIf="isAnyCreatorAlreadySubmitted(printRequest)"><strong>Note:</strong> At least one creator is will to complete your PR. Choose creator to continue</span>
           <span *ngIf="isCustomerSubmittedForAnyCreator(printRequest)"><strong>Note:</strong> Congrats, you have choosen your creator. Contact him cia phone to continue</span>
         </div>
-      </a>
+      </span>
     </div>
 
     <!--templateMaterialId-->

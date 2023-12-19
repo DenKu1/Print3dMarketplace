@@ -72,7 +72,7 @@ export class CustomerPrintRequestsComponent {
   }
 
   downloadSTLScheme(id: string): void {
-    this.printRequestService.downloadStlScheme(id).subscribe(
+    this.printRequestService.customerDownloadStlScheme(id).subscribe(
       model => {
         if (!model || !model.data || !model.fileName) {
           this.toastrService.error("Error! File not found");
