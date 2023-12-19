@@ -45,7 +45,7 @@ export class CustomerPrintRequestsComponent {
 
     this.refreshPrintRequests();
   }
-  
+
   refreshPrintRequests(): void {
     this.isLoading = true;
 
@@ -71,36 +71,48 @@ export class CustomerPrintRequestsComponent {
     return this.colors.find(color => color.id === id)?.name
   }
 
-  dataURItoBlob(dataURI) {
-     const byteString = window.atob(dataURI); 
-     const arrayBuffer = new ArrayBuffer(byteString.length); 
-     const int8Array = new Uint8Array(arrayBuffer); 
-     for (let i = 0; i < byteString.length; i++) 
-     { int8Array[i] = byteString.charCodeAt(i); } 
-     const blob = new Blob([int8Array], 
-      { type: 'file/stl' }); 
-      return blob; 
-  }
   downloadSTLScheme(id: string): void {
-    let printRequests: FileResponseModel;
+    this.printRequestService.downloadStlScheme(id).subscribe(
+      model => {
+        if (!model || !model.data || !model.fileName) {
+          this.toastrService.error("Error! File not found");
+        }
+        else {
+          const blob = this.dataURItoBlob(model.data);
+          const url = window.URL.createObjectURL(blob);
 
-     this.printRequestService.downloadStlScheme(id).subscribe(model => {
-     
-      const base64 = model.data;
-      const imageName = model.fileName;
-      const blob = this.dataURItoBlob(base64);
-      const url = window.URL.createObjectURL(blob);
-      window.open(url);
-    });
+          var anchor = document.createElement("a");
+          anchor.download = model.fileName;
+          anchor.href = url;
+          anchor.click();
+        }
+      },
+      err => {
+        this.toastrService.error("Unknown error! Please try again");
+      });
   }
 
-  modifyModelTitle(fileName: string): string{
+  dataURItoBlob(dataURI: string): Blob {
+    const byteString = window.atob(dataURI);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
+
+    const blob = new Blob([int8Array], { type: 'file/stl' });
+
+    return blob;
+  }
+
+  modifyModelTitle(fileName: string): string {
     var fileExtension = fileName?.split('.').slice(-1)[0];
 
-     if(fileName.length > 20)
-      return fileName.substring(0,20) + "..." +  fileExtension;
-    
-      return  fileName;
+    if (fileName.length > 20)
+      return fileName.substring(0, 20) + "..." + fileExtension;
+
+    return fileName;
   }
 
   getMaterialName(id: string): string {

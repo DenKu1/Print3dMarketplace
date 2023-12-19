@@ -25,7 +25,10 @@
           <span><strong>Size, mm:</strong> {{printRequest.printAreaLength || 0}} x {{printRequest.printAreaWidth || 0}} x {{printRequest.printAreaHeight || 0}}</span>
           <span><strong>Using supports:</strong> {{printRequest.useSupports || 'Up to creator'}}</span>
           <span><strong>Wall thickness, mm:</strong> {{printRequest.wallThickness || 'Up to creator'}}</span>
+
+          <!--Download STL file-->
           <button (click)="downloadSTLScheme(printRequest.id)">Download Stl scheme</button>
+
           <!--Promts to help creator on current PR status-->
           <span *ngIf="isAnyCreatorAlreadySubmitted(printRequest)"><strong>Note:</strong> At least one creator is will to complete your PR. Choose creator to continue</span>
           <span *ngIf="isCustomerSubmittedForAnyCreator(printRequest)"><strong>Note:</strong> Congrats, you have choosen your creator. Contact him cia phone to continue</span>
