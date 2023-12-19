@@ -107,7 +107,11 @@ export class CustomerPrintRequestsComponent {
   }
 
   modifyModelTitle(fileName: string): string {
-    var fileExtension = fileName?.split('.').slice(-1)[0];
+    if (!fileName) {
+      return null;
+    }
+
+    var fileExtension = fileName.split('.').slice(-1)[0];
 
     if (fileName.length > 20)
       return fileName.substring(0, 20) + "..." + fileExtension;

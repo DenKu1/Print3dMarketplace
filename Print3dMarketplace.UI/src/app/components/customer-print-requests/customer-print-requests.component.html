@@ -21,13 +21,14 @@
       <a class="cart-item-product">
         <div class="cart-item-product-thumb"><img src="../assets/customer-print-request.jpg" alt="Print Request Image"></div>
         <div class="cart-item-product-info">
-          <span><strong>Model name: </strong>{{modifyModelTitle(printRequest.fileName || 'Empty file')}}</span>
+          <span>
+            <strong>Model name: </strong>{{modifyModelTitle(printRequest.fileName) || 'Empty file'}}
+            <!--Download STL file-->
+            <a *ngIf="printRequest.fileName" (click)="downloadSTLScheme(printRequest.id)"><i class="fa-solid fa-download"></i></a>
+          </span>
           <span><strong>Size, mm:</strong> {{printRequest.printAreaLength || 0}} x {{printRequest.printAreaWidth || 0}} x {{printRequest.printAreaHeight || 0}}</span>
           <span><strong>Using supports:</strong> {{printRequest.useSupports || 'Up to creator'}}</span>
           <span><strong>Wall thickness, mm:</strong> {{printRequest.wallThickness || 'Up to creator'}}</span>
-
-          <!--Download STL file-->
-          <button (click)="downloadSTLScheme(printRequest.id)">Download Stl scheme</button>
 
           <!--Promts to help creator on current PR status-->
           <span *ngIf="isAnyCreatorAlreadySubmitted(printRequest)"><strong>Note:</strong> At least one creator is will to complete your PR. Choose creator to continue</span>
