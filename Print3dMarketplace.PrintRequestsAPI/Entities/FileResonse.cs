@@ -2,5 +2,7 @@
 
 public class FileResonse
 {
-	public byte[] Data { get; set; }
+	public string Data { get; set; }
+
+	public string FileName { get; set; }
 }

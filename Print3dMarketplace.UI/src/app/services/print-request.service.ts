@@ -6,6 +6,7 @@ import { ResponseModel } from '../models/common/responseModel';
 import { CreatePrintRequestModel } from '../models/print-requests/createPrintRequestModel';
 import { PrintRequestModel } from '../models/print-requests/printRequestModel';
 import { SubmitPrintRequestModel } from '../models/print-requests/submitPrintRequestModel';
+import { FileResponseModel } from '../models/print-requests/fileResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +43,17 @@ export class PrintRequestService {
       .pipe(map(response => {
         return response.isSuccess;
       }));
+  }
+
+  downloadStlScheme(printRequestId: string): Observable<FileResponseModel> {
+    return this.http.get<ResponseModel>(`${environment.printRequestsApiUrl}/customer/print-requests/${printRequestId}/download`)
+    .pipe(map(response => {
+      if (response.isSuccess) {
+        return response.result as FileResponseModel;
+      } else {
+        return null;
+      }
+    }));
   }
 
   cancelPrintRequest(printRequestId: string): Observable<boolean> {

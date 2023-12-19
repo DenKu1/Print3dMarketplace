@@ -98,9 +98,10 @@ public class PrintRequestService : IPrintRequestService
 
 		var requstModel = new StlSchemeRequestDTO
 		{
+			Data = [],
 			FileName = model.FileName,
 			UserId = userId.ToString(),
-			ModelID = ModelId.ToString()
+			ModelID = model.Id.ToString()
 		};
 
 		var data = await _httpClientFactory.ClientPostAsync<byte[], StlSchemeRequestDTO>(KnownHttpClients.SchemeStorageAPI,
@@ -108,7 +109,8 @@ public class PrintRequestService : IPrintRequestService
 
 		return new FileResonse
 		{
-			Data = data
+			Data = Convert.ToBase64String(data),
+			FileName = model.FileName
 		};
 	}
 

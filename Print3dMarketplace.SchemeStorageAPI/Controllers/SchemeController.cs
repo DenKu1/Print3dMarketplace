@@ -31,7 +31,7 @@ public class SchemeController : ControllerBase
 		return Ok(ResponseDto.SuccessResponse("Successfully saved"));
 	}
 
-	[HttpGet("download")]
+	[HttpPost("download")]
 	public async Task<IActionResult> DownloadBlob([FromBody] StlSchemeRequestDTO stlScheme)
 	{
 		_guard.ValidateStlModelWithoudData(stlScheme);

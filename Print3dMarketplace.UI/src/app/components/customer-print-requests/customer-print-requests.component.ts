@@ -11,6 +11,7 @@ import { UserModel } from '../../models/user/userModel';
 import { PrintRequestService } from '../../services/print-request.service';
 import { PrintRequestModel } from '../../models/print-requests/printRequestModel';
 import { SubmitPrintRequestModel } from '../../models/print-requests/submitPrintRequestModel';
+import { FileResponseModel } from '../../models/print-requests/fileResponse';
 
 @Component({
   selector: 'customer-print-requests',
@@ -68,6 +69,38 @@ export class CustomerPrintRequestsComponent {
 
   getColorName(id: string): string {
     return this.colors.find(color => color.id === id)?.name
+  }
+
+  dataURItoBlob(dataURI) {
+     const byteString = window.atob(dataURI); 
+     const arrayBuffer = new ArrayBuffer(byteString.length); 
+     const int8Array = new Uint8Array(arrayBuffer); 
+     for (let i = 0; i < byteString.length; i++) 
+     { int8Array[i] = byteString.charCodeAt(i); } 
+     const blob = new Blob([int8Array], 
+      { type: 'file/stl' }); 
+      return blob; 
+  }
+  downloadSTLScheme(id: string): void {
+    let printRequests: FileResponseModel;
+
+     this.printRequestService.downloadStlScheme(id).subscribe(model => {
+     
+      const base64 = model.data;
+      const imageName = model.fileName;
+      const blob = this.dataURItoBlob(base64);
+      const url = window.URL.createObjectURL(blob);
+      window.open(url);
+    });
+  }
+
+  modifyModelTitle(fileName: string): string{
+    var fileExtension = fileName?.split('.').slice(-1)[0];
+
+     if(fileName.length > 20)
+      return fileName.substring(0,20) + "..." +  fileExtension;
+    
+      return  fileName;
   }
 
   getMaterialName(id: string): string {

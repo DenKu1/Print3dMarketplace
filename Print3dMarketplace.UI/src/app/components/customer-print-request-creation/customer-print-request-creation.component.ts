@@ -18,7 +18,7 @@ export function ValidateFileExtension(): ValidatorFn {
 
     var fileExtension = control.value?.split('.').slice(-1)[0];
 
-    if (fileExtension === undefined) {
+    if (fileExtension === "") {
       return null;
     }
 
@@ -65,7 +65,8 @@ export class CustomerPrintRequestCreationComponent implements OnInit {
   }
 
   onFileChange(event: any) {
-    this.crPrintRequestFormInfo.f.fileName?.setValue(event.target.files[0]);
+    if(event.target.files.length > 0)
+      this.crPrintRequestFormInfo.form.get('formFile')?.setValue(event.target.files[0]);
   }
 
   initPrintRequestForm(): void {
@@ -86,8 +87,9 @@ export class CustomerPrintRequestCreationComponent implements OnInit {
     
     const reader = new FileReader();
     reader.onload = (event) => {
-      const filecontent = (event.target as FileReader).result as string
 
+      const filecontent = (event.target as FileReader).result as string
+            
       var printRequest: CreatePrintRequestModel =
       {
         templateMaterialId: this.crPrintRequestFormInfo.f.templateMaterialId.value,
@@ -156,7 +158,7 @@ class CreatePrintRequestFormInfo {
       printAreaWidth: [0, [Validators.required, Validators.min(0), Validators.max(1000)]],
       printAreaHeight: [0, [Validators.required, Validators.min(0), Validators.max(1000)]],
 
-      formFile: ['', [Validators.required, ValidateFileExtension()]],
+      formFile: [null, [Validators.required, ValidateFileExtension()]],
 
       comment: [null, [Validators.maxLength(200)]],
       useSupports: [null, []],

@@ -22,7 +22,8 @@
       <a class="cart-item-product" href="#">
         <div class="cart-item-product-thumb"><img src="../assets/customer-print-request.jpg" alt="Print Request Image"></div>
         <div class="cart-item-product-info">
-          <h4 class="cart-item-product-title">Model name: {{printRequest.fileName || 'Empty file'}}</h4>
+          <h1 class="cart-item-product-title">Model name:</h1>
+          <span>{{printRequest.fileName || 'Empty file'}}</span>
           <span><strong>Size, mm:</strong> {{printRequest.printAreaLength || 0}} x {{printRequest.printAreaWidth || 0}} x {{printRequest.printAreaHeight || 0}}</span>
           <span><strong>Using supports:</strong> {{printRequest.useSupports || 'Up to creator'}}</span>
           <span><strong>Wall thickness, mm:</strong> {{printRequest.wallThickness || 'Up to creator'}}</span>
